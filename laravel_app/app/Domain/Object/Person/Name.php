@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Domain\Object;
+namespace App\Domain\Object\Person;
 
 
 class Name
@@ -25,7 +25,9 @@ class Name
         $this->firstName = $firstName;
         $this->lastName = $lastName;
     }
-
+    /**
+     * @return string
+     */
     public function getFullName(): string{
         return $this->lastName.' '.$this->firstName;
     }

@@ -2,15 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Domain\Object\Name;
-use App\Domain\Object\Person;
-use App\Domain\Object\Sex;
-use Faker\Provider\DateTime;
+use App\Domain\Object\Person\Name;
+use App\Domain\Object\Person\Person;
+use App\Domain\Object\Person\Sex;
 use PHPUnit\Framework\TestCase;
 
 class PersonTest extends TestCase
 {
-
     /**
      * @test
      */
@@ -25,8 +23,8 @@ class PersonTest extends TestCase
             $exception_throw = true;
         }
         $this->assertTrue( $exception_throw );
-        $this->assertSame( '性別の値は0又は1です', $e->getMessage()  );
-        $this->assertSame( 4301, $e->getCode()  );
+        $this->assertSame( '性別の値は1又は2です', $e->getMessage()  );
+        $this->assertSame( 4301, $e->getCode() );
 
         $sex = null;
         $exception_throw = false;
@@ -84,6 +82,15 @@ class PersonTest extends TestCase
             $this->assertSame( $e->getMessage(), 'idは1以上の数値です' );
             $this->assertSame( $e->getCode(), 4101 );
         }
+
+        //0は新規インスタンス
+        $person = new Person(null,$name,
+                (new \DateTime())->setDate(2021,5,31),$sex);
+        $this->assertTrue( $person->isNewObject() );
+        //1以上は永続和美インスタンス
+        $person = new Person(10,$name,
+            (new \DateTime())->setDate(2021,5,31),$sex);
+        $this->assertFalse( $person->isNewObject() );
 
         //Personのメソッド戻り値テスト
         $person = new Person(1,new Name('山田','太郎'),
