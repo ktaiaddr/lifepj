@@ -1,6 +1,6 @@
 <?php
+namespace Tests\Domain\Object\Person;
 
-namespace Tests\Unit;
 
 use App\Domain\Object\Person\Name;
 use App\Domain\Object\Person\Person;
@@ -85,7 +85,7 @@ class PersonTest extends TestCase
 
         //0は新規インスタンス
         $person = new Person(null,$name,
-                (new \DateTime())->setDate(2021,5,31),$sex);
+            (new \DateTime())->setDate(2021,5,31),$sex);
         $this->assertTrue( $person->isNewObject() );
         //1以上は永続和美インスタンス
         $person = new Person(10,$name,

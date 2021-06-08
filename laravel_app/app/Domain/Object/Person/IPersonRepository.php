@@ -1,10 +1,7 @@
 <?php
 
 
-namespace App\Domain\Repository;
-
-
-use App\Domain\Object\Person\Person;
+namespace App\Domain\Object\Person;
 
 interface IPersonRepository
 {

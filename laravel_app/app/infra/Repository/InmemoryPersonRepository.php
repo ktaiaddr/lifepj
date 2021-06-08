@@ -5,8 +5,9 @@ namespace App\infra\Repository;
 
 
 use App\Domain\Object\Person\Person;
+use App\Domain\Object\Person\IPersonRepository;
 
-class InmemoryPersonRepository implements \App\Domain\Repository\IPersonRepository
+class InmemoryPersonRepository implements IPersonRepository
 {
 
     /** @var array Person[] */
@@ -19,10 +20,10 @@ class InmemoryPersonRepository implements \App\Domain\Repository\IPersonReposito
             $max_id = 0;
             if( count($this->persons) >0 ){
                 $max_id = max( array_map(function( Person $_person ){
-                    return $_person->getPersonId();
+                    return $_person->getId();
                 },$this->persons));
             }
-            $person->setPersonIdForPersistent($max_id + 1);
+            $person->setIdForNewObject($max_id + 1);
             $this->persons[] = $person;
         }
         //永続化済みインスタンス
@@ -32,7 +33,7 @@ class InmemoryPersonRepository implements \App\Domain\Repository\IPersonReposito
              * @var Person $_person
              */
             foreach( $this->persons as $index => $_person ){
-                if( $person->getPersonId() === $_person->getPersonId()){
+                if( $person->getId() === $_person->getId()){
                     $this->persons[$index] = $person;
                     break;
                 }
@@ -45,7 +46,7 @@ class InmemoryPersonRepository implements \App\Domain\Repository\IPersonReposito
     public function find(int $personId): Person|null
     {
         foreach( $this->persons as $index => $_person ){
-            if( $personId === $_person->getPersonId()){
+            if( $personId === $_person->getId()){
                 return $_person;
             }
         }

@@ -11,7 +11,7 @@ class MoneyStorageEvent extends Entity
     const KEY = 'eventId';
 
     /** @var ?int キー */
-    private ?int $eventId;
+    protected ?int $eventId;
 
     /** @var MoneyStorageId 対象ストレージのID */
     private MoneyStorageId $storageId;
@@ -19,21 +19,21 @@ class MoneyStorageEvent extends Entity
     /** @var MoneyStorageEventType 出し入れの種別 */
     private MoneyStorageEventType $type;
 
-    /** @var MoneyStorageAmount 出し入れした金額 */
-    private MoneyStorageAmount $amount;
+    /** @var MoneyStorageEventAmount 出し入れした金額 */
+    private MoneyStorageEventAmount $amount;
 
-    /** @var MoneyStorageEnventMemo メモ */
-    private MoneyStorageEnventMemo $memo;
+    /** @var MoneyStorageEventMemo メモ */
+    private MoneyStorageEventMemo $memo;
 
     /**
      * MoneyStorageEvent constructor.
      * @param int|null $eventId
      * @param MoneyStorageId $storageId
      * @param MoneyStorageEventType $type
-     * @param MoneyStorageAmount $amount
-     * @param MoneyStorageEnventMemo $memo
+     * @param MoneyStorageEventAmount $amount
+     * @param MoneyStorageEventMemo $memo
      */
-    public function __construct(?int $eventId, MoneyStorageId $storageId, MoneyStorageEventType $type, MoneyStorageAmount $amount, MoneyStorageEnventMemo $memo)
+    public function __construct(?int $eventId, MoneyStorageId $storageId, MoneyStorageEventType $type, MoneyStorageEventAmount $amount, MoneyStorageEventMemo $memo)
     {
         $this->eventId = $eventId;
         $this->storageId = $storageId;
@@ -42,5 +42,11 @@ class MoneyStorageEvent extends Entity
         $this->memo = $memo;
     }
 
-
+    /**
+     * @return int|null
+     */
+    public function getEventId(): ?int
+    {
+        return $this->eventId;
+    }
 }

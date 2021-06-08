@@ -4,7 +4,7 @@
 namespace App\Domain\Object\Car;
 
 
-class BodyColor
+class CarColor
 {
     const WHITE = 1;
     const BLACK = 2;

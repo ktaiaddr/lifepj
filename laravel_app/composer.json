@@ -42,7 +42,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test:coverage": "phpunit --testdox  --fail-on-risky --colors=always --verbose --strict-coverage --dont-report-useless-tests --coverage-html coverage"
     },
     "extra": {
         "laravel": {

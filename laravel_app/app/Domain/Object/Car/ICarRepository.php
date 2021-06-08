@@ -4,7 +4,7 @@
 namespace App\Domain\Repository;
 
 
-use App\Domain\Object\Car;
+use App\Domain\Object\Car\Car;
 
 interface ICarRepository
 {

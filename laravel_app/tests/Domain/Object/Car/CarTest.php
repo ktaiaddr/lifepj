@@ -1,14 +1,15 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Domain\Object\Car;
 
-use App\Domain\Object\Car\BodyColor;
+use App\Domain\Object\Car\CarColor;
 use App\Domain\Object\Car\Car;
 use App\Domain\Object\Car\CarName;
 use PHPUnit\Framework\TestCase;
 
 class CarTest extends TestCase
 {
+
     /**
      * @test
      */
@@ -45,12 +46,12 @@ class CarTest extends TestCase
     /**
      * @test
      */
-    public function BodyColorのテスト(): BodyColor{
+    public function BodyColorのテスト(): CarColor{
 
         $exception_throw = false;
         // 車色の例外テスト
         try{
-            new BodyColor(-1);
+            new CarColor(-1);
         }
         catch (\Exception $e) {
             $exception_throw = true;
@@ -62,14 +63,14 @@ class CarTest extends TestCase
         $bodyColor = null;
         $exception_throw = false;
         try{
-            $bodyColor = new BodyColor(BodyColor::WHITE);
+            $bodyColor = new CarColor(CarColor::WHITE);
         }catch(\Exception $e){
             $exception_throw = true;
         }
         $this->assertFalse( $exception_throw );
         $this->assertSame($bodyColor->getBodyColor(),'白');
 
-        $bodyColor = new BodyColor(BodyColor::BLACK);
+        $bodyColor = new CarColor(CarColor::BLACK);
         $this->assertSame($bodyColor->getBodyColor(),'黒');
 
         return $bodyColor;
@@ -81,7 +82,7 @@ class CarTest extends TestCase
      * @test
      * @throws \Exception
      */
-    public function Carのテスト(CarName $carName, BodyColor $bodyColor): void{
+    public function Carのテスト(CarName $carName, CarColor $bodyColor): void{
         $exception_throw = false;
         // 車色の例外テスト
         try{
@@ -111,5 +112,4 @@ class CarTest extends TestCase
         $this->assertSame( '黒', $car->getColor()  );
 
     }
-
 }

@@ -12,18 +12,18 @@ class Car
     private CarName $name;
     /** @var int 定員 */
     private int $capacity;
-    /** @var BodyColor ボディカラー */
-    private BodyColor $color;
+    /** @var CarColor ボディカラー */
+    private CarColor $color;
 
     /**
      * Car constructor.
      * @param int $carId
      * @param CarName $name
      * @param int $capacity
-     * @param BodyColor|int $color
+     * @param CarColor|int $color
      * @throws \Exception
      */
-    public function __construct(int $carId, CarName $name, int $capacity, BodyColor $color)
+    public function __construct(int $carId, CarName $name, int $capacity, CarColor $color)
     {
         if( $carId < 0 )
             throw new \Exception('caridは0以上の数値が必要です', 4602);

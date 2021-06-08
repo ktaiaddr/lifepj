@@ -4,7 +4,7 @@
 namespace App\Domain\Object\MoneyStorage;
 
 
-class MoneyStorageAmount
+class MoneyStorageEventAmount
 {
     private int $value;
 
@@ -20,4 +20,13 @@ class MoneyStorageAmount
         }
         $this->value = $value;
     }
+
+    /**
+     * @return int
+     */
+    public function getValue(): int
+    {
+        return $this->value;
+    }
+
 }

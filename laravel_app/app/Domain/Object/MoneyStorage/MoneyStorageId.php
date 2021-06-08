@@ -11,10 +11,10 @@ class MoneyStorageId
 
     /**
      * MoneyStorageId constructor.
-     * @param int $value
+     * @param ?int $value
      * @throws \Exception
      */
-    public function __construct(int $value)
+    public function __construct(?int $value)
     {
         if ($value === null) {
             throw new \Exception('ストレージIDは数値です');

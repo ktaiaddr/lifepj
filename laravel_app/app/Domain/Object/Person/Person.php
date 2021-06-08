@@ -44,12 +44,4 @@ class Person extends Entity
     public function getFullName(): string{
         return $this->name->getFullName();
     }
-
-    public function getPersonId():int {
-        return $this->personId;
-    }
-
-    public function setPersonIdForPersistent(int $id):void {
-        $this->personId = $id;
-    }
 }

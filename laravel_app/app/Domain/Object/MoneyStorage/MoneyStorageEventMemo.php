@@ -4,7 +4,7 @@
 namespace App\Domain\Object\MoneyStorage;
 
 
-class MoneyStorageEnventMemo
+class MoneyStorageEventMemo
 {
 
     private string $value;
@@ -23,7 +23,7 @@ class MoneyStorageEnventMemo
      */
     public function getValue(): string
     {
-        return $this->getValue();
+        return $this->value;
     }
 
 
