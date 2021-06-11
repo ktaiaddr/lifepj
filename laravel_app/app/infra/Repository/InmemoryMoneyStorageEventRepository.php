@@ -1,9 +1,5 @@
 <?php
-
-
 namespace App\infra\Repository;
-
-
 use App\Domain\Object\MoneyStorage\MoneyStorageEvent;
 use App\Domain\Object\MoneyStorage\MoneyStorageId;
 
