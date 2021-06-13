@@ -4,8 +4,8 @@
 namespace App\infra\Repository;
 
 
-use App\Domain\Object\Person\Person;
-use App\Domain\Object\Person\IPersonRepository;
+use App\Domain\Model\Person\Person;
+use App\Domain\Model\Person\IPersonRepository;
 
 class InmemoryPersonRepository implements IPersonRepository
 {

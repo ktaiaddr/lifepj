@@ -14,7 +14,7 @@
 <!--            <directory suffix="Test.php">./tests/Feature</directory>-->
 <!--        </testsuite>-->
         <testsuite name="Domain">
-            <directory suffix="Test.php">./tests/Domain/Object</directory>
+            <directory suffix="Test.php">./tests/Domain/Model</directory>
         </testsuite>
         <testsuite name="infra">
             <directory suffix="Test.php">./tests/infra</directory>

@@ -1,9 +1,9 @@
 <?php
 namespace App\infra\Repository;
-use App\Domain\Object\MoneyStorage\MoneyStorageEvent;
-use App\Domain\Object\MoneyStorage\MoneyStorageId;
+use App\Domain\Model\MoneyStorage\MoneyStorageEvent;
+use App\Domain\Model\MoneyStorage\MoneyStorageId;
 
-class InmemoryMoneyStorageEventRepository implements \App\Domain\Object\MoneyStorage\IMoneyStorageEventRepository
+class InmemoryMoneyStorageEventRepository implements \App\Domain\Model\MoneyStorage\IMoneyStorageEventRepository
 {
     /** @var array MoneyStorageEvent[] */
     public array $moneyStorageEvent = [];

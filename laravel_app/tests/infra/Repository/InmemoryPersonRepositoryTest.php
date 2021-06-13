@@ -2,10 +2,10 @@
 
 namespace Tests\infra\Repository;
 
-use App\Domain\Object\Person\IPersonRepository;
-use App\Domain\Object\Person\Name;
-use App\Domain\Object\Person\Person;
-use App\Domain\Object\Person\Sex;
+use App\Domain\Model\Person\IPersonRepository;
+use App\Domain\Model\Person\Name;
+use App\Domain\Model\Person\Person;
+use App\Domain\Model\Person\Sex;
 use App\infra\Repository\InmemoryPersonRepository;
 use PHPUnit\Framework\TestCase;
 

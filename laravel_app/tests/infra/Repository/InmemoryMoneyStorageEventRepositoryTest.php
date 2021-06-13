@@ -2,12 +2,12 @@
 
 namespace Tests\infra\Repository;
 
-use App\Domain\Object\MoneyStorage\IMoneyStorageEventRepository;
-use App\Domain\Object\MoneyStorage\MoneyStorageEvent;
-use App\Domain\Object\MoneyStorage\MoneyStorageEventAmount;
-use App\Domain\Object\MoneyStorage\MoneyStorageEventMemo;
-use App\Domain\Object\MoneyStorage\MoneyStorageEventType;
-use App\Domain\Object\MoneyStorage\MoneyStorageId;
+use App\Domain\Model\MoneyStorage\IMoneyStorageEventRepository;
+use App\Domain\Model\MoneyStorage\MoneyStorageEvent;
+use App\Domain\Model\MoneyStorage\MoneyStorageEventAmount;
+use App\Domain\Model\MoneyStorage\MoneyStorageEventMemo;
+use App\Domain\Model\MoneyStorage\MoneyStorageEventType;
+use App\Domain\Model\MoneyStorage\MoneyStorageId;
 use App\infra\Repository\InmemoryMoneyStorageEventRepository;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
