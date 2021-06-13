@@ -4,9 +4,9 @@
 namespace App\infra\Repository;
 
 
-use App\Domain\Object\Car\Car;
+use App\Domain\Model\Car\Car;
 
-class InmemoryCarRepository implements \App\Domain\Repository\ICarRepository
+class InmemoryCarRepository implements \App\Domain\Model\Car\ICarRepository
 {
 
     /** @var Car[] */
@@ -22,8 +22,8 @@ class InmemoryCarRepository implements \App\Domain\Repository\ICarRepository
                     return $_person->getPersonId();
                 },$this->persons));
             }
-            $person->setPersonIdForPersistent($max_id + 1);
-            $this->persons[] = $person;
+            $car->setPersonIdForPersistent($max_id + 1);
+            $this->persons[] = $car;
         }
         //永続化済みインスタンス
         else{
@@ -32,8 +32,8 @@ class InmemoryCarRepository implements \App\Domain\Repository\ICarRepository
              * @var Person $_person
              */
             foreach( $this->persons as $index => $_person ){
-                if( $person->getPersonId() === $_person->getPersonId()){
-                    $this->persons[$index] = $person;
+                if( $car->getPersonId() === $_person->getPersonId()){
+                    $this->persons[$index] = $car;
                     break;
                 }
             }
