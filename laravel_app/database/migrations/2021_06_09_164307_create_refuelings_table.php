@@ -14,7 +14,7 @@ class   CreateRefuelingsTable extends Migration
     public function up()
     {
         Schema::create('refuelings', function (Blueprint $table) {
-            $table->increments('refuelin_id');
+            $table->increments('refueling_id');
             $table->float('refueling_amount');
             $table->float('refueling_distance');
             $table->string('gas_station');

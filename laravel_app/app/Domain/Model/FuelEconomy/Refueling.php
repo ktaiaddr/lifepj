@@ -13,6 +13,12 @@ class Refueling extends \App\Domain\Model\Entity
     /** @var ?int key */
     protected ?int $refuelingId;
 
+    /** @var int  */
+    private int $userId;
+
+    /** @var \DateTime  */
+    private \DateTime $date;
+
     /** @var FuelEconomy  */
     private FuelEconomy $fuelEconomy;
 
@@ -25,15 +31,18 @@ class Refueling extends \App\Domain\Model\Entity
     /**
      * Refueling constructor.
      * @param ?int $refuelingId
+     * @param \Datetime $date
      * @param FuelEconomy $fuelEconomy
      * @param string $gasStation
      * @param string $memo
      * @throws \Exception
      */
-    public function __construct(?int $refuelingId, FuelEconomy $fuelEconomy, string $gasStation, string $memo)
+    public function __construct(?int $refuelingId, int $userId, \DateTime $date, FuelEconomy $fuelEconomy, string $gasStation, string $memo)
     {
         if( $refuelingId !== null && $refuelingId < 1 ) throw new \Exception('idは1以上の数値です', 4101);
         $this->refuelingId = $refuelingId;
+        $this->userId = $userId;
+        $this->date = $date;
         $this->fuelEconomy = $fuelEconomy;
         $this->gasStation = $gasStation;
         $this->memo = $memo;
@@ -55,6 +64,8 @@ class Refueling extends \App\Domain\Model\Entity
     {
 
         $refuelingModelBuilder->refuelingId($this->refuelingId);
+        $refuelingModelBuilder->userId($this->userId);
+        $refuelingModelBuilder->date($this->date);
         $refuelingModelBuilder->fuelEconomy($this->fuelEconomy);
         $refuelingModelBuilder->gasStation($this->gasStation);
         $refuelingModelBuilder->memo($this->memo);

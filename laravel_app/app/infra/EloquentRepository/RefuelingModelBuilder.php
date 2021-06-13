@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingNotification
 {
     private ?int $refuelingId;
+    private int $userId;
+    private \DateTime $date;
     private FuelEconomy $fuelEconomy;
     private string $gasStation;
     private string $memo;
@@ -18,6 +20,16 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
     function refuelingId(?int $refuelingId): void
     {
         $this->refuelingId = $refuelingId;
+    }
+
+    function userId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    function date(\DateTime $date): void
+    {
+        $this->date = $date;
     }
 
     function fuelEconomy(FuelEconomy $fuelEconomy): void
@@ -41,6 +53,8 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
         if($this->refuelingId === null){
             $refueling = new Refueling();
             $refueling->refueling_id = $this->refuelingId;
+            $refueling->user_id = $this->userId;
+            $refueling->date = $this->date;
             $refueling->refueling_amount = $this->fuelEconomy->getRefuelingAmount();
             $refueling->refueling_distance = $this->fuelEconomy->getRefuelingDistance();
             $refueling->gas_station = $this->gasStation;

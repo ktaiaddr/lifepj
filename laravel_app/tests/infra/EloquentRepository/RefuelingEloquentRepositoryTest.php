@@ -27,12 +27,12 @@ class RefuelingEloquentRepositoryTest extends TestCase
      */
     public function test_save(){
         $elqRefuelingRepository = new RefuelingEloquentRepository();
-        $refueling = new Refueling(null,
+        $refueling = new Refueling(null, 1, new \DateTime(),
             new FuelEconomy(30,450),
             'hanna','jikka');
         $elqRefuelingRepository->save($refueling);
 
-        $refueling2 = new Refueling(null,
+        $refueling2 = new Refueling(null, 2, new \DateTime(),
             new FuelEconomy(31,500),
             'miki','ryokou');
         $elqRefuelingRepository->save($refueling2);

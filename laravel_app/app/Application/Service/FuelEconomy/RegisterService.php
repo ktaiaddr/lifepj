@@ -26,7 +26,7 @@ class RegisterService
     public function regist(UpdateRefuelingCommand $refuelingCommand):int {
         //新規登録
         if( $refuelingCommand->isNew() ){
-            $refueling = new Refueling( null,
+            $refueling = new Refueling( null,1, new \DateTime(),
                 new FuelEconomy( $refuelingCommand->refuelingAmount, $refuelingCommand->refuelingDistance ),
                 $refuelingCommand->gasStation, $refuelingCommand->memo );
         }

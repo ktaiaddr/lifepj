@@ -32,16 +32,16 @@ class RefuelingTest extends TestCase
     public function test_Refueling(FuelEconomy $fuelEconomy){
 
         try{
-            new Refueling(0
+            new Refueling(0, 1,new \DateTime()
             ,$fuelEconomy,'阪奈','帰省');
         }catch (\Exception $e){
             $this->assertSame('idは1以上の数値です',$e->getMessage());
         }
-        $refueling = new Refueling(1
+        $refueling = new Refueling(1,1, new \DateTime()
             ,$fuelEconomy,'阪奈','帰省');
         $this->assertSame(15.06,$refueling->calcFuelEconomy());
 
-        $refueling = new Refueling(1
+        $refueling = new Refueling(1,1, new \DateTime()
             ,new FuelEconomy(23.06, 539.6),'阪奈','帰省');
         $this->assertSame(23.4,$refueling->calcFuelEconomy());
 

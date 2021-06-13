@@ -4,9 +4,9 @@
 namespace App\Application\Service\FuelEconomy;
 
 
-use App\Domain\Object\FuelEconomy\IRefuelingRepository;
+use App\Domain\Model\FuelEconomy\IRefuelingRepository;
 
-class ListDataService
+class ReadService
 {
     private IRefuelingRepository $refuelingRepository;
 
@@ -19,8 +19,12 @@ class ListDataService
         $this->refuelingRepository = $refuelingRepository;
     }
 
-    public function get(){
+    public function readDetail(int $refuelingId){
+        $refueling = $this->refuelingRepository->find($refuelingId);
+    }
 
+    public function readList(int $refuelingId){
+        $refueling = $this->refuelingRepository->find($refuelingId);
     }
 
 }

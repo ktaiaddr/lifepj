@@ -14,7 +14,7 @@ class AlterRefueling extends Migration
     public function up()
     {
         Schema::table('refuelings', function (Blueprint $table) {
-            $table->renameColumn('refuelin_id','refueling_id');
+            $table->renameColumn('refueling_id','refueling_id');
             //
         });
     }

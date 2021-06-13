@@ -26,7 +26,7 @@ class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefu
     {
         $elqReueling = \App\Models\Refueling::where('refueling_id',$refuelingId)->get()->first();
 
-        return new Refueling($elqReueling->refueling_id,
+        return new Refueling($elqReueling->refueling_id,1,new \DateTime(),
             new FuelEconomy($elqReueling->refueling_amount,
                 $elqReueling->refueling_distance),
             $elqReueling->gas_station,

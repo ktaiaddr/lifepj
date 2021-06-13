@@ -83,7 +83,9 @@ unittest(){
             --coverage-html coverage )'
 }
 
-#コンテナ起動
+##################################################################################
+# コンテナ起動
+##################################################################################
 if [ $1 = run ];then
 
   if [ -z ${DB_PASS} ] ; then
@@ -93,7 +95,9 @@ if [ $1 = run ];then
 
   start_container
 
-#コンテナストップ
+##################################################################################
+# コンテナストップ
+##################################################################################
 elif [ $1 = down ];then
   echo down
   docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME;
@@ -103,7 +107,9 @@ elif [ $1 = down ];then
     docker volume rm $MYSQL_CONTAINER_VOLUME_NAME;
   fi
 
-#テスト実行
+##################################################################################
+# PHPUnit実行
+##################################################################################
 elif [ $1 = test ];then
   unittest
 
@@ -115,6 +121,39 @@ elif [ $1 = select ];then
   fi
   docker exec -it $MYSQL_CONTAINER_NAME /bin/sh -c \
           'mysql -uroot -p'$DB_PASS' -e "select * from lifepj_test.refuelings;"'
+
+##################################################################################
+# テーブル構造確認
+##################################################################################
+elif [ $1 = desc ];then
+
+  DATABASE=$2
+  TABLE=$3
+  if [ -z $DB_PASS ];then
+    echo DB_PASSを設定してください
+    exit 1
+  fi
+
+  if [ -z "$DATABASE" -o -z "$TABLE" ];then
+    echo ターゲットテーブルが指定されていません
+    exit 1
+  fi
+
+  echo "mysql -uroot -p"$DB_PASS" -e 'desc "$DATABASE"."$TABLE"'"
+  docker exec -it $MYSQL_CONTAINER_NAME /bin/bash -c "mysql -uroot -p"$DB_PASS" -e 'desc "$DATABASE"."$TABLE"'"
+
+##################################################################################
+# artisanコマンド
+##################################################################################
+elif [ "$1" = artisan ];then
+
+  if [ -z "$2" ]; then
+    echo artisanのコマンド引数が入力されていません
+    exit 1
+  fi
+
+  echo "'(cd laravel_app; php artisan '$2';)'"
+  docker exec -it $WEB_CONTAINER_NAME /bin/sh -c "(cd laravel_app; php artisan $2;)"
 fi
 
 
