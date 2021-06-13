@@ -11,7 +11,7 @@ class Refueling extends \App\Domain\Object\Entity
     const KEY = 'refuelingId';
 
     /** @var ?int key */
-    private ?int $refuelingId;
+    protected ?int $refuelingId;
 
     /** @var FuelEconomy  */
     private FuelEconomy $fuelEconomy;
@@ -53,10 +53,36 @@ class Refueling extends \App\Domain\Object\Entity
      */
     public function notify(IRefuelingNotification $refuelingModelBuilder )
     {
-        var_dump($this->refuelingId,1);
+
         $refuelingModelBuilder->refuelingId($this->refuelingId);
         $refuelingModelBuilder->fuelEconomy($this->fuelEconomy);
         $refuelingModelBuilder->gasStation($this->gasStation);
         $refuelingModelBuilder->memo($this->memo);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function update(UpdateRefuelingCommand $updateRefuelingCommand){
+
+        if($updateRefuelingCommand->refuelingDistance !==null || $updateRefuelingCommand->refuelingAmount !==null){
+            $newRefuelingDistance = $updateRefuelingCommand->refuelingDistance !==null
+                ? $updateRefuelingCommand->refuelingDistance
+                : $this->fuelEconomy->getRefuelingDistance();
+
+            $newRefuelingAmount = $updateRefuelingCommand->refuelingAmount !==null
+                ? $updateRefuelingCommand->refuelingAmount
+                : $this->fuelEconomy->getRefuelingAmount();
+
+            $this->fuelEconomy = new FuelEconomy($newRefuelingAmount,$newRefuelingDistance);
+        }
+
+        if($updateRefuelingCommand->gasStation != null)
+            $this->gasStation = $updateRefuelingCommand->gasStation;
+
+        if($updateRefuelingCommand->memo != null)
+            $this->memo = $updateRefuelingCommand->memo;
+
+    }
+
 }

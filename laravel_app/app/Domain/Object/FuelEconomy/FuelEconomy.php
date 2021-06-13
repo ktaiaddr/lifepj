@@ -24,6 +24,7 @@ class FuelEconomy
     {
         if(! ($refuelingAmount > 0) ) throw new Exception('給油量が無効です（0以下です）');
         if(! ($refuelingDistance > 0) ) throw new Exception('走行距離が無効です（0以下です）');
+
         $this->refuelingAmount = $refuelingAmount;
         $this->refuelingDistance = $refuelingDistance;
     }

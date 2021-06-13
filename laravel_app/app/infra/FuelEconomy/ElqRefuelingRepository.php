@@ -10,7 +10,7 @@ use App\Domain\Object\FuelEconomy\Refueling;
 class ElqRefuelingRepository implements \App\Domain\Object\FuelEconomy\IRefuelingRepository
 {
 
-    function save(Refueling $refueling): void
+    function save(Refueling $refueling): int
     {
         $refuelingModelBuilder = new RefuelingModelBuilder();
         $refueling->notify($refuelingModelBuilder);
@@ -18,6 +18,8 @@ class ElqRefuelingRepository implements \App\Domain\Object\FuelEconomy\IRefuelin
         $elqRefueling = $refuelingModelBuilder->build();
 //var_dump($elqRefueling);
         $elqRefueling->save();
+//var_dump($elqRefueling->refueling_id);
+        return $elqRefueling->refueling_id;
     }
 
     function find(int $refuelingId): Refueling

@@ -4,6 +4,8 @@
 namespace App\Domain\Object\Car;
 
 
+use Exception;
+
 class Car
 {
     /** @var int  */
@@ -20,16 +22,16 @@ class Car
      * @param int $carId
      * @param CarName $name
      * @param int $capacity
-     * @param CarColor|int $color
-     * @throws \Exception
+     * @param CarColor $color
+     * @throws Exception
      */
     public function __construct(int $carId, CarName $name, int $capacity, CarColor $color)
     {
         if( $carId < 0 )
-            throw new \Exception('caridは0以上の数値が必要です', 4602);
+            throw new Exception('caridは0以上の数値が必要です', 4602);
 
         if( $capacity < 1 )
-            throw new \Exception('定員は１名以上必要です', 4601);
+            throw new Exception('定員は１名以上必要です', 4601);
 
         $this->name = $name;
         $this->capacity = $capacity;

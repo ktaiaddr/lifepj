@@ -71,8 +71,8 @@ unittest(){
 
     echo unittest
 
-    docker exec -it $WEB_CONTAINER_NAME \
-            php /opt/laravel_app/vendor/bin/phpunit \
+    docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
+            '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit \
             --configuration /opt/laravel_app/phpunit.xml \
             --testdox \
             --fail-on-risky \
@@ -80,7 +80,7 @@ unittest(){
             --verbose \
             --strict-coverage \
             --dont-report-useless-tests \
-            --coverage-html coverage
+            --coverage-html coverage )'
 }
 
 #コンテナ起動
@@ -98,7 +98,10 @@ elif [ $1 = down ];then
   echo down
   docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME;
   docker network rm $CONTAINER_NETWORK;
-  docker volume rm $MYSQL_CONTAINER_VOLUME_NAME;
+  #DBvolumeも消す場合
+  if [ -n "$2" -a "$2" = db ]; then
+    docker volume rm $MYSQL_CONTAINER_VOLUME_NAME;
+  fi
 
 #テスト実行
 elif [ $1 = test ];then

@@ -37,7 +37,7 @@ class RefuelingModelBuilder implements \App\Domain\Object\FuelEconomy\IRefueling
 
     public function build(): Refueling
     {
-        var_dump($this->refuelingId);
+
         if($this->refuelingId === null){
             $refueling = new Refueling();
             $refueling->refueling_id = $this->refuelingId;
