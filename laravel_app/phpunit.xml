@@ -16,12 +16,17 @@
         <testsuite name="Domain">
             <directory suffix="Test.php">./tests/Domain/Model</directory>
         </testsuite>
-        <testsuite name="infra">
-            <directory suffix="Test.php">./tests/infra</directory>
-        </testsuite>
         <testsuite name="Application">
             <directory suffix="Test.php">./tests/Application</directory>
         </testsuite>
+
+        <testsuite name="infra_EloquentRepository">
+            <directory suffix="Test.php">./tests/infra/EloquentRepository</directory>
+        </testsuite>
+        <testsuite name="infra_mysqlquery">
+            <directory suffix="Test.php">./tests/infra/mysqlquery</directory>
+        </testsuite>
+
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

@@ -71,7 +71,12 @@ unittest(){
 
     echo unittest
 
-    docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
+    if [ -n $1 ]; then
+      echo "test_file: "$1
+      docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
+              '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit --configuration /opt/laravel_app/phpunit.xml '$1')'
+    else
+      docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
             '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit \
             --configuration /opt/laravel_app/phpunit.xml \
             --testdox \
@@ -81,6 +86,7 @@ unittest(){
             --strict-coverage \
             --dont-report-useless-tests \
             --coverage-html coverage )'
+    fi
 }
 
 ##################################################################################
@@ -111,7 +117,8 @@ elif [ $1 = down ];then
 # PHPUnit実行
 ##################################################################################
 elif [ $1 = test ];then
-  unittest
+  echo $2
+  unittest $2
 
 elif [ $1 = select ];then
 
