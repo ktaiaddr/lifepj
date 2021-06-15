@@ -120,17 +120,28 @@ elif [ $1 = test ];then
   echo $2
   unittest $2
 
+##################################################################################
+# MySQL select
+##################################################################################
 elif [ $1 = select ];then
 
+  DATABASE=$2
+  TABLE=$3
   if [ -z $DB_PASS ];then
     echo DB_PASSを設定してください
     exit 1
   fi
+
+  if [ -z "$DATABASE" -o -z "$TABLE" ];then
+    echo ターゲットテーブルが指定されていません
+    exit 1
+  fi
+
   docker exec -it $MYSQL_CONTAINER_NAME /bin/sh -c \
-          'mysql -uroot -p'$DB_PASS' -e "select * from lifepj_test.refuelings;"'
+          'mysql -uroot -p'$DB_PASS' -e "select * from '$DATABASE'.'$TABLE';"'
 
 ##################################################################################
-# テーブル構造確認
+# MySQL テーブル構造確認
 ##################################################################################
 elif [ $1 = desc ];then
 
