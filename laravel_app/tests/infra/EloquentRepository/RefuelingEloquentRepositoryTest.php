@@ -69,5 +69,12 @@ class RefuelingEloquentRepositoryTest extends TestCase
         $this->assertSame( 'memo2_modify',$p_memo_value);
 
         $this->elqRefuelingRepository->save($refueling2);
+
+        $refueling = new Refueling(null, 1, new \DateTime(),
+            new FuelEconomy(30,450),
+            'gasStation1','memo３');
+        $this->elqRefuelingRepository->save($refueling);
+
+        return true;
     }
 }

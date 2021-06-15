@@ -14,14 +14,25 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
     {
         parent::setUp();
     }
-    function test_findByUserid(){
+
+    /**
+     * @depends \Tests\infra\EloquentRepository\RefuelingEloquentRepositoryTest::test_save
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    function test_findByUserid($a){
+
+        var_dump($a);
+
         /** @var FuelEconomyMysqlQueryService $fuelEconomyMysqlQueryService */
         $fuelEconomyMysqlQueryService = app()->make(FuelEconomyMysqlQueryService::class);
+
         /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
         $fuelEconomyQueryModel_list = $fuelEconomyMysqlQueryService->findByUserid(1);
+
         $this->assertTrue( $fuelEconomyQueryModel_list[0] instanceof FuelEconomyQueryModel );
         $this->assertSame( 'memo1',$fuelEconomyQueryModel_list[0]->memo);
         $this->assertSame( 'memo2_modify',$fuelEconomyQueryModel_list[1]->memo);
+        $this->assertSame( 'memo３',$fuelEconomyQueryModel_list[2]->memo);
 
         $fuelEconomyQueryModel_list = $fuelEconomyMysqlQueryService->findByUserid(3);
         $this->assertSame( [],$fuelEconomyQueryModel_list );

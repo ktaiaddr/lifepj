@@ -18,4 +18,11 @@ class FuelEconomyQueryModel
 
     public string $memo;
 
+    /**
+     * 燃費計算
+     * @return float
+     */
+    public function calcFuelEconomy():float{
+        return round( $this->refueling_distance / $this->refueling_amount,2);
+    }
 }
