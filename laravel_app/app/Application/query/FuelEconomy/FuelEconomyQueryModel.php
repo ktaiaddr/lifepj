@@ -6,16 +6,16 @@ namespace App\Application\query\FuelEconomy;
 
 class FuelEconomyQueryModel
 {
-    private int $user_id;
+    public int $user_id;
 
-    private string $date;
+    public string $date;
 
-    private float $refueling_amount;
+    public float $refueling_amount;
 
-    private float $refueling_distance;
+    public float $refueling_distance;
 
-    private string $gas_station;
+    public string $gas_station;
 
-    private string $memo;
+    public string $memo;
 
 }

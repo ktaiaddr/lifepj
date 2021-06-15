@@ -15,12 +15,16 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
         parent::setUp();
     }
     function test_findByUserid(){
-
-        $fuelEconomyMysqlQueryService = new FuelEconomyMysqlQueryService();
+        /** @var FuelEconomyMysqlQueryService $fuelEconomyMysqlQueryService */
+        $fuelEconomyMysqlQueryService = app()->make(FuelEconomyMysqlQueryService::class);
+        /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
         $fuelEconomyQueryModel_list = $fuelEconomyMysqlQueryService->findByUserid(1);
         $this->assertTrue( $fuelEconomyQueryModel_list[0] instanceof FuelEconomyQueryModel );
+        $this->assertSame( 'memo1',$fuelEconomyQueryModel_list[0]->memo);
+        $this->assertSame( 'memo2_modify',$fuelEconomyQueryModel_list[1]->memo);
 
-        $fuelEconomyQueryModel_list = $fuelEconomyMysqlQueryService->findByUserid(2);
+        $fuelEconomyQueryModel_list = $fuelEconomyMysqlQueryService->findByUserid(3);
+        $this->assertSame( [],$fuelEconomyQueryModel_list );
     }
 
     protected function tearDown():void

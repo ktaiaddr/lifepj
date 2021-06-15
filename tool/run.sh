@@ -71,7 +71,7 @@ unittest(){
 
     echo unittest
 
-    if [ -n $1 ]; then
+    if [ -n "$1" ]; then
       echo "test_file: "$1
       docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
               '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit --configuration /opt/laravel_app/phpunit.xml '$1')'
