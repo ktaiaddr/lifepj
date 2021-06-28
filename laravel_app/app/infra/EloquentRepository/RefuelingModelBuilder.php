@@ -12,7 +12,7 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
 {
     private ?int $refuelingId;
     private int $userId;
-    private \DateTime $date;
+    private string $date;
     private FuelEconomy $fuelEconomy;
     private string $gasStation;
     private string $memo;
@@ -29,7 +29,7 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
 
     function date(\DateTime $date): void
     {
-        $this->date = $date;
+        $this->date = $date->format( 'Y-m-d' );
     }
 
     function fuelEconomy(FuelEconomy $fuelEconomy): void
