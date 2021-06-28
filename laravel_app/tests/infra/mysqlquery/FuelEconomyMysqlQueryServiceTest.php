@@ -16,12 +16,9 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
     }
 
     /**
-     * @depends \Tests\infra\EloquentRepository\RefuelingEloquentRepositoryTest::test_save
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    function test_findByUserid($a){
-
-        var_dump($a);
+    function test_findByUserid(){
 
         /** @var FuelEconomyMysqlQueryService $fuelEconomyMysqlQueryService */
         $fuelEconomyMysqlQueryService = app()->make(FuelEconomyMysqlQueryService::class);
