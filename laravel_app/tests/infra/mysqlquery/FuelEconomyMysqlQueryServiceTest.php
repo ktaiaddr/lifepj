@@ -27,15 +27,16 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
         $stmt->execute();
         $elqRefuelingRepository = new RefuelingEloquentRepository();
 
-        $refueling = new Refueling(null, 1, new \DateTime('2021-01-01'),
-            new FuelEconomy(30,450),
-            'gasStation1','memo1');
-        $elqRefuelingRepository->save($refueling);
-
-        $refueling2 = new Refueling(null, 1, new \DateTime('2021-05-01'),
-            new FuelEconomy(31,500),
-            'gasStation2','memo2');
-        $elqRefuelingRepository->save($refueling2);
+        for( $i = 1 ; $i<=12 ; $i++ ){
+            $refueling = new Refueling(
+                null,
+                1,
+                new \DateTime('2021-'.sprintf('%02d',$i).'-'.sprintf('%02d',$i)),
+                new FuelEconomy((30 + $i),(500+$i)),
+                'gasStation'.$i,
+                'memo'.$i);
+            $elqRefuelingRepository->save($refueling);
+        }
     }
 
     /**
@@ -56,13 +57,23 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
 
     function test_findByUseridAndCondition(){
 
+        $cond = new FuelEconomyQueryConditions(null,null,
+            null,null,null,null,null,null,1);
+        /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
+        $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
+
+        $this->assertSame(5,count($fuelEconomyQueryModel_list));
+
+        for($i=1;$i<=5;$i++)
+            $this->assertSame(round((500+$i)/(30+$i),2), $fuelEconomyQueryModel_list[($i-1)]->calcFuelEconomy());
+
         $cond = new FuelEconomyQueryConditions(new \DateTime('2021-01-01'),new \DateTime('2022-01-01'),
-            30,30,400,450,'g','m',null);
+            31,33,501,503,'g','m',null);
         /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
         $this->assertIsArray($fuelEconomyQueryModel_list);
-        $this->assertSame(1,count($fuelEconomyQueryModel_list));
+        $this->assertSame(3,count($fuelEconomyQueryModel_list));
     }
 
     protected function tearDown():void

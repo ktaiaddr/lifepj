@@ -62,7 +62,7 @@ class RefuelingEloquentRepositoryTest extends TestCase
         $p_memo_value = $p_memo->getValue($refueling2);
         $this->assertSame( 'memo2',$p_memo_value);
 
-        sleep(1);
+//        sleep(1);
 
         $refueling2->updateMemo('memo2_modify');
         $p_memo_value = $p_memo->getValue($refueling2);

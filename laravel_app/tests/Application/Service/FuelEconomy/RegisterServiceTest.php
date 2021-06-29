@@ -53,7 +53,7 @@ class RegisterServiceTest extends TestCase
 
         $refueling_id2 = $this->registerService->regist($updateRefuelingCommand2);
 
-        sleep(1);
+//        sleep(1);
 
         $refueling = $this->refuelingRepository->find($refueling_id2);
         $updateRefuelingCommand3 = new UpdateRefuelingCommand(

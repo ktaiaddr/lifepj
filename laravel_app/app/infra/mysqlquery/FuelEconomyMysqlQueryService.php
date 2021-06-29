@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy\FuelEconomyQueryService
 {
 
+    const LIMIT = 5;
+
     /**
      * @inheritDoc
      */
@@ -38,6 +40,8 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 
         $wheres = [];
         $values = [];
+
+        $limit_bind = [':limit',self::LIMIT ,\PDO::PARAM_INT];
 
         $wheres[] = ' user_id = :user_id ';
         $values[] = [':user_id', $userId, \PDO::PARAM_INT];
@@ -82,13 +86,21 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
             $wheres[] = 'memo like :memo';
             $values[] = [':memo', '%'.$fuelEconomyQueryConditions->getMemo().'%', \PDO::PARAM_STR];
         }
+        //メモ
+        if(! empty($fuelEconomyQueryConditions->getPage()))
+            $offset_bind = [':offset', self::LIMIT *($fuelEconomyQueryConditions->getPage()-1), \PDO::PARAM_INT];
+        else
+            $offset_bind = [':offset', 0, \PDO::PARAM_INT];
 
-        $query = ' select * from refuelings where '. implode( ' and ', $wheres );
+        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' limit :limit offset :offset';
 
         $stmt = $pdo->prepare( $query );
 
         foreach( $values as $value )
             $stmt->bindValue( ...$value );
+
+        $stmt->bindValue( ...$limit_bind );
+        $stmt->bindValue( ...$offset_bind );
 
         $stmt->execute();
 
