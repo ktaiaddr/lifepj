@@ -58,13 +58,13 @@ class RegisterServiceTest extends TestCase
         $refueling = $this->refuelingRepository->find($refueling_id2);
         $updateRefuelingCommand3 = new UpdateRefuelingCommand(
             $refueling->getId()
+            ,41
             ,null
-            ,900
             ,'mikisi'
             ,'yasumisi');
         $refueling_id3 = $this->registerService->regist($updateRefuelingCommand3);
         $refueling = $this->refuelingRepository->find($refueling_id3);
-        $this->assertSame(21.43, $refueling->calcFuelEconomy());
+        $this->assertSame(round(556/41,2), $refueling->calcFuelEconomy());
 
     }
 }

@@ -4,6 +4,8 @@
 namespace App\Application\query\FuelEconomy;
 
 
+use App\Domain\Model\FuelEconomy\FuelEconomy;
+
 class FuelEconomyQueryModel
 {
     public int $user_id;
@@ -23,6 +25,13 @@ class FuelEconomyQueryModel
      * @return float
      */
     public function calcFuelEconomy():float{
-        return round( $this->refueling_distance / $this->refueling_amount,2);
+
+        try{
+            $fuelEconomy = new FuelEconomy($this->refueling_amount,$this->refueling_distance);
+            return $fuelEconomy->calcFuelEconomy();
+
+        }catch(\Exception $e){
+
+        }
     }
 }

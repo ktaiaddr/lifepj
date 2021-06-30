@@ -10,9 +10,7 @@
 <!--        <testsuite name="Unit">-->
 <!--            <directory suffix="Test.php">./tests/Unit</directory>-->
 <!--        </testsuite>-->
-<!--        <testsuite name="Feature">-->
-<!--            <directory suffix="Test.php">./tests/Feature</directory>-->
-<!--        </testsuite>-->
+
         <testsuite name="Domain">
             <directory suffix="Test.php">./tests/Domain/Model</directory>
         </testsuite>
@@ -26,7 +24,9 @@
         <testsuite name="infra_mysqlquery">
             <directory suffix="Test.php">./tests/infra/mysqlquery</directory>
         </testsuite>
-
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

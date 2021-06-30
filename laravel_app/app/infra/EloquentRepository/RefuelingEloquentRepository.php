@@ -16,9 +16,9 @@ class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefu
         $refueling->notify($refuelingModelBuilder);
 
         $elqRefueling = $refuelingModelBuilder->build();
-//var_dump($elqRefueling);
+
         $elqRefueling->save();
-//var_dump($elqRefueling->refueling_id);
+
         return $elqRefueling->refueling_id;
     }
 

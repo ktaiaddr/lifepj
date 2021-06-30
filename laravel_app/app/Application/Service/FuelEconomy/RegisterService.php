@@ -17,6 +17,7 @@ class RegisterService
      */
     public function __construct(IRefuelingRepository $refuelingRepository)
     {
+        //コンストラクタインジェクション
         $this->refuelingRepository = $refuelingRepository;
     }
 
@@ -24,6 +25,7 @@ class RegisterService
      * @throws \Exception
      */
     public function regist(UpdateRefuelingCommand $refuelingCommand):int {
+
         //新規登録
         if( $refuelingCommand->isNew() ){
             $refueling = new Refueling( null,1, new \DateTime(),
@@ -35,7 +37,9 @@ class RegisterService
             $refueling = $this->refuelingRepository->find( $refuelingCommand->refuelingId );
             $refueling->update( $refuelingCommand );
         }
-        $refueling_id = $this->refuelingRepository->save($refueling);
-        return $refueling_id;
+
+        //idを返却
+        return $this->refuelingRepository->save($refueling);
+
     }
 }

@@ -13,7 +13,8 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
     private ?int $refuelingId;
     private int $userId;
     private string $date;
-    private FuelEconomy $fuelEconomy;
+    private float $refuelingAmount;
+    private float $refuelingDistance;
     private string $gasStation;
     private string $memo;
 
@@ -32,9 +33,14 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
         $this->date = $date->format( 'Y-m-d' );
     }
 
-    function fuelEconomy(FuelEconomy $fuelEconomy): void
+    function refuelingAmount(float $refuelingAmount): void
     {
-        $this->fuelEconomy = $fuelEconomy;
+        $this->refuelingAmount = $refuelingAmount;
+    }
+
+    function refuelingDistance(float $refuelingDistance): void
+    {
+        $this->refuelingDistance = $refuelingDistance;
     }
 
     function gasStation(string $gasStation): void
@@ -49,21 +55,23 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
 
     public function build(): Refueling
     {
-
+        //新規EloqModel
         if($this->refuelingId === null){
             $refueling = new Refueling();
             $refueling->refueling_id = $this->refuelingId;
             $refueling->user_id = $this->userId;
             $refueling->date = $this->date;
-            $refueling->refueling_amount = $this->fuelEconomy->getRefuelingAmount();
-            $refueling->refueling_distance = $this->fuelEconomy->getRefuelingDistance();
+            $refueling->refueling_amount = $this->refuelingAmount;
+            $refueling->refueling_distance = $this->refuelingDistance;
             $refueling->gas_station = $this->gasStation;
             $refueling->memo = $this->memo;
             return $refueling;
         }
+
+        //既存EloqModel
         $refueling = Refueling::where('refueling_id',$this->refuelingId)->get()->first();
-        $refueling->refueling_amount = $this->fuelEconomy->getRefuelingAmount();
-        $refueling->refueling_distance = $this->fuelEconomy->getRefuelingDistance();
+        $refueling->refueling_amount = $this->refuelingAmount;
+        $refueling->refueling_distance = $this->refuelingDistance;
         $refueling->gas_station = $this->gasStation;
         $refueling->memo = $this->memo;
         return $refueling;

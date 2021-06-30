@@ -37,15 +37,15 @@ class FuelEconomyQueryConditions
                                 ?string $memo,
                                 ?int $page)
     {
-        $this->dateStart = $dateStart;
-        $this->dateEnd = $dateEnd;
-        $this->amountLow = $amountLow;
-        $this->amountHigh = $amountHigh;
-        $this->distanceLow = $distanceLow;
+        $this->dateStart    = $dateStart;
+        $this->dateEnd      = $dateEnd;
+        $this->amountLow    = $amountLow;
+        $this->amountHigh   = $amountHigh;
+        $this->distanceLow  = $distanceLow;
         $this->distanceHigh = $distanceHigh;
-        $this->gasStation = $gasStation;
-        $this->memo = $memo;
-        $this->page = $page;
+        $this->gasStation   = $gasStation;
+        $this->memo         = $memo;
+        $this->page         = $page;
     }
 
     /**

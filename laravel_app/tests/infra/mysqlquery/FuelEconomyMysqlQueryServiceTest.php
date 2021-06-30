@@ -59,7 +59,7 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
 
         $cond = new FuelEconomyQueryConditions(null,null,
             null,null,null,null,null,null,1);
-        /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
+
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
         $this->assertSame(5,count($fuelEconomyQueryModel_list));
@@ -69,7 +69,7 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
 
         $cond = new FuelEconomyQueryConditions(new \DateTime('2021-01-01'),new \DateTime('2022-01-01'),
             31,33,501,503,'g','m',null);
-        /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
+
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
         $this->assertIsArray($fuelEconomyQueryModel_list);

@@ -31,6 +31,20 @@ class FuelEconomy
     }
 
     /**
+     * @param float|null $refuelingAmount
+     * @param float|null $refuelingDistance
+     * @return FuelEconomy
+     * @throws Exception
+     */
+    public function recreate(?float $refuelingAmount, ?float $refuelingDistance): FuelEconomy
+    {
+        return new FuelEconomy(
+            $refuelingAmount?:$this->refuelingAmount,
+            $refuelingDistance?:$this->refuelingDistance
+        );
+    }
+
+    /**
      * 燃費（キロ/リットル）を返す
      * @return float
      */
@@ -38,21 +52,9 @@ class FuelEconomy
         return round( $this->refuelingDistance / $this->refuelingAmount,2);
     }
 
-    /**
-     * @return float
-     */
-    public function getRefuelingAmount(): float
-    {
-        return $this->refuelingAmount;
+    public function notify(IRefuelingNotification $refuelingModelBuilder){
+        $refuelingModelBuilder->refuelingAmount($this->refuelingAmount);
+        $refuelingModelBuilder->refuelingDistance($this->refuelingDistance);
     }
-
-    /**
-     * @return float
-     */
-    public function getRefuelingDistance(): float
-    {
-        return $this->refuelingDistance;
-    }
-
 
 }
