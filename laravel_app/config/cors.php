@@ -29,6 +29,8 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+//    'supports_credentials' => false,
+    #https://zenn.dev/nrikiji/articles/dcde3df1ea8d85
+    'supports_credentials' => true,
 
 ];
