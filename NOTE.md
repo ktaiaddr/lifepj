@@ -40,3 +40,21 @@ class HogeTest extends TestCase
 上から順番にテストが実行されるっぽい
 なので、順番に依存するテストがあるならそのように並べるのが吉かも
 
+
+Laravel8 + Sanctum + ReactでSPA認証  
+https://nochio12.hatenablog.com/entry/2020/10/03/215718
+
+Laravel Breeze APIでサクッと認証機能を実装する  
+https://zenn.dev/nrikiji/articles/dcde3df1ea8d85
+
+テストDBへのマイグレーション   
+tool/run.sh artisan "migrate --env=testing"
+
+
+
+composer require laravel/breeze
+
+composer require laravel/sanctum
+
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+

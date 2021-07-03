@@ -53,13 +53,32 @@ start_container(){
   fi
 
   docker run \
+      --network ${CONTAINER_NETWORK} \
+      --rm \
+      --name mailhog \
+      -p 8025:8025 \
+      -d mailhog/mailhog
+
+
+  docker run \
       --network $CONTAINER_NETWORK \
       --name $WEB_CONTAINER_NAME \
       --rm \
       -itd \
       -v $THISDIR:/opt \
       -w /opt \
-      $WEB_CONTAINER_IMAGE_NAME
+      --entrypoint="/bin/sh" \
+      -p 9000:80 \
+      $WEB_CONTAINER_IMAGE_NAME \
+      -c "
+      deluser www-data;
+      adduser -u $(id -u) -s /sbin/nologin -D www-data;
+      addgroup nginx www-data ;
+      addgroup www-data www-data;
+      nginx;
+      php-fpm
+      "
+
 
   if [ $MYSQL_VOLUME_COUNT -eq 0 ]; then
     docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
@@ -73,10 +92,10 @@ unittest(){
 
     if [ -n "$1" ]; then
       echo "test_file: "$1
-      docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
+      docker exec -it --user=www-data $WEB_CONTAINER_NAME /bin/sh -c \
               '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit --configuration /opt/laravel_app/phpunit.xml '$1')'
     else
-      docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
+      docker exec -it --user=www-data $WEB_CONTAINER_NAME /bin/sh -c \
             '( cd laravel_app; php /opt/laravel_app/vendor/bin/phpunit \
             --configuration /opt/laravel_app/phpunit.xml \
             --testdox \
@@ -143,6 +162,27 @@ elif [ $1 = select ];then
 ##################################################################################
 # MySQL テーブル構造確認
 ##################################################################################
+elif [ $1 = showtable ];then
+
+  DATABASE=$2
+  TABLE=$3
+  if [ -z $DB_PASS ];then
+    echo DB_PASSを設定してください
+    exit 1
+  fi
+
+  if [ -z "$DATABASE" ];then
+    echo ターゲットDBが指定されていません
+    exit 1
+  fi
+
+  COMMAND="mysql -uroot -p"$DB_PASS" -e 'show tables from "$DATABASE"'"
+  echo ${COMMAND}
+  docker exec -it $MYSQL_CONTAINER_NAME /bin/bash -c "${COMMAND}"
+
+##################################################################################
+# MySQL テーブル構造確認
+##################################################################################
 elif [ $1 = desc ];then
 
   DATABASE=$2
@@ -170,8 +210,9 @@ elif [ "$1" = artisan ];then
     exit 1
   fi
 
-  echo "'(cd laravel_app; php artisan '$2';)'"
-  docker exec -it $WEB_CONTAINER_NAME /bin/sh -c "(cd laravel_app; php artisan $2;)"
+  COMMAND="(cd laravel_app; php artisan "$2";)"
+  echo ${COMMAND}
+  docker exec -it -u www-data $WEB_CONTAINER_NAME /bin/sh -c "${COMMAND}"
 fi
 
 

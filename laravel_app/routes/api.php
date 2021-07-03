@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RefuelingsRegistController;
 use App\Http\Controllers\RefuelingsSearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/refuelings', RefuelingsSearchController::class );
+Route::post('/refuelings/regist', RefuelingsRegistController::class );
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
