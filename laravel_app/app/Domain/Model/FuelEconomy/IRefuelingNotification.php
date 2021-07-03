@@ -11,6 +11,6 @@ interface IRefuelingNotification
     function date              (\DateTime $date)          :void;
     function refuelingAmount   (float $refuelingAmount)   :void;
     function refuelingDistance (float $refuelingDistance) :void;
-    function gasStation        (string $gasStation)       :void;
-    function memo              (string $memo)             :void;
+    function gasStation        (?string $gasStation)       :void;
+    function memo              (?string $memo)             :void;
 }

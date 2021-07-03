@@ -39,8 +39,8 @@ class FuelEconomy
     public function recreate(?float $refuelingAmount, ?float $refuelingDistance): FuelEconomy
     {
         return new FuelEconomy(
-            $refuelingAmount?:$this->refuelingAmount,
-            $refuelingDistance?:$this->refuelingDistance
+            $refuelingAmount    ?: $this->refuelingAmount,
+            $refuelingDistance ?: $this->refuelingDistance
         );
     }
 

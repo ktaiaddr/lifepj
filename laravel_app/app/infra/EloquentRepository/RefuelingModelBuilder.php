@@ -15,8 +15,8 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
     private string $date;
     private float $refuelingAmount;
     private float $refuelingDistance;
-    private string $gasStation;
-    private string $memo;
+    private ?string $gasStation;
+    private ?string $memo;
 
     function refuelingId(?int $refuelingId): void
     {
@@ -43,16 +43,19 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
         $this->refuelingDistance = $refuelingDistance;
     }
 
-    function gasStation(string $gasStation): void
+    function gasStation(?string $gasStation): void
     {
         $this->gasStation = $gasStation;
     }
 
-    function memo(string $memo): void
+    function memo(?string $memo): void
     {
         $this->memo = $memo;
     }
 
+    /**
+     * @return Refueling
+     */
     public function build(): Refueling
     {
         //新規EloqModel
@@ -70,6 +73,7 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
 
         //既存EloqModel
         $refueling = Refueling::where('refueling_id',$this->refuelingId)->get()->first();
+        $refueling->date = $this->date;
         $refueling->refueling_amount = $this->refuelingAmount;
         $refueling->refueling_distance = $this->refuelingDistance;
         $refueling->gas_station = $this->gasStation;

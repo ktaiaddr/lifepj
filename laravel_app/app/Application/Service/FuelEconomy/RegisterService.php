@@ -19,27 +19,35 @@ class RegisterService
     {
         //コンストラクタインジェクション
         $this->refuelingRepository = $refuelingRepository;
+        mb_send_mail('hoge@hoge.hoge',"title","body");
     }
 
     /**
+     * @param UpdateRefuelingCommand $refuelingCommand
+     * @param int $userId
+     * @return int
      * @throws \Exception
      */
-    public function regist(UpdateRefuelingCommand $refuelingCommand):int {
-
+    public function regist(UpdateRefuelingCommand $refuelingCommand, int $userId):int
+    {
         //新規登録
-        if( $refuelingCommand->isNew() ){
-            $refueling = new Refueling( null,1, new \DateTime(),
-                new FuelEconomy( $refuelingCommand->refuelingAmount, $refuelingCommand->refuelingDistance ),
-                $refuelingCommand->gasStation, $refuelingCommand->memo );
-        }
+        if( $refuelingCommand->isNew() )
+            return $this->refuelingRepository->save(
+                new Refueling(
+                    null,
+                    $userId,
+                    $refuelingCommand->date,
+                    new FuelEconomy( $refuelingCommand->refuelingAmount, $refuelingCommand->refuelingDistance ),
+                    $refuelingCommand->gasStation,
+                    $refuelingCommand->memo
+                )
+            );
+
         //更新
-        else{
-            $refueling = $this->refuelingRepository->find( $refuelingCommand->refuelingId );
-            $refueling->update( $refuelingCommand );
-        }
-
-        //idを返却
+        $refueling = $this->refuelingRepository->find( $refuelingCommand->refuelingId, $userId );
+        if(! $refueling)
+            throw new \Exception('更新対象のデータが見つかりません',404 );
+        $refueling->update( $refuelingCommand );
         return $this->refuelingRepository->save($refueling);
-
     }
 }

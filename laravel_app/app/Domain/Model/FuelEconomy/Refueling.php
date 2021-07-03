@@ -22,22 +22,22 @@ class Refueling extends \App\Domain\Model\Entity
     /** @var FuelEconomy  */
     private FuelEconomy $fuelEconomy;
 
-    /** @var string  */
-    private string $gasStation;
+    /** @var ?string  */
+    private ?string $gasStation;
 
-    /** @var string  */
-    private string $memo;
+    /** @var ?string  */
+    private ?string $memo;
 
     /**
      * Refueling constructor.
      * @param ?int $refuelingId
      * @param \Datetime $date
      * @param FuelEconomy $fuelEconomy
-     * @param string $gasStation
-     * @param string $memo
+     * @param ?string $gasStation
+     * @param ?string $memo
      * @throws \Exception
      */
-    public function __construct(?int $refuelingId, int $userId, \DateTime $date, FuelEconomy $fuelEconomy, string $gasStation, string $memo)
+    public function __construct(?int $refuelingId, int $userId, \DateTime $date, FuelEconomy $fuelEconomy, ?string $gasStation, ?string $memo)
     {
         if( $refuelingId !== null && $refuelingId < 1 ) throw new \Exception('idは1以上の数値です', 4101);
         $this->refuelingId = $refuelingId;
@@ -57,23 +57,18 @@ class Refueling extends \App\Domain\Model\Entity
         return $this->fuelEconomy->calcFuelEconomy();
     }
 
-//    //メモを更新します
-//    public function updateMemo(string $memo){
-//        $this->memo = $memo;
-//    }
-
     /**
      * @param IRefuelingNotification $refuelingModelBuilder
      */
-    public function notify(IRefuelingNotification $refuelingModelBuilder )
+    public function notify( IRefuelingNotification $refuelingModelBuilder )
     {
-        $refuelingModelBuilder->refuelingId($this->refuelingId);
-        $refuelingModelBuilder->userId($this->userId);
-        $refuelingModelBuilder->date($this->date);
-        $refuelingModelBuilder->gasStation($this->gasStation);
-        $refuelingModelBuilder->memo($this->memo);
+        $refuelingModelBuilder->refuelingId( $this->refuelingId );
+        $refuelingModelBuilder->userId     ( $this->userId      );
+        $refuelingModelBuilder->date       ( $this->date        );
+        $refuelingModelBuilder->gasStation ( $this->gasStation  );
+        $refuelingModelBuilder->memo       ( $this->memo        );
 
-        $this->fuelEconomy->notify($refuelingModelBuilder);
+        $this->fuelEconomy->notify( $refuelingModelBuilder      );
     }
 
     /**
@@ -86,12 +81,14 @@ class Refueling extends \App\Domain\Model\Entity
             $updateRefuelingCommand->refuelingDistance?:null
         );
 
+        if($updateRefuelingCommand->date != null)
+            $this->date = $updateRefuelingCommand->date;
+
         if($updateRefuelingCommand->gasStation != null)
             $this->gasStation = $updateRefuelingCommand->gasStation;
 
         if($updateRefuelingCommand->memo != null)
             $this->memo = $updateRefuelingCommand->memo;
-
     }
 
 }

@@ -1,33 +1,55 @@
 <?php
-
-
 namespace App\infra\EloquentRepository;
-
 
 use App\Domain\Model\FuelEconomy\FuelEconomy;
 use App\Domain\Model\FuelEconomy\Refueling;
 
+/**
+ * 給油クラス リポジトリ 実装クラス
+ * Class RefuelingEloquentRepository
+ * @package App\infra\EloquentRepository
+ */
 class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefuelingRepository
 {
 
-    function save(Refueling $refueling): int
+    /**
+     * DBに給油データを保存
+     * @param Refueling $refueling
+     * @return int
+     */
+    function save( Refueling $refueling ): int
     {
-        $refuelingModelBuilder = new RefuelingModelBuilder();
-        $refueling->notify($refuelingModelBuilder);
+        $refuelingModelBuilder = new RefuelingModelBuilder(); //通知オブジェクト生成
+        $refueling->notify( $refuelingModelBuilder );         //給油クラスから通知オブジェクトにデータを詰込み
+        $elqRefueling = $refuelingModelBuilder->build();      //EloquentModelを生成
+        $elqRefueling->save();                                //保存
 
-        $elqRefueling = $refuelingModelBuilder->build();
-
-        $elqRefueling->save();
-
-        return $elqRefueling->refueling_id;
+        return $elqRefueling->refueling_id;                   //給油データのIDを返却
     }
 
-    function find(int $refuelingId): Refueling
+    /**
+     * DBから給油データを取得
+     * @param int $refuelingId
+     * @return ?Refueling
+     * @throws \Exception
+     */
+    function find(int $refuelingId,int $userId): ?Refueling
     {
-        $elqReueling = \App\Models\Refueling::where('refueling_id',$refuelingId)->get()->first();
+        $elqReueling = \App\Models\Refueling
+                            ::where('refueling_id', $refuelingId)
+                            ->where('user_id',$userId)
+                            ->get()
+                            ->first();
 
-        return new Refueling($elqReueling->refueling_id,1,new \DateTime(),
-            new FuelEconomy($elqReueling->refueling_amount,
+        if(! $elqReueling)
+            return null;
+
+        return new Refueling(
+            $elqReueling->refueling_id,
+            $elqReueling->user_id,
+            new \DateTime($elqReueling->date),
+            new FuelEconomy(
+                $elqReueling->refueling_amount,
                 $elqReueling->refueling_distance),
             $elqReueling->gas_station,
             $elqReueling->memo

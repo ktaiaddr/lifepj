@@ -78,10 +78,10 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
 
     protected function tearDown():void
     {
-//        $pdo = DB::getPdo();
-//        $stmt = $pdo->prepare('truncate refuelings');
-//        $stmt->execute();
-//        parent::tearDown();
+        $pdo = DB::getPdo();
+        $stmt = $pdo->prepare('truncate refuelings');
+        $stmt->execute();
+        parent::tearDown();
 
     }
 
