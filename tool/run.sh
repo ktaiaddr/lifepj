@@ -124,6 +124,9 @@ if [ $1 = run ];then
 # コンテナストップ
 ##################################################################################
 elif [ $1 = down ];then
+
+  docker ps -a
+
   echo down
   docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME mailhog;
   docker network rm $CONTAINER_NETWORK;
@@ -131,6 +134,8 @@ elif [ $1 = down ];then
   if [ -n "$2" -a "$2" = db ]; then
     docker volume rm $MYSQL_CONTAINER_VOLUME_NAME;
   fi
+
+  docker ps -a
 
 ##################################################################################
 # PHPUnit実行
