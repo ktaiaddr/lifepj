@@ -125,7 +125,7 @@ if [ $1 = run ];then
 ##################################################################################
 elif [ $1 = down ];then
   echo down
-  docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME;
+  docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME mailhog;
   docker network rm $CONTAINER_NETWORK;
   #DBvolumeも消す場合
   if [ -n "$2" -a "$2" = db ]; then
