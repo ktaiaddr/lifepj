@@ -19,7 +19,6 @@ class RegisterService
     {
         //コンストラクタインジェクション
         $this->refuelingRepository = $refuelingRepository;
-        mb_send_mail('hoge@hoge.hoge',"title","body");
     }
 
     /**
