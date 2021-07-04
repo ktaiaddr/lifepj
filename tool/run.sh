@@ -8,6 +8,10 @@ WEB_CONTAINER_NAME="life_web_container"
 MYSQL_CONTAINER_NAME="life_mysql_container"
 MYSQL_CONTAINER_VOLUME_NAME="lifemysql_data"
 
+NODEJS_CONTAINER_NAME=lifepj_node
+
+MAILHOG_CONTAINER_NAME=mailhog
+
 start_container(){
 
   echo run
@@ -55,7 +59,7 @@ start_container(){
   docker run \
       --network ${CONTAINER_NETWORK} \
       --rm \
-      --name mailhog \
+      --name ${MAILHOG_CONTAINER_NAME} \
       -p 8025:8025 \
       -d mailhog/mailhog
 
@@ -84,6 +88,10 @@ start_container(){
     docker exec -it $WEB_CONTAINER_NAME /bin/sh -c \
         '(cd laravel_app; php artisan migrate; php artisan migrate --env=testing)'
   fi
+
+  docker run -itd --rm -w /opt/react_app -u $(id -u) -v $THISDIR:/opt --name ${NODEJS_CONTAINER_NAME} --entrypoint=npx node:14.16.1-alpine webpack -w
+
+
 }
 
 unittest(){
@@ -132,7 +140,12 @@ elif [ $1 = down ];then
   docker ps -a
 
   echo down
-  docker stop $MYSQL_CONTAINER_NAME $WEB_CONTAINER_NAME mailhog;
+  docker stop \
+          ${MYSQL_CONTAINER_NAME} \
+          ${WEB_CONTAINER_NAME} \
+          ${MAILHOG_CONTAINER_NAME} \
+          ${NODEJS_CONTAINER_NAME};
+
   docker network rm $CONTAINER_NETWORK;
   #DBvolumeも消す場合
   if [ -n "$2" -a "$2" = db ]; then
