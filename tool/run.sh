@@ -201,6 +201,21 @@ elif [ $1 = desc ];then
   docker exec -it $MYSQL_CONTAINER_NAME /bin/bash -c "mysql -uroot -p"$DB_PASS" -e 'desc "$DATABASE"."$TABLE"'"
 
 ##################################################################################
+# ログイン
+##################################################################################
+elif [ "$1" = login ];then
+
+  if [ -z "$2" ]; then
+    echo 対象コンテナを入力してください
+    exit 1
+  fi
+
+  if [ "$2" = "web" ]; then docker exec -it -u $(id -u) $WEB_CONTAINER_NAME /bin/sh; exit 0; fi
+  if [ "$2" = "db"  ]; then docker exec -it $MYSQL_CONTAINER_NAME /bin/bash; exit 0; fi
+
+  echo 対象コンテナが見つかりません
+
+##################################################################################
 # artisanコマンド
 ##################################################################################
 elif [ "$1" = artisan ];then
