@@ -76,7 +76,7 @@ start_container(){
       addgroup nginx www-data ;
       addgroup www-data www-data;
       nginx;
-      php-fpm
+      docker-php-entrypoint php-fpm
       "
 
 
