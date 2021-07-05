@@ -89,8 +89,7 @@ start_container(){
         '(cd laravel_app; php artisan migrate; php artisan migrate --env=testing)'
   fi
 
-  docker run -itd --rm -w /opt/react_app -u $(id -u) -v $THISDIR:/opt --name ${NODEJS_CONTAINER_NAME} --entrypoint=npx node:14.16.1-alpine webpack -w
-
+  docker run -itd --rm -w /opt/react_app -u $(id -u) -v $(pwd):/opt --name ${NODEJS_CONTAINER_NAME} node:14.16.1-alpine
 
 }
 
@@ -250,7 +249,15 @@ elif [ "$1" = artisan ];then
   COMMAND="(cd laravel_app; php artisan "$2";)"
   echo ${COMMAND}
   docker exec -it -u www-data $WEB_CONTAINER_NAME /bin/sh -c "${COMMAND}"
-fi
 
+##################################################################################
+# webpack
+##################################################################################
+elif [ "$1" = webpack ];then
+
+  docker exec -it -w /opt/react_app -u $(id -u) ${NODEJS_CONTAINER_NAME} npx webpack -w
+  exit 0
+
+fi
 
 

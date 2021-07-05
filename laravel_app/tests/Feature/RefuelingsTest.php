@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Tests\TestCase;
 
 class RefuelingsTest extends TestCase
@@ -11,7 +12,9 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistIdIsNimus_Status422(){
 
-        $response = $this->json('POST','/api/refuelings/regist',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_id'       =>  null         ,
             'date'               =>  '2021-07-01' ,
             'refueling_amount'   =>  0            ,
@@ -30,7 +33,9 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistAmountNullStatus422(){
 
-        $response = $this->json('POST','/api/refuelings/regist',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_distance'=>500,
             'gas_station'=> "g",
             'memo'=>"m",
@@ -44,7 +49,9 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistDistanceNullStatus422(){
 
-        $response = $this->json('POST','/api/refuelings/regist',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_amount'=>500,
             'gas_station'=> "g",
             'memo'=>"m",
@@ -74,7 +81,10 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistNewStatusIs200(){
 
-        $response = $this->withSession(['user_id' => 9])->json('POST','/api/refuelings/regist',[
+        $user = new User();
+        $user->id = 9;
+
+        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'date'                => '2021-07-05',
             'refueling_amount'    => 1,
             'refueling_distance'  => 500,
@@ -84,7 +94,7 @@ class RefuelingsTest extends TestCase
 
 //        $response->dumpHeaders();
 //        $response->dumpSession();
-//        $response->dump();
+        $response->dump();
         $response->assertStatus(200);
     }
 
@@ -95,7 +105,9 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistUpdate(){
 
-        $response = $this->withSession(['user_id' => 9])->json('POST','/api/refuelings/regist',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_id'       =>  1,
             'date'               =>  '2021-08-01',
             'refueling_amount'   =>  2,
@@ -114,7 +126,9 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsSearch200()
     {
-        $response = $this->withSession(['user_id' => 9])->json('GET','/api/refuelings',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('GET','/api/refuelings',[
             'date_start'      =>  '2021-01-01',
             'date_end'        =>  '2021-08-01',
             'amount_low'      =>  1.1,
@@ -132,7 +146,9 @@ class RefuelingsTest extends TestCase
 
     public function test_RefuelingsSearch422(){
 
-        $response = $this->json('GET','/api/refuelings',[
+        $user = new User();
+        $user->id = 9;
+        $response = $this->actingAs($user)->json('GET','/api/refuelings',[
             'date_start'     =>  null,
             'date_end'       =>  '2021-06-30',
             'amount_low'     =>  1,

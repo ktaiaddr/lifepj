@@ -21,6 +21,7 @@ export default class HelloChild extends React.Component<HelloProps> {
 
         return (
             <div>
+                <div>bb</div>
                 <b onClick={this.props.alert}>1, {this.props.name}!</b>
                 <b onClick={this.props.alert2}>{this.props.age}歳</b>
             </div>
