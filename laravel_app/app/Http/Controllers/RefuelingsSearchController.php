@@ -6,6 +6,7 @@ use App\Application\query\FuelEconomy\FuelEconomyQueryService;
 use App\Http\Requests\RefuelingsSearchRequest;
 use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RefuelingsSearchController extends Controller
 {
@@ -31,6 +32,7 @@ class RefuelingsSearchController extends Controller
             return response()->json( [],400);
 
         $user_id = session()->get('user_id');
+        $user_id = Auth::id();
 
         $fuelEconomyQueryModel_list = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
 

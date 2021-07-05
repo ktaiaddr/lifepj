@@ -6,6 +6,7 @@ use App\Application\Service\FuelEconomy\RegisterService;
 use App\Http\Requests\RefuelingsRegistRequest;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RefuelingsRegistController extends Controller
 {
@@ -28,6 +29,7 @@ class RefuelingsRegistController extends Controller
 
         try{
             $user_id = session()->get('user_id');
+            $user_id = Auth::id();
             if(! $user_id)
                 throw new \Exception('ユーザIDがありません');
 
