@@ -24,4 +24,6 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/test', [baseController::class,'create']);
+Route::get('/mylogin', [baseController::class,'create']);
+Route::get('/test2', [baseController::class,'create']);
+Route::get('/other', [baseController::class,'create']);
