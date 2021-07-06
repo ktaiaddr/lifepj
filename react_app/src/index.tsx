@@ -1,15 +1,22 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import Hello from "./hello";
+import axios from "axios";
 
-// Hello コンポーネントの属性（プロパティ）を定義
-interface HelloProps {
-    name?: string;  // オプショナルな name 属性
-}
+ const initialize = async function (){
 
-const root = document.getElementById('root')
+     const root = document.getElementById('root')
 
-// Hello コンポーネントを <div id="root"> に表示
-ReactDom.render(
-	<Hello />,root
-);
+     const instance = axios.create({ withCredentials: true })
+
+     const loginCheckResult = await instance.get('http://localhost:9000/api/mylogincheck').catch(e=> {
+         return {data:{result:'fail'}}
+     })
+
+     const logind = loginCheckResult.data.result == 'ok'
+
+     ReactDom.render(<Hello logind={logind}/>,root);
+ };
+
+initialize();
+

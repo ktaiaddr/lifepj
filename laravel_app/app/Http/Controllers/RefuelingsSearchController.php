@@ -36,6 +36,9 @@ class RefuelingsSearchController extends Controller
 
         $fuelEconomyQueryModel_list = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
 
+        foreach( $fuelEconomyQueryModel_list as &$fuelEconomyQueryModel )
+            $fuelEconomyQueryModel->fuelEconomy = $fuelEconomyQueryModel->calcFuelEconomy();
+
         return response()->json( $fuelEconomyQueryModel_list,200);
     }
 }

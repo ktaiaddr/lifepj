@@ -5,6 +5,7 @@ import Login from "./login"
 
 import axios from "axios";
 import { BrowserRouter as Router, Redirect, Route, Link, Switch } from 'react-router-dom';
+import HelloChild2 from "./hello_child2";
 
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -13,70 +14,29 @@ axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 interface HelloState {
     name?: string;  // オプショナルな name 属性
     age?: number|string;  // オプショナルな name 属性
+    logined?:boolean
+}
+interface HelloProps {
+    logind?: boolean;  // オプショナルな name 属性
 }
 
-export default class Hello extends React.Component<null,HelloState> {
-//     async componentDidMount() {
-//         // setTimeout(()=>alert(1),1000);
-//         const instance = axios.create({
-//             withCredentials: true
-//         })
-//         const res3 = await instance.post('http://localhost:9000/login', {
-//             email:'test@test444444.local',
-//             password:'test444444',
-//         }, { withCredentials: true }
-//         )
-//
-// // console.log(res3);
-//
-//         const res2 = await instance.post('http://localhost:9000/api/refuelings/regist', {
-//             // ここにクエリパラメータを指定する
-//             'date'                : '2021-07-05',
-//             'refueling_amount'    : 1,
-//             'refueling_distance'  : 500,
-//             'gas_station'         : "g",
-//             'memo'                : "m",
-//             }
-//             , { withCredentials: true }
-//         ).catch((e)=> {return e} );
-// console.log(res2)
-//
-//
-//
-//         const res = await instance.get('http://localhost:9000/api/refuelings', {
-//             // ここにクエリパラメータを指定する
-//             'date_start'      :  '2021-01-01',
-//             'date_end'        :  '2021-08-01',
-//             'amount_low'      :  1.1,
-//             'amount_high'     :  200.1,
-//             'distance_low'    :  1.1,
-//             'distance_high'   :  1000,
-//             'gas_station'     :  'g',
-//             'memo'            :  "m",
-//             'page'            :  1,
-//             }
-//         ).catch((e)=> {return e} );
-//         console.log(res)
-//
-//     }
-//     componentWillMount() {
-//         // setTimeout(()=>alert(2),1000);
-//     }
+export default class Hello extends React.Component<HelloProps,HelloState> {
+    async componentDidMount() {
+
+    }
+    async componentWillMount() {
+    }
     constructor(props:any) {
+
         super(props);
-        this.state = {name : "fug",age:"aaaaaaaaaa"}
+
+        this.state = {logined: props.logind}
+
     }
-    alert(){
+    setLogined(newValue:boolean){
         this.setState({
-            name: (this.state.name == 'fug') ? 'aavbsfasfafa':'fug'
-        });
-    }
-    alert2(){
-        this.setState({age:
-                ( typeof (this.state.age) == 'number')?
-                    (this.state.age >=110 ? 100 :this.state.age+1)
-                    :100
-        });
+            logined: newValue
+        })
     }
     render(): React.ReactNode {
         const name = this.state.name ?? 'Unknown';
@@ -84,20 +44,30 @@ export default class Hello extends React.Component<null,HelloState> {
         return (
             <Router>
                 <div>
-                    [<Link to="/mylogin">mylogin</Link>]
-                    [<Link to="/test2">test2</Link>]
-                    [<Link to="/other">other</Link>]
+                    {this.state.logined &&
+                    <>
+                        <div>ログインしてます</div>
+			[<Link to="/user_page">給油データ</Link>]
+			[<Link to="/user_page2">給油データ2</Link>]
+                    </>
+                    }
                 </div>
                 <Switch>
                     <Route exact path='/mylogin' render={()=>
-                        <Login />
+                        <Login setLogined={this.setLogined.bind(this)}/>
                     }/>
-                    <Route exact path='/test2' render={()=>
-                        <HelloChild name={this.state.name+"2"}
-                                    age={this.state.age+"2"}
-                                    alert={this.alert.bind(this)}
-                                    alert2={this.alert2.bind(this)} />
-                    }/>
+                    {this.state.logined?
+                        <Route exact path='/user_page' render={()=>
+                            <HelloChild />
+                        }/>
+                        :<Redirect to="/mylogin" />
+                    }
+                    {this.state.logined?
+                        <Route exact path='/user_page2' render={()=>
+                            <HelloChild2 />
+                        }/>
+                        :<Redirect to="/mylogin" />
+                    }
                     <Route />
                 </Switch>
 

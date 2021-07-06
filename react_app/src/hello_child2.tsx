@@ -14,7 +14,7 @@ interface refuelings{
     memo:string
 }
 
-export default class HelloChild extends React.Component<HelloProps,{refuelings_data_list:refuelings[]}> {
+export default class HelloChild2 extends React.Component<HelloProps,{refuelings_data_list:refuelings[]}> {
 
     async componentDidMount() {
 

@@ -1,19 +1,18 @@
 import * as React from "react";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {Redirect, useHistory } from "react-router-dom";
 
 // Hello コンポーネントの属性（プロパティ）を定義
 interface HelloProps {
-    alert?: ()=>void;
-    alert2?: ()=>void;
     name?: string;  // オプショナルな name 属性
     age?: number|string;  // オプショナルな name 属性
+    setLogined:(newValue:boolean)=>void
 }
 interface StateProps {
-    name?: string;  // オプショナルな name 属性
-    age?: number|string;  // オプショナルな name 属性
+    mail?: string;  // オプショナルな name 属性
     password?:string
     login:boolean
+    loginerror:boolean
 }
 
 
@@ -21,11 +20,11 @@ export default class Login extends React.Component<HelloProps,StateProps> {
 
     constructor(props:any) {
         super(props);
-        this.state = {name : "test@test444444.local",age:"hoge",password:"", login: false }
+        this.state = {mail : "test@test444444.local",password:"", login: false, loginerror: false }
     }
     setEmail(event: React.ChangeEvent<HTMLInputElement>){
         this.setState({
-            name: event.target.value
+            mail: event.target.value
         });
     }
     setPassword(event: React.ChangeEvent<HTMLInputElement>){
@@ -33,40 +32,49 @@ export default class Login extends React.Component<HelloProps,StateProps> {
             password: event.target.value
         });
     }
-
     async login(){
 
-        const instance = axios.create({
-            withCredentials: true
-        })
-        const res3 = await instance.post('http://localhost:9000/api/mylogin', {
-                email:this.state.name,
-                password:this.state.password,
-            },
-            { withCredentials: true }
-        ).catch((e)=>{
-            console.log(e)
-            return <Redirect to="/other" />
+        this.setState({loginerror: false});
+
+        const instance = axios.create({withCredentials: true})
+
+        interface resType {
+            data: { result:string }
+        }
+
+        const loginParam = {
+            email:this.state.mail,
+            password:this.state.password,
+        }
+
+        const loginResult : resType = await instance.post('http://localhost:9000/api/mylogin'
+            , loginParam
+            ,{ withCredentials: true }
+        ).catch( e => {
+            this.setState({loginerror: true});
+            return {data:{result:'ng'}};
         });
-        this.setState({
-            login: true
-        });
+
+        if( loginResult )
+            if( loginResult.data.result =='ok' ){
+                this.props.setLogined(true)
+                this.setState({login: true});
+            }
 
     }
     render(): React.ReactNode {
-        const name = this.props.name ?? 'Unknown';
         // const history = useHistory()
 
-        if(this.state.login){
-            return <Redirect to="/test2" />
-        }
+        if(this.state.login)
+            return <Redirect to="/user_page" />
 
         return (
             <div>
                 <form>
+                    {this.state.loginerror && (<h1>ログインエラー</h1>)}
                     <label>
                         mail:
-                        <input type="text" name="mail" value={this.state.name} onInput={this.setEmail.bind(this)} />
+                        <input type="text" name="mail" value={this.state.mail} onInput={this.setEmail.bind(this)} />
                     </label>
                     <label>
                         password:
