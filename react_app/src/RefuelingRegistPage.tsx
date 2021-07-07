@@ -38,8 +38,8 @@ export default ()=>{
 
         if( loginResult )
             if( loginResult.data.result =='ok' ){
-                props.setLogined(true)
-                setLogin( true);
+                // props.setLogined(true)
+                // setLogin( true);
             }
     }
 
