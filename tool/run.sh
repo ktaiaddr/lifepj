@@ -179,7 +179,7 @@ elif [ $1 = select ];then
   fi
 
   docker exec -it $MYSQL_CONTAINER_NAME /bin/sh -c \
-          'mysql -uroot -p'$DB_PASS' -e "select * from '$DATABASE'.'$TABLE';"'
+          'mysql -uroot -p'$DB_PASS' -e "select version();select * from '$DATABASE'.'$TABLE';"'
 
 ##################################################################################
 # MySQL テーブル構造確認
