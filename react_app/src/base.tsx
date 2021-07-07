@@ -5,8 +5,10 @@ import RefuelingRegistPage from "./RefuelingRegistPage";
 import Login from "./login"
 
 import axios from "axios";
-import { BrowserRouter as Router, Redirect, Route, Link, Switch, useLocation } from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Link, Switch, useLocation, useHistory} from 'react-router-dom';
 import HouseholdAccount from "./HouseholdAccount";
+import UserHeader from "./user_header";
+import {useEffect, useState} from "react";
 
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -30,43 +32,31 @@ const getLogin = async ()=>{
     return ( loginCheckResult.data.result == 'ok' )
 }
 
-export default class Base extends React.Component<HelloProps,HelloState> {
+export default ()=>{
+    const history = useHistory()
+    const [login, setLogin]:any = useState(null)
 
-    componentDidMount() {
+    useEffect(()=>{
+        let cleanUp = false;
         (async ()=>{
-            this.setState( { login: await getLogin()} )
-        })();
-    }
+            if( !cleanUp)
+                setLogin( await getLogin() )
+        })()
+        const cleanup = () => { cleanUp = true; };
+        return cleanup;
+    })
 
-    constructor(props:any) {
-        super(props);
-        this.state = { login: null }
-    }
-
-    setLogined(newValue:boolean){
-        this.setState({
-            login: newValue
-        })
-    }
-
-    render(): React.ReactNode {
-        // this.getLocation();
-        if( this.state.login === null )
-            return (<>ローディング中...</>)
-
-
-        return (
+    return (login===null?(<>ローディング中...</>):
             <Router>
                 <Switch>
-                    <Route exact path='/refueling'  render={ ()=> (this.state.login?<RefuelingPage /> :<Redirect to={"/mylogin"} />) }/>
-                    <Route exact path='/refueling/regist'  render={ ()=> (this.state.login?<RefuelingRegistPage /> :<Redirect to={"/mylogin"} />) }/>
-                    <Route exact path='/household_account' render={ ()=> (this.state.login?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
+                    <Route exact path='/refueling'  render={ ()=> (login?<RefuelingPage /> :<Redirect to={"/mylogin"} />) }/>
+                    <Route exact path='/refueling/regist'  render={ ()=> (login?<RefuelingRegistPage /> :<Redirect to={"/mylogin"} />) }/>
+                    <Route exact path='/household_account' render={ ()=> (login?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
                     <Route exact path='/mylogin' render={()=>
-                        <Login setLogined={this.setLogined.bind(this)}/>
+                        <Login setLogined={setLogin}/>
                     }/>
                 </Switch>
             </Router>
-
-            )
-    }
+    )
 }
+

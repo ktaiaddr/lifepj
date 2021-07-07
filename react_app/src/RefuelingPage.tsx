@@ -1,16 +1,15 @@
 // Hello コンポーネントを定義
 import * as React from "react";
 import axios from "axios";
-import {BrowserRouter as Router, Link, Redirect, Route, Switch} from "react-router-dom";
 import UserHeader from "./user_header";
-import HouseholdAccount from "./HouseholdAccount";
-import Login from "./login";
 import RefuelingSubHeader from "./RefuelingSubHeader";
+import {useEffect, useState} from "react";
 
 // Hello コンポーネントの属性（プロパティ）を定義
 interface HelloProps {}
 
 interface refuelings{
+    refueling_id :number
     user_id :number
     date :string
     refueling_amount :number
@@ -19,51 +18,46 @@ interface refuelings{
     memo:string
 }
 
-export default class RefuelingPage extends React.Component<HelloProps,{refuelings_data_list:refuelings[]}> {
+export default (props:any)=>{
+    const [refuelings_data_list,setRefuelings_data_list]:[Array<refuelings>,any] = useState([])
 
-    async componentDidMount() {
+    useEffect(()=>{
+        const url = 'http://localhost:9000/api/refuelings'
+        let cleanedUp = false;
 
-        const instance = axios.create({ withCredentials: true })
+        const f = async ()=>{
+            const instance = axios.create({ withCredentials: true })
+            const result = await instance.get(url).catch(e=> {
+                return {data:{result:'fail'}}
+            })
+            if(result && !cleanedUp)
+                setRefuelings_data_list(result.data)
+        };
+        f();
 
-        const result = await instance.get('http://localhost:9000/api/refuelings').catch(e=> {
-            return {data:{result:'fail'}}
-        })
+        const cleanup = () => { cleanedUp = true; };
+        return cleanup;
+    }, []);
 
-        if(result)
-            this.setRefuelingsDataList(result.data)
-    }
-    setRefuelingsDataList(list:[]){
-        this.setState({
-            refuelings_data_list:list
-        })
-    }
-    constructor(props:any) {
-        super(props);
-        this.state = {
-            refuelings_data_list:[]
-        }
-    }
-    render(): React.ReactNode {
-
-        return (
-            <>
+    return (
+        <>
             <div><UserHeader /></div>
             <div><RefuelingSubHeader /></div>
-                {
-                    this.state.refuelings_data_list
-                    ?this.state.refuelings_data_list.map(value=>
-                        <>
+            {
+                refuelings_data_list
+                    ?
+                    refuelings_data_list.map((value)=>
+                        (<div key={value.refueling_id}>
                             <div>{value.user_id}</div>
                             <div>{value.date}</div>
                             <div>{value.refueling_amount}</div>
                             <div>{value.refueling_distance}</div>
                             <div>{value.gas_station}</div>
                             <div>{value.memo}</div>
-                        </>
+                        </div>)
                     )
-                    :<></>
-                }
-            </>
-        );
-    }
+                    :(<></>)
+            }
+        </>
+    )
 }
