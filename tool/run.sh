@@ -33,6 +33,7 @@ start_container(){
       -e TZ=Asia/Tokyo \
       -e BIND-ADDRESS=0.0.0.0 \
       -itd mysql:5.7 --character-set-server=utf8 --collation-server=utf8_unicode_ci
+      -v $(pwd)/docker_config/mysql_db/my.cnf:/etc/mysql/my.cnf \
 
   if [ $MYSQL_VOLUME_COUNT -eq 0 ]; then
 
