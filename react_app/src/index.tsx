@@ -1,22 +1,16 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import Hello from "./hello";
+import Base from "./base";
 import axios from "axios";
 
- const initialize = async function (){
+const initilize = (async function (){
 
-     const root = document.getElementById('root')
+    const root = document.getElementById( 'root' )
 
-     const instance = axios.create({ withCredentials: true })
+    ReactDom.render(<Base />,root)
 
-     const loginCheckResult = await instance.get('http://localhost:9000/api/mylogincheck').catch(e=> {
-         return {data:{result:'fail'}}
-     })
+ });
 
-     const logind = loginCheckResult.data.result == 'ok'
+initilize()
 
-     ReactDom.render(<Hello logind={logind}/>,root);
- };
-
-initialize();
 

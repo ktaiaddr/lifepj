@@ -1,6 +1,11 @@
 // Hello コンポーネントを定義
 import * as React from "react";
 import axios from "axios";
+import {BrowserRouter as Router, Link, Redirect, Route, Switch} from "react-router-dom";
+import UserHeader from "./user_header";
+import HouseholdAccount from "./HouseholdAccount";
+import Login from "./login";
+import RefuelingSubHeader from "./RefuelingSubHeader";
 
 // Hello コンポーネントの属性（プロパティ）を定義
 interface HelloProps {}
@@ -14,7 +19,7 @@ interface refuelings{
     memo:string
 }
 
-export default class HelloChild2 extends React.Component<HelloProps,{refuelings_data_list:refuelings[]}> {
+export default class RefuelingPage extends React.Component<HelloProps,{refuelings_data_list:refuelings[]}> {
 
     async componentDidMount() {
 
@@ -42,9 +47,11 @@ export default class HelloChild2 extends React.Component<HelloProps,{refuelings_
 
         return (
             <>
-                {this.state.refuelings_data_list
-                    ?
-                    this.state.refuelings_data_list.map(value=>
+            <div><UserHeader /></div>
+            <div><RefuelingSubHeader /></div>
+                {
+                    this.state.refuelings_data_list
+                    ?this.state.refuelings_data_list.map(value=>
                         <>
                             <div>{value.user_id}</div>
                             <div>{value.date}</div>
@@ -54,8 +61,7 @@ export default class HelloChild2 extends React.Component<HelloProps,{refuelings_
                             <div>{value.memo}</div>
                         </>
                     )
-                    :
-                    <></>
+                    :<></>
                 }
             </>
         );

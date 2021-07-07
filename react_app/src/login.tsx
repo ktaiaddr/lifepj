@@ -57,8 +57,9 @@ export default class Login extends React.Component<HelloProps,StateProps> {
 
         if( loginResult )
             if( loginResult.data.result =='ok' ){
-                this.props.setLogined(true)
                 this.setState({login: true});
+                this.props.setLogined(true)
+
             }
 
     }
@@ -71,7 +72,7 @@ export default class Login extends React.Component<HelloProps,StateProps> {
         return (
             <div>
                 <form>
-                    {this.state.loginerror && (<h1>ログインエラー</h1>)}
+                    {this.state.loginerror && <h1>ログインエラー</h1>}
                     <label>
                         mail:
                         <input type="text" name="mail" value={this.state.mail} onInput={this.setEmail.bind(this)} />
