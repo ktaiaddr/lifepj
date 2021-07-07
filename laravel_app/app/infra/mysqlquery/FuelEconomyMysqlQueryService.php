@@ -96,7 +96,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         else
             $offset_bind = [':offset', 0, \PDO::PARAM_INT];
 
-        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' limit :limit offset :offset';
+        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by created_at desc limit :limit offset :offset ';
 
         $stmt = $pdo->prepare( $query );
 

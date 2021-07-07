@@ -48,12 +48,12 @@ export default (props:any)=>{
                     ?
                     refuelings_data_list.map((value)=>
                         (<div key={value.refueling_id}>
-                            <div>{value.user_id}</div>
-                            <div>{value.date}</div>
-                            <div>{value.refueling_amount}</div>
-                            <div>{value.refueling_distance}</div>
-                            <div>{value.gas_station}</div>
-                            <div>{value.memo}</div>
+                            <span>ユーザID：{value.user_id}</span>｜
+                            <span>日付：{value.date}</span>｜
+                            <span>数量：{value.refueling_amount}</span>
+                            <span>距離：{value.refueling_distance}</span>
+                            <span>ガスステーション：{value.gas_station}</span>
+                            <span>メモ：{value.memo}</span>
                         </div>)
                     )
                     :(<></>)
