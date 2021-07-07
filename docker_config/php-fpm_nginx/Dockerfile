@@ -7,8 +7,8 @@ RUN apk update && \
 #タイムゾーン設定
 RUN apk add --update --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-    echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
+#    echo "Asia/Tokyo" > /etc/timezone && \
 
 RUN docker-php-ext-install pdo_mysql
 
