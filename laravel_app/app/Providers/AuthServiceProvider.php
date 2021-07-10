@@ -50,7 +50,8 @@ class AuthServiceProvider extends ServiceProvider
         });
         ResetPassword::createUrlUsing(function( $user, string $token ){
             // このURLがメールにリンクとして挿入されます。tokenを使用して、APIへリクエストします
-            return 'http://localhost:9000/reset-password/' . $token;
+//            return 'http://localhost:9000/reset-password/' . $token;
+            return 'http://localhost:9000/myresetpassword/' . $token;
         });
 
     }

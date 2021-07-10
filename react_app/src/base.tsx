@@ -10,6 +10,7 @@ import RefuelingRegistPage from "./RefuelingRegistPage";
 import Login from "./login"
 import HouseholdAccount from "./HouseholdAccount";
 import PasswordForget from "./password_forget";
+import ResetPassword from "./reset_password";
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
 
@@ -60,6 +61,9 @@ export default ()=>{
                     }/>
                     <Route exact path='/myforgetpassword' render={()=>
                         <PasswordForget />
+                    }/>
+                    <Route path='/myresetpassword/:token' render={({match})=>
+                        <ResetPassword match={match}/>
                     }/>
                 </Switch>
             </Router>
