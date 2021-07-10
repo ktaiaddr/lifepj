@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MyLogin\LoginCheckController;
 use App\Http\Controllers\MyLogin\LoginController;
+use App\Http\Controllers\MyLogin\LogoutController;
 use App\Http\Controllers\RefuelingsRegistController;
 use App\Http\Controllers\RefuelingsSearchController;
 use App\Http\Controllers\UI\baseController;
@@ -23,6 +24,7 @@ Route::get('/refuelings', RefuelingsSearchController::class );
 Route::post('/refuelings/regist', RefuelingsRegistController::class );
 
 Route::post('/mylogin', LoginController::class );
+Route::post('/mylogout', LogoutController::class );
 Route::get('/mylogincheck', LoginCheckController::class);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

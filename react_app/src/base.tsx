@@ -53,8 +53,8 @@ export default ()=>{
             <Router>
                 <Switch>
                     <Route exact path='/refueling'  render={ ()=> (login!==null&&login!==false?<RefuelingPage /> :<Redirect to={"/mylogin"} />) }/>
-                    <Route exact path='/refueling/regist'  render={ ()=> (login!==null?<RefuelingRegistPage /> :<Redirect to={"/mylogin"} />) }/>
-                    <Route exact path='/household_account' render={ ()=> (login!==null?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
+                    <Route exact path='/refueling/regist'  render={ ()=> (login!==null&&login!==false?<RefuelingRegistPage /> :<Redirect to={"/mylogin"} />) }/>
+                    <Route exact path='/household_account' render={ ()=> (login!==null&&login!==false?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
                     <Route exact path='/mylogin' render={()=>
                         <Login setLogined={setLogin}/>
                     }/>
