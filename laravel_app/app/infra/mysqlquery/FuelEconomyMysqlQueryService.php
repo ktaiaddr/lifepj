@@ -98,12 +98,17 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         else
             $offset_bind = [':offset', 0, \PDO::PARAM_INT];
 
-        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by created_at desc limit :limit offset :offset ';
+        $count_query = ' select count(*) as count from refuelings where '. implode( ' and ', $wheres );
+        $count_stmt = $pdo->prepare( $count_query );
+        foreach( $values as $value ) $count_stmt->bindValue( ...$value );
+        $count_stmt->execute();
+        $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
+        $count = $result['count'];
 
+        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by created_at desc limit :limit offset :offset ';
         $stmt = $pdo->prepare( $query );
 
-        foreach( $values as $value )
-            $stmt->bindValue( ...$value );
+        foreach( $values as $value ) $stmt->bindValue( ...$value );
 
         $stmt->bindValue( ...$limit_bind );
         $stmt->bindValue( ...$offset_bind );
@@ -113,7 +118,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $list = $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class );
 
 
-        return $list;
+        return [$list,$count];
 
     }
 }

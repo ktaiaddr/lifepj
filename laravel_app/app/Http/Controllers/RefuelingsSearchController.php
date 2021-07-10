@@ -34,8 +34,8 @@ class RefuelingsSearchController extends Controller
         $user_id = session()->get('user_id');
         $user_id = Auth::id();
 
-        $fuelEconomyQueryModel_list = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
+        $result = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
 
-        return response()->json( $fuelEconomyQueryModel_list,200);
+        return response()->json( ['list'=> $result[0],'count'=>$result[1]],200);
     }
 }
