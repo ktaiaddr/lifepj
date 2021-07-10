@@ -30,6 +30,7 @@ RUN mkdir /run/php
 COPY ./zz-www.conf /usr/local/etc/php-fpm.d/zz-www.conf
 COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
+#xdebugを有効にする
 RUN echo '#コメントアウト'             > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
 	echo '#extension=xdebug'        >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
 	echo 'zend_extension=xdebug.so' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
