@@ -62,19 +62,41 @@ export default (props:HelloProps)=>{
     else{
         return (
             <div>
-                <form>
-                    {loginError && <h1>ログインエラー</h1>}
-                    <label>
-                        mail:
-                        <input type="text" name="mail" value={mail} onInput={setEmail} />
-                    </label>
-                    <label>
-                        password:
-                        <input type="password" name="password" value={password} onInput={_setPassword} />
-                    </label>
-                    <input type="button" value="Submit" onClick={_login} />
-                </form>
+                    {loginError &&
+                    <div className="notification is-danger">
+                        ログインエラー
+                    </div>}
+                <div className="field">
+                    <p className="control has-icons-left has-icons-right">
+                        <input className="input" type="email" placeholder="Email" name="mail"  value={mail} onInput={setEmail} />
+                        <span className="icon is-small is-left">
+                            <i className="fas fa-envelope" />
+                        </span>
+                        <span className="icon is-small is-right">
+                            <i className="fas fa-check" />
+                        </span>
+                    </p>
+                </div>
+
+
+                <div className="field">
+                    <p className="control has-icons-left">
+                        <input className="input" type="password" placeholder="Password" name="password" value={password} onInput={_setPassword}/>
+                        <span className="icon is-small is-left">
+                            <i className="fas fa-lock" />
+                        </span>
+                    </p>
+                </div>
+                <div className="field">
+                    <p className="control">
+                        <button className="button is-success" onClick={_login}  >
+                            Login
+                        </button>
+                    </p>
+                </div>
+
             </div>
+
         )
     }
 }
