@@ -16,47 +16,91 @@ interface refuelings{
     refueling_distance:number
     gas_station:string
     memo:string
+    fuel_economy:number
 }
 
 export default (props:any)=>{
     const [refuelings_data_list,setRefuelings_data_list]:[Array<refuelings>,any] = useState([])
+    const [readed,setReaded]:any = useState(false)
+    const [pageNumSelect,setPageNumSelect]:[number,any] = useState(5)
 
+    const pageNumSelectable = [5,10,20,50,100]
+    function changePageNumSelect(e:React.ChangeEvent<HTMLSelectElement>){
+        setPageNumSelect(e.target.value)
+    }
     useEffect(()=>{
+        document.title = "給油データ一覧"
+    }, []);
+
+    const f = async ()=>{
         const url = 'http://localhost:9000/api/refuelings'
+        const instance = axios.create({ withCredentials: true })
+        const result = await instance.get(url,{
+            params:{limit:pageNumSelect}
+        }).catch(e=> {
+            return {data:{result:'fail'}}
+        })
+        return result;
+    };
+    useEffect(()=>{
         let cleanedUp = false;
-
-        const f = async ()=>{
-            const instance = axios.create({ withCredentials: true })
-            const result = await instance.get(url).catch(e=> {
-                return {data:{result:'fail'}}
-            })
-            if(result && !cleanedUp)
+        const f2 = async()=>{
+            const result = await f();
+            console.log(result)
+            if(result && !cleanedUp){
                 setRefuelings_data_list(result.data)
-        };
-        f();
-
+                setReaded(true)
+            }
+        }
+        f2();
         const cleanup = () => { cleanedUp = true; };
         return cleanup;
-    }, []);
+    }, [pageNumSelect]);
 
     return (
         <>
-            <div><UserHeader /></div>
-            <div><RefuelingSubHeader /></div>
-            {
-                refuelings_data_list
-                    ?
-                    refuelings_data_list.map((value)=>
-                        (<div key={value.refueling_id}>
-                            <span>ユーザID：{value.user_id}</span>｜
-                            <span>日付：{value.date}</span>｜
-                            <span>数量：{value.refueling_amount}</span>
-                            <span>距離：{value.refueling_distance}</span>
-                            <span>ガスステーション：{value.gas_station}</span>
-                            <span>メモ：{value.memo}</span>
-                        </div>)
-                    )
-                    :(<></>)
+            {readed ===true?
+                (<>
+                    <div><UserHeader /></div>
+                    <div><RefuelingSubHeader /></div>
+                </>):
+                <></>
+            }
+            {readed ===true?
+                <div>
+                    <span>表示数</span>
+                    <div className="select">
+                        <select defaultValue={pageNumSelect} onChange={changePageNumSelect}>
+                            {pageNumSelectable.map(num=>
+                                <option value={num} key={num}>{num}</option>
+                            )}
+                        </select>
+                    </div>
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th>UserId</th>
+                        <th>日付</th>
+                        <th>数量</th>
+                        <th>距離</th>
+                        <th>ガスステーション</th>
+                        <th>メモ</th>
+                        <th>燃費</th>
+                    </tr>
+                    </thead><tbody>
+                {refuelings_data_list.map((value)=>(
+                    <tr key={value.refueling_id}>
+                        <td>{value.user_id}</td>
+                        <td>{value.date}</td>
+                        <td>{value.refueling_amount}</td>
+                        <td>{value.refueling_distance}</td>
+                        <td>{value.gas_station}</td>
+                        <td>{value.memo}</td>
+                        <td>{value.fuel_economy}</td>
+                    </tr>
+                   ))}
+                </tbody></table></div>:
+                (<></>)
             }
         </>
     )

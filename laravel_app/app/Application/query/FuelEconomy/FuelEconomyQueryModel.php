@@ -20,6 +20,16 @@ class FuelEconomyQueryModel
 
     public string $memo;
 
+    public float $fuel_economy;
+
+    /**
+     * FuelEconomyQueryModel constructor.
+     */
+    public function __construct()
+    {
+        $this->fuel_economy = $this->calcFuelEconomy();
+    }
+
     /**
      * 燃費計算
      * @return float

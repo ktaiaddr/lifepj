@@ -15,6 +15,7 @@ class FuelEconomyQueryConditions
     private ?string $gasStation;
     private ?string $memo;
     private ?int $page;
+    private ?int $limit;
 
     /**
      * FuelEconomyQueryConditions constructor.
@@ -26,6 +27,8 @@ class FuelEconomyQueryConditions
      * @param ?float $distanceHigh
      * @param ?string $gasStation
      * @param ?string $memo
+     * @param ?int $limit
+     * @param ?int $page
      */
     public function __construct(?\DateTime $dateStart,
                                 ?\DateTime $dateEnd,
@@ -35,7 +38,8 @@ class FuelEconomyQueryConditions
                                 ?float $distanceHigh,
                                 ?string $gasStation,
                                 ?string $memo,
-                                ?int $page)
+                                ?int $page,
+                                ?int $limit)
     {
         $this->dateStart    = $dateStart;
         $this->dateEnd      = $dateEnd;
@@ -46,6 +50,7 @@ class FuelEconomyQueryConditions
         $this->gasStation   = $gasStation;
         $this->memo         = $memo;
         $this->page         = $page;
+        $this->limit        = $limit;
     }
 
     /**
@@ -118,6 +123,14 @@ class FuelEconomyQueryConditions
     public function getPage(): ?int
     {
         return $this->page;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLimit(): ?int
+    {
+        return $this->limit;
     }
 
 

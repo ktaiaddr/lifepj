@@ -1,7 +1,7 @@
 import * as React from "react";
 import UserHeader from "./user_header";
 import RefuelingSubHeader from "./RefuelingSubHeader";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default ()=>{
@@ -43,16 +43,20 @@ export default ()=>{
             }
     }
 
+    useEffect(()=>{
+        document.title = "給油データ登録"
+    },[])
+
     return (
         <>
             <div><UserHeader /></div>
             <div><RefuelingSubHeader /></div>
 
-            <div><input type="date" placeholder={'日付'} name="date" value={date} onInput={inputHandle}/></div>
-            <div><input type="text" min={1} placeholder={'給油量（リットル）'} name="refueling_amount" value={refueling_amount} onInput={inputHandle} /></div>
-            <div><input type="text" placeholder={'走行距離'} name="refueling_distance" value={refueling_distance} onInput={inputHandle}/></div>
-            <div><input type="text" placeholder={'給油ステーション'} name="gas_station" value={gas_station} onInput={inputHandle}/></div>
-            <div><input type="text" placeholder={'メモ'} name="memo" value={memo} onInput={inputHandle}/></div>
+            <div><input type="date" className="input" placeholder={'日付'} name="date" value={date} onInput={inputHandle}/></div>
+            <div><input type="text" className="input" min={1} placeholder={'給油量（リットル）'} name="refueling_amount" value={refueling_amount} onInput={inputHandle} /></div>
+            <div><input type="text" className="input" placeholder={'走行距離'} name="refueling_distance" value={refueling_distance} onInput={inputHandle}/></div>
+            <div><input type="text" className="input" placeholder={'給油ステーション'} name="gas_station" value={gas_station} onInput={inputHandle}/></div>
+            <div><input type="text" className="input" placeholder={'メモ'} name="memo" value={memo} onInput={inputHandle}/></div>
             <div><button onClick={submit}>登録する</button></div>
 
         </>

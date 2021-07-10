@@ -36,6 +36,7 @@ class RefuelingsSearchRequest extends FormRequest
             'gas_station' => ['string'],
             'memo' => ['string'],
             'page' => ['numeric'],
+            'limit' => ['numeric'],
         ];
     }
 
@@ -50,7 +51,8 @@ class RefuelingsSearchRequest extends FormRequest
             $this->distance_high,
             $this->gas_station,
             $this->memo,
-            $this->page
+            $this->page,
+            $this->limit
         );
     }
 }

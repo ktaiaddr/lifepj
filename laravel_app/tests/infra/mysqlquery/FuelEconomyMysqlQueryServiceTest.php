@@ -36,6 +36,7 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
                 'gasStation'.$i,
                 'memo'.$i);
             $elqRefuelingRepository->save($refueling);
+            sleep(1);
         }
     }
 
@@ -63,9 +64,9 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
         $this->assertSame(5,count($fuelEconomyQueryModel_list));
-
+//dd($fuelEconomyQueryModel_list);
         for($i=1;$i<=5;$i++)
-            $this->assertSame(round((500+$i)/(30+$i),2), $fuelEconomyQueryModel_list[($i-1)]->calcFuelEconomy());
+            $this->assertSame(round((512+1-$i)/(42+1-$i),2), $fuelEconomyQueryModel_list[($i-1)]->calcFuelEconomy());
 
         $cond = new FuelEconomyQueryConditions(new \DateTime('2021-01-01'),new \DateTime('2022-01-01'),
             31,33,501,503,'g','m',null);

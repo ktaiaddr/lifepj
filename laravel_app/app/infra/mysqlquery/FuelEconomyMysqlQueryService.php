@@ -43,7 +43,9 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $wheres = [];
         $values = [];
 
-        $limit_bind = [':limit',self::LIMIT ,\PDO::PARAM_INT];
+        $limit = $fuelEconomyQueryConditions->getLimit() ?: self::LIMIT;
+
+        $limit_bind = [':limit',$limit ,\PDO::PARAM_INT];
 
         $wheres[] = ' user_id = :user_id ';
         $values[] = [':user_id', $userId, \PDO::PARAM_INT];
@@ -92,7 +94,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         }
         //メモ
         if(! empty($fuelEconomyQueryConditions->getPage()))
-            $offset_bind = [':offset', self::LIMIT *($fuelEconomyQueryConditions->getPage()-1), \PDO::PARAM_INT];
+            $offset_bind = [':offset', $limit *($fuelEconomyQueryConditions->getPage()-1), \PDO::PARAM_INT];
         else
             $offset_bind = [':offset', 0, \PDO::PARAM_INT];
 
