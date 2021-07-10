@@ -9,7 +9,7 @@ import RefuelingPage from "./RefuelingPage";
 import RefuelingRegistPage from "./RefuelingRegistPage";
 import Login from "./login"
 import HouseholdAccount from "./HouseholdAccount";
-
+import PasswordForget from "./password_forget";
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
 
@@ -57,6 +57,9 @@ export default ()=>{
                     <Route exact path='/household_account' render={ ()=> (login!==null&&login!==false?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
                     <Route exact path='/mylogin' render={()=>
                         <Login setLogined={setLogin}/>
+                    }/>
+                    <Route exact path='/myforgetpassword' render={()=>
+                        <PasswordForget />
                     }/>
                 </Switch>
             </Router>

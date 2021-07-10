@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios, {AxiosResponse} from "axios";
-import {BrowserRouter as Router, Redirect, Route, Switch, useHistory} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch, useHistory, Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 // Hello コンポーネントの属性（プロパティ）を定義
@@ -92,6 +92,9 @@ export default (props:HelloProps)=>{
                         <button className="button is-success" onClick={_login}  >
                             Login
                         </button>
+                    </p>
+                    <p className="control">
+                        <Link to="/myforgetpassword">パスワードを忘れた場合</Link>
                     </p>
                 </div>
 
