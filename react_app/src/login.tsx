@@ -62,7 +62,8 @@ export default (props:HelloProps)=>{
     else{
         return (
             <div>
-                    {loginError &&
+                <h1 className="title">ログイン</h1>
+                {loginError &&
                     <div className="notification is-danger">
                         ログインエラー
                     </div>}
