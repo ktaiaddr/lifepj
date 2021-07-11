@@ -4,10 +4,11 @@
 namespace App\Http\Controllers\MyLogin;
 
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginCheckController
+class LoginCheckController extends Controller
 {
     public function __invoke(Request $request){
 

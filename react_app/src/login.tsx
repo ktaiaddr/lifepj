@@ -97,6 +97,9 @@ export default (props:HelloProps)=>{
                     <p className="control">
                         <Link to="/myforgetpassword">パスワードを忘れた場合</Link>
                     </p>
+                    <p className="control">
+                        <Link to="/myregisteruser">会員登録する</Link>
+                    </p>
                 </div>
 
             </div>

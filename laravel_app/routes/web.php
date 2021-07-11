@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MyLogin\VerifyEmailController;
 use App\Http\Controllers\UI\baseController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,5 @@ Route::get('/refueling/regist', [baseController::class,'create']);
 Route::get('/household_account', [baseController::class,'create']);
 Route::get('/myforgetpassword', [baseController::class,'create']);
 Route::get('/myresetpassword/{token}', [baseController::class,'create']);
+Route::get('/myregisteruser', [baseController::class,'create']);
+Route::get('/myverifyemail/{id}/{hash}', [baseController::class,'create'])->name('myverifyemail');

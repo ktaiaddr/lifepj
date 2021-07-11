@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
             $id = $notifiable->getKey();
             $hash = sha1( $notifiable->getEmailForVerification() );
 
-            $url = URL::temporarySignedRoute('verification.verify',now()->addMinutes(1),[
+            $url = URL::temporarySignedRoute('myverifyemail',now()->addMinutes(100),[
                 'id'=>$id,
                 'hash'=>$hash
             ]);

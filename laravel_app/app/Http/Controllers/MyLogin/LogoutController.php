@@ -4,10 +4,11 @@
 namespace App\Http\Controllers\MyLogin;
 
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LogoutController
+class LogoutController extends Controller
 {
 
     /**

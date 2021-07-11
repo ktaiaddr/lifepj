@@ -11,6 +11,9 @@ import Login from "./login"
 import HouseholdAccount from "./HouseholdAccount";
 import PasswordForget from "./password_forget";
 import ResetPassword from "./reset_password";
+import RegisterUser from "./register_user";
+import Verifyemail from "./verify_email";
+
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
 
@@ -63,7 +66,13 @@ export default ()=>{
                         <PasswordForget />
                     }/>
                     <Route path='/myresetpassword/:token' render={({match})=>
-                        <ResetPassword match={match}/>
+                        <ResetPassword match={match} />
+                    }/>
+                    <Route exact path='/myregisteruser' render={()=>
+                        <RegisterUser />
+                    }/>
+                    <Route exact path='/myverifyemail/:id/:hash'  render={({match})=>
+                        <Verifyemail  match={match} />
                     }/>
                 </Switch>
             </Router>

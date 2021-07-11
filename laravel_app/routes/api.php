@@ -6,6 +6,8 @@ use App\Http\Controllers\MyLogin\LoginController;
 use App\Http\Controllers\MyLogin\LogoutController;
 use App\Http\Controllers\MyLogin\PasswordResetController;
 use App\Http\Controllers\MyLogin\PasswordResetExecController;
+use App\Http\Controllers\MyLogin\RegisterUserController;
+use App\Http\Controllers\MyLogin\VerifyEmailController;
 use App\Http\Controllers\RefuelingsRegistController;
 use App\Http\Controllers\RefuelingsSearchController;
 use App\Http\Controllers\UI\baseController;
@@ -31,6 +33,8 @@ Route::post('/mylogout', LogoutController::class );
 Route::get('/mylogincheck', LoginCheckController::class);
 Route::post('/mypasswordreset', PasswordResetController::class);
 Route::post('/mypasswordresetexec', PasswordResetExecController::class);
+Route::post('/myregistuser', RegisterUserController::class);
+Route::get('/myverifyemail/{id}/{hash}', VerifyEmailController::class)->middleware(['auth', 'signed', 'throttle:6,1']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
