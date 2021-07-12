@@ -32,4 +32,5 @@ Route::get('/household_account', [baseController::class,'create']);
 Route::get('/myforgetpassword', [baseController::class,'create']);
 Route::get('/myresetpassword/{token}', [baseController::class,'create']);
 Route::get('/myregisteruser', [baseController::class,'create']);
-Route::get('/myverifyemail/{id}/{hash}', [baseController::class,'create'])->name('myverifyemail');
+//Route::get('/myverifyemail/{id}/{hash}', [baseController::class,'create'])->name('myverifyemail');
+Route::get('/myverifyemail/{id}/{hash}', [VerifyEmailController::class,'verify'])->name('myverifyemail');

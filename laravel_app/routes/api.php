@@ -34,7 +34,7 @@ Route::get('/mylogincheck', LoginCheckController::class);
 Route::post('/mypasswordreset', PasswordResetController::class);
 Route::post('/mypasswordresetexec', PasswordResetExecController::class);
 Route::post('/myregistuser', RegisterUserController::class);
-Route::get('/myverifyemail/{id}/{hash}', VerifyEmailController::class)->middleware(['auth', 'signed', 'throttle:6,1']);
+//Route::get('/myverifyemail/{id}/{hash}', [VerifyEmailController::class,'verify']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

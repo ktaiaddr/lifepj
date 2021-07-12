@@ -1,6 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
 import {RouteComponentProps} from "react-router";
 
 // type Props = RouteComponentProps<{
@@ -10,7 +11,8 @@ import {RouteComponentProps} from "react-router";
 // } >;
 
 export default (props: any)=>{
-
+    const location = useLocation();
+    console.log(location.search)
     const {params} = props.match
     const id = params.id
     const hash = params.hash
@@ -20,7 +22,7 @@ export default (props: any)=>{
         const instance = axios.create({withCredentials: true})
         interface resType {data: boolean}
         const resetResult : resType = await instance.get(
-            'http://localhost:9000/api/myverifyemail'+'/'+id+'/'+hash
+            'http://localhost:9000/api/myverifyemail'+'/'+id+'/'+hash+location.search
         ).catch( e => {
             return {data:false};
         });

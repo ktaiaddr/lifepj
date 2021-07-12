@@ -49,9 +49,20 @@ export default (props: any)=>{
         }
     }
 
+
+    if(message){
+        return (
+            <>
+                <div>
+                    <h1 className="title">ユーザ登録</h1>
+                    <span>{message}</span>
+                </div>
+            </>
+        )
+    }
+
     return (
         <>
-            {message && (<span>{message}</span>)}
             <div>
                 <h1 className="title">ユーザ登録</h1>
 
