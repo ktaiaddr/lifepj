@@ -50,32 +50,23 @@ export default ()=>{
     return (
         <>
             <div><UserHeader /></div>
-            <div><RefuelingSubHeader /></div>
 
-            <div className="columns">
-                <div className="column">
-                    <div className="field">
-                        <input className="input" name="date" type="date" placeholder={'日付'} onInput={inputHandle} />
-                    </div>
-                </div>
-                {/*<div><input type="date" className="input" placeholder={'日付'} name="date" value={date} onInput={inputHandle}/></div>*/}
-                <div className="column">
-                    <div><input type="text" className="input" min={1} placeholder={'給油量（リットル）'} name="refueling_amount" value={refueling_amount} onInput={inputHandle} /></div>
-                </div>
-                <div className="column">
-                    <div><input type="text" className="input" placeholder={'走行距離'} name="refueling_distance" value={refueling_distance} onInput={inputHandle}/></div>
-                </div>
-                <div className="column">
-                    <div><input type="text" className="input" placeholder={'給油ステーション'} name="gas_station" value={gas_station} onInput={inputHandle}/></div>
-                </div>
-                <div className="column">
-                    <div><input type="text" className="input" placeholder={'メモ'} name="memo" value={memo} onInput={inputHandle}/></div>
-                </div>
-                <div className="column">
-                    <div><button className="button" onClick={submit}>登録する</button></div>
-                </div>
+            <div className="row justify-content-md-center">
+                <div className="col-sm-10 col-md-5">
+                    <form>
+                        <div className="mb-3">
 
+                        <input type="date" className="form-control" name="date" placeholder={'日付'} onInput={inputHandle} />
+                    <input type="text" className="form-control" min={1} placeholder={'給油量（リットル）'} name="refueling_amount" value={refueling_amount} onInput={inputHandle} />
+                    <input type="text" className="form-control" placeholder={'走行距離'} name="refueling_distance" value={refueling_distance} onInput={inputHandle}/>
+                    <input type="text" className="form-control" placeholder={'給油ステーション'} name="gas_station" value={gas_station} onInput={inputHandle}/>
+                    <input type="text" className="form-control" placeholder={'メモ'} name="memo" value={memo} onInput={inputHandle}/>
+                    <button className="btn btn-outline-success" onClick={submit}>登録する</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
         </>
     );
 }

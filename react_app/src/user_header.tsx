@@ -37,20 +37,40 @@ export default ()=>{
     if(logout) return <Redirect to="/mylogin" />
 
     return (
-        <nav className="navbar is-info" role="navigation" aria-label="main navigation">
-            <div className="navbar-brand">
-                <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
-                   data-target="navbarBasicExample" onClick={toggle_active}>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div id="navbarBasicExample" className="navbar-menu is-active">
-                <div className="navbar-start">
-                    <Link className="navbar-item" to={refueling_route}>給油データ</Link>
-                    <Link className="navbar-item" to={household_account}>家計簿</Link>
-                    <button onClick={_logout}>ログアウト</button>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5" >
+            <div className="container-fluid">
+                <a className="navbar-brand" href="#">Navbar</a>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            {/*<a className="nav-link active" aria-current="page" href="#">Home</a>*/}
+                            <Link className="nav-link active" to={refueling_route}>給油データ</Link>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><Link className="dropdown-item" to="/refueling">一覧</Link></li>
+                                <li> <Link className="dropdown-item" to="/refueling/regist">登録</Link></li>
+                            </ul>
+                        </li>
+
+                        <li className="nav-item">
+                            {/*<a className="nav-link" href="#">Link</a>*/}
+                            <Link className="nav-link" to={household_account}>家計簿</Link>
+
+                        </li>
+                    </ul>
+                    <form className="d-flex">
+                        {/*<button className="btn btn-outline-success" type="submit">Search</button>*/}
+                        <button className="btn btn-outline-success" onClick={_logout}>ログアウト</button>
+                    </form>
                 </div>
             </div>
         </nav>

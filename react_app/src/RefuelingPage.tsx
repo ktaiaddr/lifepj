@@ -86,47 +86,44 @@ export default (props:any)=>{
             {readed ===true?
                 (<>
                     <div><UserHeader /></div>
-                    <div><RefuelingSubHeader /></div>
+                    {/*<div><RefuelingSubHeader /></div>*/}
                 </>):
                 <></>
             }
             {readed ===true?
                 <div>
-                    <nav className="level">
-                        <div className="level-left">
-                            <div className="level-item">
-                                <label className="label">表示件数</label>
-                            </div>
-
-                            <div className="level-item">
-                                    <div className="field">
-                                        <div className="control">
-                                            <div className="select">
-                                                <select defaultValue={pageLimitSelect} onChange={changePageNumSelect}>
-                                                    {pageNumSelectable.map(num=>
-                                                        <option value={num} key={num}>{num}</option>
-                                                    )}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                            </div>
-                            <div className="level-item">
-                                <button className="button" onClick={pagingPrevious}>前のページ</button>
-                                <div className="select">
-                                <select value={pagingNumber} onChange={changPagingNumber}>
-                                    {pagingSelectable.map(num=>
-                                        <option value={num} key={num}>{num}</option>
+                    <div className="row">
+                        <div className="col-5 col-sm-2">
+                            <div className="input-group">
+                                <select className="form-select" defaultValue={pageLimitSelect} onChange={changePageNumSelect}>
+                                    {pageNumSelectable.map(num=>
+                                        <option value={num} key={num}>{num}件</option>
                                     )}
                                 </select>
-                                </div>
-
-                                <button className="button" onClick={pagingNext}>次のページ</button>
                             </div>
                         </div>
+                        <div className="col-7 col-sm-10">
+                        <nav aria-label="Page navigation example">
 
-                    </nav>
+                                <ul className="pagination justify-content-end">
+                                    <li className="page-item">
+                                        <a className="page-link" href="#" onClick={pagingPrevious}>＜</a>
+                                    </li>
+                                    <li className="page-item">
+                                        <select className="form-select" value={pagingNumber} onChange={changPagingNumber}>
+                                            {pagingSelectable.map(num=>
+                                                <option value={num} key={num}>{num}</option>
+                                            )}
+                                        </select>
+                                    </li>
+                                    <li className="page-item">
+                                        <a className="page-link" href="#" onClick={pagingNext}>＞</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
 
                 <table className="table">
                     <thead>
