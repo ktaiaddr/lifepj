@@ -9,6 +9,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RefuelingsSearchRequest extends FormRequest
 {
+
+    const SORT_KEY_DATE = 1;
+    const SORT_KEY_DISTANCE = 2;
+    const SORT_KEY_AMOUNT = 3;
+    const SORT_KEY_FUELECONOMY = 4;
+    const SORT_KEY_GASSTATION = 5;
+    const SORT_KEY_MEMO = 6;
+
+    const SORT_DESC = 1;
+    const SORT_ASC = 2;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,6 +48,8 @@ class RefuelingsSearchRequest extends FormRequest
             'memo' => ['string'],
             'page' => ['numeric'],
             'limit' => ['numeric'],
+            'sort_key' => ['numeric'],
+            'sort_order' => ['numeric'],
         ];
     }
 
@@ -52,7 +65,9 @@ class RefuelingsSearchRequest extends FormRequest
             $this->gas_station,
             $this->memo,
             $this->page,
-            $this->limit
+            $this->limit,
+            $this->sort_key,
+            $this->sort_order
         );
     }
 }

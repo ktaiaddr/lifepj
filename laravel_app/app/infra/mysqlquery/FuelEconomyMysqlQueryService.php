@@ -6,6 +6,7 @@ namespace App\infra\mysqlquery;
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
 use App\Application\query\FuelEconomy\FuelEconomyQueryModel;
+use App\Http\Requests\RefuelingsSearchRequest;
 use Illuminate\Support\Facades\DB;
 
 class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy\FuelEconomyQueryService
@@ -105,7 +106,32 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
         $count = $result['count'];
 
-        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by created_at desc limit :limit offset :offset ';
+        switch($fuelEconomyQueryConditions->getSortKey()){
+            case RefuelingsSearchRequest::SORT_KEY_DISTANCE: $order_by_value = ' refueling_distance ';break;
+            case RefuelingsSearchRequest::SORT_KEY_AMOUNT:  $order_by_value = ' refueling_amount ';break;
+            case RefuelingsSearchRequest::SORT_KEY_FUELECONOMY:  $order_by_value = ' (refueling_distance / refueling_amount) ';break;
+            case RefuelingsSearchRequest::SORT_KEY_GASSTATION:  $order_by_value = ' gas_station ';break;
+            case RefuelingsSearchRequest::SORT_KEY_MEMO:  $order_by_value = ' memo ';break;
+
+            default:
+            case RefuelingsSearchRequest::SORT_KEY_DATE:
+                $order_by_value = ' date ';break;
+        }
+
+        switch($fuelEconomyQueryConditions->getSortOrder()){
+            case RefuelingsSearchRequest::SORT_ASC: $sort_order = ' asc ';break;
+            default:
+            case RefuelingsSearchRequest::SORT_DESC:
+                $sort_order = ' desc ';break;
+        }
+
+
+        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by '.$order_by_value
+            .' '.$sort_order.' limit :limit offset :offset ';
+
+
+
+
         $stmt = $pdo->prepare( $query );
 
         foreach( $values as $value ) $stmt->bindValue( ...$value );

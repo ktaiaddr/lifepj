@@ -3,7 +3,7 @@ import * as React from "react";
 import axios from "axios";
 import UserHeader from "./user_header";
 import RefuelingSubHeader from "./RefuelingSubHeader";
-import {cloneElement, useEffect, useState} from "react";
+import {BaseSyntheticEvent, cloneElement, SyntheticEvent, useEffect, useState} from "react";
 import RefuelingSearchCondition from "./RefuelingSearchCondition";
 
 // Hello コンポーネントの属性（プロパティ）を定義
@@ -20,6 +20,19 @@ interface refuelings{
     fuel_economy:number
 }
 const pageNumSelectable = [10,20,50,100]
+
+enum sortKeys{
+    DATE=1,
+    DISTANCE=2,
+    AMOUNT=3,
+    FUELECONOMY=4,
+    GASSTATION=5,
+    MEMO=6
+}
+enum sortOrders{
+    DESC=1,
+    ASC=2
+}
 
 export default (props:any)=>{
     const [refuelings_data_list,setRefuelings_data_list]:[Array<refuelings>,any] = useState([])
@@ -41,6 +54,8 @@ export default (props:any)=>{
     const [buttonDisabled,setButtonDisabled]:any = useState(true)
     const [resetSubmit,setResetSubmit]:any = useState(false)
     const [enableSarch,setEnableSarch]:any = useState(false)
+    const [sortKey,setSortKey] = useState<sortKeys>(sortKeys.DATE)
+    const [sortOrder,setSortOrder]:any = useState<sortOrders>(sortOrders.DESC)
 
     function _setSearchCondition(e:React.ChangeEvent<HTMLInputElement>){
 
@@ -141,6 +156,8 @@ export default (props:any)=>{
                 distance_high:searchCondition.distance_high?parseInt(searchCondition.distance_high):null,
                 gas_station:searchCondition.gas_station || null,
                 memo:searchCondition.memo || null,
+                sort_key:sortKey || null,
+                sort_order:sortOrder || null,
             },
         }).catch(e=> {
             return {data:{result:'fail'}}
@@ -165,7 +182,16 @@ export default (props:any)=>{
         return cleanup;
         console.log(33333)
 
-    }, [pageLimitSelect,pagingNumber]);
+    }, [pageLimitSelect,pagingNumber,sortKey,sortOrder]);
+
+    function changeSort(e:BaseSyntheticEvent)
+    {
+        console.log(e.target.getAttribute('data-name'))
+        if( e.target.getAttribute('data-name') == sortKey)
+            setSortOrder( sortOrder == sortOrders.ASC ?sortOrders.DESC:sortOrders.ASC )
+        else
+            setSortKey( e.target.getAttribute('data-name') )
+    }
 
     return (
         <>
@@ -222,12 +248,36 @@ export default (props:any)=>{
                     <table className="table">
                         <thead>
                         <tr>
-                            <th>日付</th>
-                            <th>距離</th>
-                            <th>数量</th>
-                            <th>燃費</th>
-                            <th>ガスステーション</th>
-                            <th>メモ</th>
+                            <th>日付
+                                <span onClick={changeSort} data-name={sortKeys.DATE} className={sortKey==sortKeys.DATE?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
+                            <th>距離
+                                <span onClick={changeSort} data-name={sortKeys.DISTANCE} className={sortKey==sortKeys.DISTANCE?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
+                            <th>数量
+                                <span onClick={changeSort} data-name={sortKeys.AMOUNT} className={sortKey==sortKeys.AMOUNT?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
+                            <th>燃費
+                                <span onClick={changeSort} data-name={sortKeys.FUELECONOMY} className={sortKey==sortKeys.FUELECONOMY?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
+                            <th>ガスステーション
+                                <span onClick={changeSort} data-name={sortKeys.GASSTATION} className={sortKey==sortKeys.GASSTATION?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
+                            <th>メモ
+                                <span onClick={changeSort} data-name={sortKeys.MEMO} className={sortKey==sortKeys.MEMO?"text-primary":"text-secondary"}>
+                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
+                                    </span>
+                            </th>
                         </tr>
                         </thead><tbody>
                     {refuelings_data_list.map((value,index)=>(

@@ -16,6 +16,8 @@ class FuelEconomyQueryConditions
     private ?string $memo;
     private ?int $page;
     private ?int $limit;
+    private ?int $sort_key;
+    private ?int $sort_order;
 
     /**
      * FuelEconomyQueryConditions constructor.
@@ -29,6 +31,8 @@ class FuelEconomyQueryConditions
      * @param ?string $memo
      * @param ?int $limit
      * @param ?int $page
+     * @param ?int $sort_key
+     * @param ?int $sort_order
      */
     public function __construct(?\DateTime $dateStart,
                                 ?\DateTime $dateEnd,
@@ -39,7 +43,9 @@ class FuelEconomyQueryConditions
                                 ?string $gasStation,
                                 ?string $memo,
                                 ?int $page,
-                                ?int $limit)
+                                ?int $limit,
+                                ?int $sort_key,
+                                ?int $sort_order)
     {
         $this->dateStart    = $dateStart;
         $this->dateEnd      = $dateEnd;
@@ -51,6 +57,8 @@ class FuelEconomyQueryConditions
         $this->memo         = $memo;
         $this->page         = $page;
         $this->limit        = $limit;
+        $this->sort_key     = $sort_key;
+        $this->sort_order   = $sort_order;
     }
 
     /**
@@ -131,6 +139,22 @@ class FuelEconomyQueryConditions
     public function getLimit(): ?int
     {
         return $this->limit;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortKey(): ?int
+    {
+        return $this->sort_key;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sort_order;
     }
 
 
