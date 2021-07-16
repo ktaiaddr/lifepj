@@ -5,6 +5,9 @@ import UserHeader from "./user_header";
 import RefuelingSubHeader from "./RefuelingSubHeader";
 import {BaseSyntheticEvent, cloneElement, SyntheticEvent, useEffect, useState} from "react";
 import RefuelingSearchCondition from "./RefuelingSearchCondition";
+import RefuelingPageLimitSelect from "./RefuelingPageLimitSelect";
+import RefuelingPagenation from "./RefuelingPagenation";
+import RefuelingResultTable from "./RefuelingResultTable";
 
 // Hello コンポーネントの属性（プロパティ）を定義
 interface HelloProps {}
@@ -19,7 +22,7 @@ interface refuelings{
     memo:string
     fuel_economy:number
 }
-const pageNumSelectable = [10,20,50,100]
+// const pageNumSelectable = [10,20,50,100]
 
 enum sortKeys{
     DATE=1,
@@ -52,7 +55,7 @@ export default (props:any)=>{
         memo:'',
     })
     const [buttonDisabled,setButtonDisabled]:any = useState(true)
-    const [resetSubmit,setResetSubmit]:any = useState(false)
+    const [resetDone,setResetDone]:any = useState(true)
     const [enableSarch,setEnableSarch]:any = useState(false)
     const [sortKey,setSortKey] = useState<sortKeys>(sortKeys.DATE)
     const [sortOrder,setSortOrder]:any = useState<sortOrders>(sortOrders.DESC)
@@ -68,6 +71,7 @@ export default (props:any)=>{
         setSearchCondition(tmp)
         console.log(searchCondition)
         setButtonDisabled(false)
+        setResetDone(false)
     }
     function searchResult()
     {
@@ -89,6 +93,7 @@ export default (props:any)=>{
         })
         setPagingNumber(1)
         setEnableSarch(true)
+        setResetDone(true)
     }
     useEffect(()=>{
         if(enableSarch){
@@ -195,102 +200,46 @@ export default (props:any)=>{
 
     return (
         <>
-            {readed ===true?
-                (<>
-                    <div><UserHeader /></div>
-                    {/*<div><RefuelingSubHeader /></div>*/}
-                </>):
-                <></>
-            }
+            {/*{readed ===true?*/}
+            {/*    (<>*/}
+            {/*        <div><UserHeader /></div>*/}
+            {/*        /!*<div><RefuelingSubHeader /></div>*!/*/}
+            {/*    </>):*/}
+            {/*    <></>*/}
+            {/*}*/}
+            <div><UserHeader /></div>
+
             {readed ===true?
                 <div>
 
                     <div className="row">
-                        <div className="col-5 col-sm-2">
-                            <div className="input-group">
-                                <select className="form-select" defaultValue={pageLimitSelect} onChange={changePageNumSelect}>
-                                    {pageNumSelectable.map(num=>
-                                        <option value={num} key={num}>{num}件</option>
-                                    )}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-7 col-sm-10">
-                            <nav aria-label="Page navigation example">
-                                <ul className="pagination justify-content-end">
-                                    <li className="page-item">
-                                        <a className="page-link" href="#" onClick={pagingPrevious}>＜</a>
-                                    </li>
-                                    <li className="page-item">
-                                        <select className="form-select" value={pagingNumber} onChange={changPagingNumber}>
-                                            {pagingSelectable.map(num=>
-                                                <option value={num} key={num}>{num}</option>
-                                            )}
-                                        </select>
-                                    </li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="#" onClick={pagingNext}>＞</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+
+                        <RefuelingPageLimitSelect pageLimitSelect={pageLimitSelect}
+                                                  changePageNumSelect={changePageNumSelect} />
+
+                        <RefuelingPagenation pagingPrevious={pagingPrevious}
+                                             pagingNumber={pagingNumber}
+                                             changPagingNumber={changPagingNumber}
+                                             pagingSelectable={pagingSelectable}
+                                             pagingNext={pagingNext} />
+
                     </div>
 
-
-                    <RefuelingSearchCondition
-                        searchCondition={searchCondition}
-                        _setSearchCondition={_setSearchCondition}
-                        searchResult={searchResult}
-                        resetSearch={resetSearch}
-                        buttonDisabled={buttonDisabled} />
+                    <RefuelingSearchCondition searchCondition={searchCondition}
+                                              _setSearchCondition={_setSearchCondition}
+                                              searchResult={searchResult}
+                                              resetSearch={resetSearch}
+                                              buttonDisabled={buttonDisabled}
+                                              resetDone={resetDone} />
 
                     <div>{refuelingsCount}件</div>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>日付
-                                <span onClick={changeSort} data-name={sortKeys.DATE} className={sortKey==sortKeys.DATE?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                            <th>距離
-                                <span onClick={changeSort} data-name={sortKeys.DISTANCE} className={sortKey==sortKeys.DISTANCE?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                            <th>数量
-                                <span onClick={changeSort} data-name={sortKeys.AMOUNT} className={sortKey==sortKeys.AMOUNT?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                            <th>燃費
-                                <span onClick={changeSort} data-name={sortKeys.FUELECONOMY} className={sortKey==sortKeys.FUELECONOMY?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                            <th>ガスステーション
-                                <span onClick={changeSort} data-name={sortKeys.GASSTATION} className={sortKey==sortKeys.GASSTATION?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                            <th>メモ
-                                <span onClick={changeSort} data-name={sortKeys.MEMO} className={sortKey==sortKeys.MEMO?"text-primary":"text-secondary"}>
-                                        {sortOrder==sortOrders.DESC?"▼":"▲"}
-                                    </span>
-                            </th>
-                        </tr>
-                        </thead><tbody>
-                    {refuelings_data_list.map((value,index)=>(
-                        <tr key={value.refueling_id} style={index%2==0?{background:"lightblue"}:{}}>
-                            <td>{value.date}</td>
-                            <td>{value.refueling_distance}</td>
-                            <td>{value.refueling_amount}</td>
-                            <td>{value.fuel_economy}</td>
-                            <td>{value.gas_station}</td>
-                            <td>{value.memo}</td>
-                        </tr>
-                   ))}
-                    </tbody></table>
+
+                    <RefuelingResultTable  changeSort={changeSort}
+                                           sortKey={sortKey}
+                                           sortOrder={sortOrder}
+                                           sortKeys={sortKeys}
+                                           sortOrders={sortOrders}
+                                           refuelings_data_list={refuelings_data_list} />
                 </div>
                 :
                 (<></>)

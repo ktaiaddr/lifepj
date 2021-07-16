@@ -8,6 +8,7 @@ export default (props:any)=> {
     const searchResult = props.searchResult
     const resetSearch = props.resetSearch
     const buttonDisabled = props.buttonDisabled
+    const resetDone = props.resetDone
 
     return (
         <>
@@ -126,7 +127,7 @@ export default (props:any)=> {
             <div className="row mb-4">
                 <div className="col-lg-6">
                     <button className={"btn"+ (buttonDisabled?" btn-secondary":" btn-primary")} onClick={searchResult} disabled={buttonDisabled}>検索</button>
-                    <button className={"btn"+ (buttonDisabled?" btn-secondary":" btn-primary")} onClick={resetSearch} disabled={buttonDisabled}>リセット</button>
+                    <button className={"btn"+ (resetDone?" btn-secondary":" btn-primary")} onClick={resetSearch} disabled={resetDone}>リセット</button>
                 </div>
             </div>
         </>
