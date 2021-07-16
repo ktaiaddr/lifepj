@@ -2,39 +2,25 @@
 import * as React from "react";
 import axios from "axios";
 import UserHeader from "./user_header";
-import RefuelingSubHeader from "./RefuelingSubHeader";
 import {BaseSyntheticEvent, cloneElement, SyntheticEvent, useEffect, useState} from "react";
 import RefuelingSearchCondition from "./RefuelingSearchCondition";
 import RefuelingPageLimitSelect from "./RefuelingPageLimitSelect";
 import RefuelingPagenation from "./RefuelingPagenation";
 import RefuelingResultTable from "./RefuelingResultTable";
+import {sortKeys,sortOrders} from "./sortEnums"
+import refuelings from "./interfaceRefuelings";
 
-// Hello コンポーネントの属性（プロパティ）を定義
-interface HelloProps {}
-
-interface refuelings{
-    refueling_id :number
-    user_id :number
-    date :string
-    refueling_amount :number
-    refueling_distance:number
-    gas_station:string
-    memo:string
-    fuel_economy:number
-}
-// const pageNumSelectable = [10,20,50,100]
-
-enum sortKeys{
-    DATE=1,
-    DISTANCE=2,
-    AMOUNT=3,
-    FUELECONOMY=4,
-    GASSTATION=5,
-    MEMO=6
-}
-enum sortOrders{
-    DESC=1,
-    ASC=2
+const initCondition = ()=> {
+    return {
+        date_start:'',
+        date_end:'',
+        distance_lower:'',
+        distance_high:'',
+        amount_lower:'',
+        amount_high:'',
+        gas_station:'',
+        memo:'',
+    }
 }
 
 export default (props:any)=>{
@@ -44,16 +30,7 @@ export default (props:any)=>{
     const [pageLimitSelect,setPageLimitSelect]:[number,any] = useState(10)
     const [pagingNumber,setPagingNumber]:[number,any] = useState(1)
     const [pagingSelectable,setPagingSelectable]:[number[],any] = useState([1])
-    const [searchCondition, setSearchCondition] :any = useState({
-        date_start:'',
-        date_end:'',
-        distance_lower:'',
-        distance_high:'',
-        amount_lower:'',
-        amount_high:'',
-        gas_station:'',
-        memo:'',
-    })
+    const [searchCondition, setSearchCondition] :any = useState(initCondition())
     const [buttonDisabled,setButtonDisabled]:any = useState(true)
     const [resetDone,setResetDone]:any = useState(true)
     const [enableSarch,setEnableSarch]:any = useState(false)
@@ -61,15 +38,9 @@ export default (props:any)=>{
     const [sortOrder,setSortOrder]:any = useState<sortOrders>(sortOrders.DESC)
 
     function _setSearchCondition(e:React.ChangeEvent<HTMLInputElement>){
-
-        console.log(e.target.name)
-        console.log(e.target.value)
         const tmp = {...searchCondition}
-        console.log(tmp)
         tmp[e.target.name] = e.target.value
-        // setSearchCondition(null)
         setSearchCondition(tmp)
-        console.log(searchCondition)
         setButtonDisabled(false)
         setResetDone(false)
     }
@@ -79,18 +50,8 @@ export default (props:any)=>{
         setPagingNumber(1)
         setEnableSarch(true)
     }
-    function resetSearch()
-    {
-        setSearchCondition({
-            date_start:'',
-            date_end:'',
-            distance_lower:'',
-            distance_high:'',
-            amount_lower:'',
-            amount_high:'',
-            gas_station:'',
-            memo:'',
-        })
+    function resetSearch() {
+        setSearchCondition(initCondition())
         setPagingNumber(1)
         setEnableSarch(true)
         setResetDone(true)
@@ -102,21 +63,7 @@ export default (props:any)=>{
         }
     },[enableSarch])
 
-    function resetSearchRequest(){
-        const f2 = async()=>{
-            const result = await f();
 
-            if(result ){
-                setRefuelings_data_list(result.data.list)
-                setRefuelingsCount(result.data.count)
-                setPagingSelectable([...Array(Math.ceil(result.data.count/pageLimitSelect)).keys()].map(i => ++i))
-                setReaded(true)
-            }
-        }
-        f2();
-
-        setButtonDisabled(true)
-    }
 
 
     function changePageNumSelect(e:React.ChangeEvent<HTMLSelectElement>){
@@ -169,6 +116,23 @@ export default (props:any)=>{
         })
         return result;
     };
+
+    function resetSearchRequest(){
+        const f2 = async()=>{
+            const result = await f();
+
+            if(result ){
+                setRefuelings_data_list(result.data.list)
+                setRefuelingsCount(result.data.count)
+                setPagingSelectable([...Array(Math.ceil(result.data.count/pageLimitSelect)).keys()].map(i => ++i))
+                setReaded(true)
+            }
+        }
+        f2();
+
+        setButtonDisabled(true)
+    }
+
     useEffect(()=>{
         let cleanedUp = false;
         const f2 = async()=>{
@@ -185,32 +149,32 @@ export default (props:any)=>{
         f2();
         const cleanup = () => { cleanedUp = true; };
         return cleanup;
-        console.log(33333)
 
     }, [pageLimitSelect,pagingNumber,sortKey,sortOrder]);
 
     function changeSort(e:BaseSyntheticEvent)
     {
-        console.log(e.target.getAttribute('data-name'))
-        if( e.target.getAttribute('data-name') == sortKey)
+        const dataName = e.target.getAttribute('data-name')
+        if(dataName == sortKey){
             setSortOrder( sortOrder == sortOrders.ASC ?sortOrders.DESC:sortOrders.ASC )
-        else
-            setSortKey( e.target.getAttribute('data-name') )
+            return
+        }
+        setSortKey( dataName )
     }
 
     return (
         <>
-            {/*{readed ===true?*/}
-            {/*    (<>*/}
-            {/*        <div><UserHeader /></div>*/}
-            {/*        /!*<div><RefuelingSubHeader /></div>*!/*/}
-            {/*    </>):*/}
-            {/*    <></>*/}
-            {/*}*/}
             <div><UserHeader /></div>
 
             {readed ===true?
                 <div>
+
+                    <RefuelingSearchCondition searchCondition={searchCondition}
+                                              _setSearchCondition={_setSearchCondition}
+                                              searchResult={searchResult}
+                                              resetSearch={resetSearch}
+                                              buttonDisabled={buttonDisabled}
+                                              resetDone={resetDone} />
 
                     <div className="row">
 
@@ -224,13 +188,6 @@ export default (props:any)=>{
                                              pagingNext={pagingNext} />
 
                     </div>
-
-                    <RefuelingSearchCondition searchCondition={searchCondition}
-                                              _setSearchCondition={_setSearchCondition}
-                                              searchResult={searchResult}
-                                              resetSearch={resetSearch}
-                                              buttonDisabled={buttonDisabled}
-                                              resetDone={resetDone} />
 
                     <div>{refuelingsCount}件</div>
 
