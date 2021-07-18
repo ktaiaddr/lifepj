@@ -7,10 +7,10 @@ import {UseSortType} from "./hooks/use-refuelings";
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const changeSort           = refuelingHook.changeSort
-    const sortKey              = refuelingHook.sortKey
-    const sortOrder            = refuelingHook.sortOrder
-    const refuelings_data_list = refuelingHook.refuelings_data_list
+    const { changeSort           ,
+            sortKey              ,
+            sortOrder            ,
+            refuelings_data_list } = refuelingHook
 
     return (
         <table className="table">

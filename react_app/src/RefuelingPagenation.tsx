@@ -4,11 +4,11 @@ import {UseSortType} from "./hooks/use-refuelings";
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const pagingPrevious    = refuelingHook.pagingPrevious
-    const pagingNumber      = refuelingHook.pagingNumber
-    const changPagingNumber = refuelingHook.changPagingNumber
-    const pagingSelectable  = refuelingHook.pagingSelectable
-    const pagingNext        = refuelingHook.pagingNext
+    const { pagingPrevious    ,
+            pagingNumber      ,
+            changPagingNumber ,
+            pagingSelectable  ,
+            pagingNext        } = refuelingHook
 
     return (<div className="col-7 col-sm-10">
         <nav aria-label="Page navigation example">

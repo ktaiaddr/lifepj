@@ -3,12 +3,12 @@ import {UseSortType} from "./hooks/use-refuelings";
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const _setSearchCondition = refuelingHook._setSearchCondition
-    const searchCondition     = refuelingHook.searchCondition
-    const searchResult        = refuelingHook.searchResult
-    const resetSearch         = refuelingHook.resetSearch
-    const buttonDisabled      = refuelingHook.buttonDisabled
-    const resetDone           = refuelingHook.resetDone
+    const { _setSearchCondition ,
+            searchCondition     ,
+            searchResult        ,
+            resetSearch         ,
+            buttonDisabled      ,
+            resetDone           } = refuelingHook
 
     return (
         <>

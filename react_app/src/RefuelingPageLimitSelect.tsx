@@ -5,8 +5,8 @@ const pageNumSelectable = [10,20,50,100]
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const pageLimitSelect     = refuelingHook.pageLimitSelect
-    const changePageNumSelect = refuelingHook.changePageNumSelect
+    const { pageLimitSelect     ,
+            changePageNumSelect } = refuelingHook
 
     return (<div className="col-5 col-sm-2">
         <div className="input-group">
