@@ -17,7 +17,7 @@ interface StateProps {
 
 export default (props:HelloProps)=>{
 
-    const [mail,       setMail]:any = useState('test@test444444.local')
+    const [mail,       setMail]:any = useState('ktaiaddr@gmail.com')
     const [password,   setPassword]:any = useState('')
     const [login,      setLogin]:any = useState(false)
     const [loginError, setLoginError]:any = useState(false)

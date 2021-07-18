@@ -1,14 +1,15 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
+import {UseSortType} from "./hooks/use-refuelings";
 
-export default (props:any)=> {
+export default (props:{refuelingHook:UseSortType})=> {
 
-    const _setSearchCondition = props._setSearchCondition
-    const searchCondition = props.searchCondition
-    const searchResult = props.searchResult
-    const resetSearch = props.resetSearch
-    const buttonDisabled = props.buttonDisabled
-    const resetDone = props.resetDone
+    const _setSearchCondition = props.refuelingHook._setSearchCondition
+    const searchCondition = props.refuelingHook.searchCondition
+    const searchResult = props.refuelingHook.searchResult
+    const resetSearch = props.refuelingHook.resetSearch
+    const buttonDisabled = props.refuelingHook.buttonDisabled
+    const resetDone = props.refuelingHook.resetDone
 
     return (
         <>
@@ -124,11 +125,14 @@ export default (props:any)=> {
                     </div>
                 </div>
             </div>
-            <div className="row mb-4">
-                <div className="col-lg-6">
-                    <button className={"btn"+ (buttonDisabled?" btn-secondary":" btn-primary")} onClick={searchResult} disabled={buttonDisabled}>検索</button>
-                    <button className={"btn"+ (resetDone?" btn-secondary":" btn-primary")} onClick={resetSearch} disabled={resetDone}>リセット</button>
-                </div>
+            <div className="mb-4 d-flex">
+
+                    <div className="0">
+                        <button className={"btn"+ (buttonDisabled?" btn-secondary":" btn-primary")} onClick={searchResult} disabled={buttonDisabled}>検索</button>
+                    </div>
+                    <div className="mx-2">
+                        <button className={"btn"+ (resetDone?" btn-secondary":" btn-primary")} onClick={resetSearch} disabled={resetDone}>リセット</button>
+                    </div>
             </div>
         </>
     )

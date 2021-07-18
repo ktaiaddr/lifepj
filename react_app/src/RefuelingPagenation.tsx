@@ -1,13 +1,14 @@
 import * as React from "react";
+import {UseSortType} from "./hooks/use-refuelings";
 
 
-export default (props:any)=> {
+export default (props:{refuelingHook:UseSortType})=> {
 
-    const pagingPrevious = props.pagingPrevious
-    const pagingNumber = props.pagingNumber
-    const changPagingNumber = props.changPagingNumber
-    const pagingSelectable :number[]= props.pagingSelectable
-    const pagingNext = props.pagingNext
+    const pagingPrevious = props.refuelingHook.pagingPrevious
+    const pagingNumber = props.refuelingHook.pagingNumber
+    const changPagingNumber = props.refuelingHook.changPagingNumber
+    const pagingSelectable :number[]= props.refuelingHook.pagingSelectable
+    const pagingNext = props.refuelingHook.pagingNext
 
     return (<div className="col-7 col-sm-10">
         <nav aria-label="Page navigation example">
