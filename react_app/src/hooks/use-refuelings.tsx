@@ -6,14 +6,14 @@ import axios from "axios";
 
 const initCondition = ()=> {
     return {
-        date_start:'',
-        date_end:'',
-        distance_lower:'',
-        distance_high:'',
-        amount_lower:'',
-        amount_high:'',
-        gas_station:'',
-        memo:'',
+        date_start    : '',
+        date_end      : '',
+        distance_lower: '',
+        distance_high : '',
+        amount_lower  : '',
+        amount_high   : '',
+        gas_station   : '',
+        memo          : '',
     }
 }
 const initCondition_data = initCondition()
@@ -81,12 +81,12 @@ const useRefuelings = (): UseSortType => {
     }
 
     function changePageNumSelect(e:React.ChangeEvent<HTMLSelectElement>){
-        setPageLimitSelect(parseInt(e.target.value))
+        setPageLimitSelect(Number(e.target.value))
         setPagingNumber(1)
     }
 
     function changPagingNumber(e:React.ChangeEvent<HTMLSelectElement>){
-        setPagingNumber(parseInt(e.target.value))
+        setPagingNumber(Number(e.target.value))
     }
 
     function pagingPrevious(){
@@ -116,10 +116,10 @@ const useRefuelings = (): UseSortType => {
                 page          : pagingNumber,
                 date_start    : searchCondition.date_start     || null,
                 date_end      : searchCondition.date_end       || null,
-                amount_low    : searchCondition.amount_lower   ?  parseInt(searchCondition.amount_lower  ) : null,
-                amount_high   : searchCondition.amount_high    ?  parseInt(searchCondition.amount_high   ) : null,
-                distance_low  : searchCondition.distance_lower ?  parseInt(searchCondition.distance_lower) : null,
-                distance_high : searchCondition.distance_high  ?  parseInt(searchCondition.distance_high ) : null,
+                amount_low    : searchCondition.amount_lower   ?  Number(searchCondition.amount_lower  ) : null,
+                amount_high   : searchCondition.amount_high    ?  Number(searchCondition.amount_high   ) : null,
+                distance_low  : searchCondition.distance_lower ?  Number(searchCondition.distance_lower) : null,
+                distance_high : searchCondition.distance_high  ?  Number(searchCondition.distance_high ) : null,
                 gas_station   : searchCondition.gas_station    || null,
                 memo          : searchCondition.memo           || null,
                 sort_key      : sortKey || null,

@@ -3,19 +3,14 @@ import {sortKeys,sortOrders} from "./sortEnums"
 
 import RefuelingResultTableHeader from "./RefuelingResultTableHeader";
 import RefuelingResultTableBody from "./RefuelingResultTableBody";
-import refuelings from "./interfaceRefuelings";
 import {UseSortType} from "./hooks/use-refuelings";
 
-export default (props:{refuelingHook:UseSortType})=> {
+export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const changeSort = props.refuelingHook.changeSort
-    const sortKey :sortKeys = props.refuelingHook.sortKey
-    const sortOrder :sortOrders = props.refuelingHook.sortOrder
-    const refuelings_data_list :Array<refuelings> = props.refuelingHook.refuelings_data_list
-
-    const rowColor = (index: number)=>{
-        return index%2==0 ? {background:"lightblue"} : {}
-    }
+    const changeSort           = refuelingHook.changeSort
+    const sortKey              = refuelingHook.sortKey
+    const sortOrder            = refuelingHook.sortOrder
+    const refuelings_data_list = refuelingHook.refuelings_data_list
 
     return (
         <table className="table">

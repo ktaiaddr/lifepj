@@ -1,15 +1,14 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
 import {UseSortType} from "./hooks/use-refuelings";
 
-export default (props:{refuelingHook:UseSortType})=> {
+export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 
-    const _setSearchCondition = props.refuelingHook._setSearchCondition
-    const searchCondition = props.refuelingHook.searchCondition
-    const searchResult = props.refuelingHook.searchResult
-    const resetSearch = props.refuelingHook.resetSearch
-    const buttonDisabled = props.refuelingHook.buttonDisabled
-    const resetDone = props.refuelingHook.resetDone
+    const _setSearchCondition = refuelingHook._setSearchCondition
+    const searchCondition     = refuelingHook.searchCondition
+    const searchResult        = refuelingHook.searchResult
+    const resetSearch         = refuelingHook.resetSearch
+    const buttonDisabled      = refuelingHook.buttonDisabled
+    const resetDone           = refuelingHook.resetDone
 
     return (
         <>
