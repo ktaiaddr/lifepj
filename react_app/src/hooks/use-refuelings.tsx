@@ -1,6 +1,6 @@
 import {BaseSyntheticEvent, useEffect, useState} from "react";
-import {sortKeys, sortOrders} from "../sortEnums";
-import refuelings from "../interfaceRefuelings";
+import {sortKeys, sortOrders} from "../Refueling/sortEnums";
+import refuelings from "../Refueling/interfaceRefuelings";
 import * as React from "react";
 import axios from "axios";
 
@@ -23,18 +23,18 @@ interface MySearchInputElement extends HTMLInputElement{
 }
 
 type UseSortType = {
-    refuelings_data_list: refuelings[],
-    refuelingsCount     : number,
-    readed              : boolean,
-    pageLimitSelect     : number,
-    pagingNumber        : number,
-    pagingSelectable    : number[],
-    searchCondition     : t_searchCondition,
-    buttonDisabled      : boolean,
-    resetDone           : boolean,
-    sortKey             : sortKeys,
-    sortOrder           : sortOrders,
-    changeSort          : (e: BaseSyntheticEvent)=>void,
+    refuelings_data_list: refuelings[],//給油データ一覧データ
+    refuelingsCount     : number,      //給油データ件数
+    readed              : boolean,     //読込完了
+    pageLimitSelect     : number,      //1ページ表示件数
+    pagingNumber        : number,      //ページング位置（ページ番号）
+    pagingSelectable    : number[],    //ページング配列（1...n）
+    searchCondition     : t_searchCondition,//検索条件
+    buttonDisabled      : boolean,//検索ボタン無効状態
+    resetDone           : boolean,//リセット完了状態
+    sortKey             : sortKeys,//並びキー
+    sortOrder           : sortOrders,//並び昇順降順
+    changeSort          : (e: BaseSyntheticEvent)=>void,//並び変更関数
     _setSearchCondition : (e: React.ChangeEvent<MySearchInputElement>)=>void,
     changePageNumSelect : (e: React.ChangeEvent<HTMLSelectElement>)=>void,
     changPagingNumber   : (e: React.ChangeEvent<HTMLSelectElement>)=>void,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {UseSortType} from "./hooks/use-refuelings";
+import {UseSortType} from "../hooks/use-refuelings";
 
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {

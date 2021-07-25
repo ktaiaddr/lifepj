@@ -5,14 +5,14 @@ import {BrowserRouter as Router, Redirect, Route, Link, Switch, useHistory, useL
 
 import axios from "axios";
 
-import RefuelingPage from "./RefuelingPage";
-import RefuelingRegistPage from "./RefuelingRegistPage";
-import Login from "./login"
-import HouseholdAccount from "./HouseholdAccount";
-import PasswordForget from "./password_forget";
-import ResetPassword from "./reset_password";
-import RegisterUser from "./register_user";
-import Verifyemail from "./verify_email";
+import RefuelingPage from "./Refueling/RefuelingPage";
+import RefuelingRegistPage from "./Refueling/RefuelingRegistPage";
+import Login from "./Login/login"
+import HouseholdAccount from "./HouseholdAccount/HouseholdAccount";
+import PasswordForget from "./Login/password_forget";
+import ResetPassword from "./Login/reset_password";
+import RegisterUser from "./Login/register_user";
+import Verifyemail from "./Login/verify_email";
 
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 

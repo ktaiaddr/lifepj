@@ -3,7 +3,7 @@ import {sortKeys,sortOrders} from "./sortEnums"
 
 import RefuelingResultTableHeader from "./RefuelingResultTableHeader";
 import RefuelingResultTableBody from "./RefuelingResultTableBody";
-import {UseSortType} from "./hooks/use-refuelings";
+import {UseSortType} from "../hooks/use-refuelings";
 
 export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
 

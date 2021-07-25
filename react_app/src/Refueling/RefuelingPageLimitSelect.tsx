@@ -1,5 +1,5 @@
 import * as React from "react";
-import {UseSortType} from "./hooks/use-refuelings";
+import {UseSortType} from "../hooks/use-refuelings";
 
 const pageNumSelectable = [10,20,50,100]
 
