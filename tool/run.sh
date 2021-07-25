@@ -54,8 +54,8 @@ start_container(){
       -v $(pwd)/docker_config/mysql_db/my.cnf:/etc/mysql/my.cnf \
       -itd \
       ${MYSQL_IMAGE_NAME} \
-      --character-set-server=utf8 \
-      --collation-server=utf8_unicode_ci
+      --character-set-server=utf8mb4 \
+      --collation-server=utf8mb4_bin
 
   #########################
   #MailHogのコンテナ作成
