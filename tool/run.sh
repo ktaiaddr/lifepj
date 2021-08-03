@@ -52,6 +52,7 @@ start_container(){
       -e TZ=Asia/Tokyo \
       -e BIND-ADDRESS=0.0.0.0 \
       -v $(pwd)/docker_config/mysql_db/my.cnf:/etc/mysql/my.cnf \
+      -p 30306:3306 \
       -itd \
       ${MYSQL_IMAGE_NAME} \
       --character-set-server=utf8mb4 \
