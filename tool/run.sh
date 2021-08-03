@@ -210,12 +210,13 @@ elif [ "$1" = down ];then
 
   docker ps -a
 
+  #mysqlのダンプを出力
   docker exec -it $MYSQL_CONTAINER_NAME /bin/bash -c \
     "
     MYSQL_PWD=${DB_PASS} mysqldump -uroot lifepj      > lifepj.dump;
     MYSQL_PWD=${DB_PASS} mysqldump -uroot lifepj_test > lifepj_test.dump;
     "
-
+  #ダンプをローカルにコピー
   docker cp $MYSQL_CONTAINER_NAME:/lifepj.dump ./
   docker cp $MYSQL_CONTAINER_NAME:/lifepj_test.dump ./
 
