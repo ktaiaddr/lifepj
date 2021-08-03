@@ -54,13 +54,13 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         //日付開始日
         if( $fuelEconomyQueryConditions->getDateStart() !==null ){
             $wheres[] = 'date >= :date_start';
-            $values[] = ['date_start', $fuelEconomyQueryConditions->getDateStart()->format('Y-m-d'), \PDO::PARAM_STR];
+            $values[] = [':date_start', $fuelEconomyQueryConditions->getDateStart()->format('Y-m-d'), \PDO::PARAM_STR];
         }
 
         //日付終了日
         if( $fuelEconomyQueryConditions->getDateEnd() !==null ){
             $wheres[] = 'date <= :date_end';
-            $values[] = ['date_end',  $fuelEconomyQueryConditions->getDateEnd()->format('Y-m-d'), \PDO::PARAM_STR];
+            $values[] = [':date_end',  $fuelEconomyQueryConditions->getDateEnd()->format('Y-m-d'), \PDO::PARAM_STR];
         }
 
         //給油量最低

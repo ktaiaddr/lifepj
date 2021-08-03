@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Application\query\FuelEconomy\FuelEconomyQueryService;
 use App\Http\Requests\RefuelingsSearchRequest;
 use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +25,14 @@ class RefuelingsSearchController extends Controller
     /**
      * Handle the incoming request.
      * @param RefuelingsSearchRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function __invoke(RefuelingsSearchRequest $request)
+    public function __invoke(RefuelingsSearchRequest $request):JsonResponse
     {
         if(! $request->ajax())
             return response()->json( [],400);
 
-        $user_id = session()->get('user_id');
+        // 現在認証されているユーザーのID取得
         $user_id = Auth::id();
 
         $result = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );

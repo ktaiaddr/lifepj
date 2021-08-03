@@ -48,34 +48,8 @@ class RefuelingEloquentRepositoryTest extends TestCase
             'gasStation2','memo2');
         $this->elqRefuelingRepository->save($refueling2);
 
-
         $refueling2 = $this->elqRefuelingRepository->find(2, 1);
         $this->assertTrue( $refueling2 instanceof Refueling);
-
-        // Reflectionクラスをインスタンス化
-        $reflectionClass = new \ReflectionClass($refueling2);
-        // プロパティの値を取得
-        $p_memo = $reflectionClass->getProperty('memo');
-        // privateプロパティのアクセス範囲を設定（trueを指定でアクセスできるようになる）
-        $p_memo->setAccessible(true);
-        $p_memo_value = $p_memo->getValue($refueling2);
-        $this->assertSame( 'memo2',$p_memo_value);
-
-        // プロパティの値を取得
-        $p_date = $reflectionClass->getProperty('date');
-        // privateプロパティのアクセス範囲を設定（trueを指定でアクセスできるようになる）
-        $p_date->setAccessible(true);
-        $p_date_value = $p_date->getValue($refueling2);
-        $this->assertEquals( new \DateTime('2021-01-02'), $p_date_value);
-
-
-//        sleep(1);
-
-//        $refueling2->updateMemo('memo2_modify');
-//        $p_memo_value = $p_memo->getValue($refueling2);
-//        $this->assertSame( 'memo2_modify',$p_memo_value);
-
-        $this->elqRefuelingRepository->save($refueling2);
 
         $refueling = new Refueling(null, 1, new \DateTime(),
             new FuelEconomy(30,450),

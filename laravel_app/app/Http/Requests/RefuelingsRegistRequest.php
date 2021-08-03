@@ -7,6 +7,16 @@ namespace App\Http\Requests;
 use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class RefuelingsRegistRequest
+ * @property int $refuleing_id
+ * @property string $date
+ * @property float $refueling_amount
+ * @property float $refueling_distance
+ * @property string $gas_station
+ * @property string $memo
+ * @package App\Http\Requests
+ */
 class RefuelingsRegistRequest extends FormRequest
 {
     /**
@@ -36,15 +46,20 @@ class RefuelingsRegistRequest extends FormRequest
         ];
     }
 
+    /**
+     * リクエストからコマンドオブジェクトを生成
+     * @return UpdateRefuelingCommand
+     * @throws \Exception
+     */
     public function transferCommand(): UpdateRefuelingCommand
     {
         return new UpdateRefuelingCommand(
-            $this->refuleing_id ? $this->refuleing_id : null,
+            $this->refuleing_id ?: null,
             $this->date ? new \DateTime($this->date):null,
             $this->refueling_amount,
             $this->refueling_distance,
-            $this->gas_station ? $this->gas_station : '',
-            $this->memo?$this->memo : ''
+            $this->gas_station ?: '',
+            $this->memo?: ''
         );
     }
 }
