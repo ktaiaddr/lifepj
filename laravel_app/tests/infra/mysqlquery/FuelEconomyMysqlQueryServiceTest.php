@@ -42,7 +42,7 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    function test_findByUserid(){
+    function test_ユーザIDで検索(){
 
         /** @var FuelEconomyQueryModel[] $fuelEconomyQueryModel_list */
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUserid(1);
@@ -55,25 +55,25 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
         $this->assertSame( [],$fuelEconomyQueryModel_list );
     }
 
-    function test_findByUseridAndCondition(){
+    function test_ユーザIDと条件で検索(){
 
         $cond = new FuelEconomyQueryConditions(null,null,
-            null,null,null,null,null,null,1,null);
+            null,null,null,null,null,null,1,null,null,null);
 
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
-        $this->assertSame(5,count($fuelEconomyQueryModel_list));
-//dd($fuelEconomyQueryModel_list);
+//        dd($fuelEconomyQueryModel_list);
+        $this->assertSame(12,($fuelEconomyQueryModel_list[1]));
         for($i=1;$i<=5;$i++)
-            $this->assertSame(round((512+1-$i)/(42+1-$i),2), $fuelEconomyQueryModel_list[($i-1)]->calcFuelEconomy());
+            $this->assertSame(round((512+1-$i)/(42+1-$i),2), $fuelEconomyQueryModel_list[0][($i-1)]->calcFuelEconomy());
 
         $cond = new FuelEconomyQueryConditions(new \DateTime('2021-01-01'),new \DateTime('2022-01-01'),
-            31,33,501,503,'g','m',null,null);
+            31,33,501,503,'g','m',null,null,null,null);
 
         $fuelEconomyQueryModel_list = $this->fuelEconomyMysqlQueryService->findByUseridAndCondition(1,$cond);
 
         $this->assertIsArray($fuelEconomyQueryModel_list);
-        $this->assertSame(3,count($fuelEconomyQueryModel_list));
+        $this->assertSame(3,$fuelEconomyQueryModel_list[1]);
     }
 
     protected function tearDown():void

@@ -7,17 +7,14 @@ use Tests\TestCase;
 
 class RefuelingsTest extends TestCase
 {
-    /**
-     * 給油量が0なので422
-     */
-    public function test_RefuelingsRegistIdIsNimus_Status422(){
+    public function test_給油量が0なので_レスポンスステータス「422」でエラー(){
 
         $user = new User();
         $user->id = 9;
         $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
-            'refueling_id'       =>  null         ,
+            'refueling_id'       =>  null         ,//nullは新規登録
             'date'               =>  '2021-07-01' ,
-            'refueling_amount'   =>  0            ,
+            'refueling_amount'   =>  0            ,//エラー箇所
             'refueling_distance' =>  500          ,
             'gas_station'        =>  ""           ,
             'memo'               =>  "m"          ,
@@ -28,13 +25,12 @@ class RefuelingsTest extends TestCase
         $response->assertStatus(422);
     }
 
-    /**
-     * 給油量がないので422
-     */
-    public function test_RefuelingsRegistAmountNullStatus422(){
+    public function test_給油量がないのでレスポンスステータス「422」でエラー(){
 
         $user = new User();
         $user->id = 9;
+
+        //refueling_amountがないのでエラーになる
         $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_distance'=>500,
             'gas_station'=> "g",
@@ -44,13 +40,12 @@ class RefuelingsTest extends TestCase
         $response->assertStatus(422);
     }
 
-    /**
-     * 距離が無いので422
-     */
-    public function test_RefuelingsRegistDistanceNullStatus422(){
+    public function test_距離がないのでレスポンスステータス「422」でエラー(){
 
         $user = new User();
         $user->id = 9;
+
+        //refueling_distanceがないのでエラーになる
         $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
             'refueling_amount'=>500,
             'gas_station'=> "g",
