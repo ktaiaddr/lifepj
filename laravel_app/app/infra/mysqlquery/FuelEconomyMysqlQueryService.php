@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
 class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy\FuelEconomyQueryService
 {
 
-    const LIMIT = 5;
-
     /**
      * @inheritDoc
      */
@@ -44,10 +42,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $wheres = [];
         $values = [];
 
-        $limit = $fuelEconomyQueryConditions->getLimit() ?: self::LIMIT;
-
-        $limit_bind = [':limit',$limit ,\PDO::PARAM_INT];
-
+        // ユーザID
         $wheres[] = ' user_id = :user_id ';
         $values[] = [':user_id', $userId, \PDO::PARAM_INT];
 
@@ -93,58 +88,73 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
             $wheres[] = 'memo like :memo';
             $values[] = [':memo', '%'.$fuelEconomyQueryConditions->getMemo().'%', \PDO::PARAM_STR];
         }
-        //メモ
-        if(! empty($fuelEconomyQueryConditions->getPage()))
-            $offset_bind = [':offset', $limit *($fuelEconomyQueryConditions->getPage()-1), \PDO::PARAM_INT];
-        else
-            $offset_bind = [':offset', 0, \PDO::PARAM_INT];
 
-        $count_query = ' select count(*) as count from refuelings where '. implode( ' and ', $wheres );
+        //件数取得用クエリ
+        $count_query  = ' select count(*) as count ';
+        $count_query .= '   from refuelings ';
+        $count_query .= '  where '. implode( ' and ', $wheres );
+
         $count_stmt = $pdo->prepare( $count_query );
         foreach( $values as $value ) $count_stmt->bindValue( ...$value );
+        //件数取得
         $count_stmt->execute();
         $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
         $count = $result['count'];
 
-        switch($fuelEconomyQueryConditions->getSortKey()){
-            case RefuelingsSearchRequest::SORT_KEY_DISTANCE: $order_by_value = ' refueling_distance ';break;
-            case RefuelingsSearchRequest::SORT_KEY_AMOUNT:  $order_by_value = ' refueling_amount ';break;
-            case RefuelingsSearchRequest::SORT_KEY_FUELECONOMY:  $order_by_value = ' (refueling_distance / refueling_amount) ';break;
-            case RefuelingsSearchRequest::SORT_KEY_GASSTATION:  $order_by_value = ' gas_station ';break;
-            case RefuelingsSearchRequest::SORT_KEY_MEMO:  $order_by_value = ' memo ';break;
+        // order by 値
+        $order_by_value = match ($fuelEconomyQueryConditions->getSortKey()) {
+            RefuelingsSearchRequest::SORT_KEY_DISTANCE => ' refueling_distance ',
+            RefuelingsSearchRequest::SORT_KEY_AMOUNT => ' refueling_amount ',
+            RefuelingsSearchRequest::SORT_KEY_FUELECONOMY => ' (refueling_distance / refueling_amount) ',
+            RefuelingsSearchRequest::SORT_KEY_GASSTATION => ' gas_station ',
+            RefuelingsSearchRequest::SORT_KEY_MEMO => ' memo ',
+            default => ' date ',
+        };
 
-            default:
-            case RefuelingsSearchRequest::SORT_KEY_DATE:
-                $order_by_value = ' date ';break;
-        }
+        // 並び
+        $sort_order = match ($fuelEconomyQueryConditions->getSortOrder()) {
+            RefuelingsSearchRequest::SORT_ASC => ' asc ',
+            default => ' desc ',
+        };
 
-        switch($fuelEconomyQueryConditions->getSortOrder()){
-            case RefuelingsSearchRequest::SORT_ASC: $sort_order = ' asc ';break;
-            default:
-            case RefuelingsSearchRequest::SORT_DESC:
-                $sort_order = ' desc ';break;
-        }
+        //クエリ組み立て
+        $query  = " select * ";
+        $query .= " from refuelings ";
+        $query .= " where ". implode( ' and ', $wheres );
+        $query .= " order by ". $order_by_value;
+        $query .= " ".$sort_order;
+        $query .= " limit :limit ";
+        $query .= " offset :offset ";
 
-
-        $query = ' select * from refuelings where '. implode( ' and ', $wheres ). ' order by '.$order_by_value
-            .' '.$sort_order.' limit :limit offset :offset ';
-
-
-
-
+        //ステートメント作成
         $stmt = $pdo->prepare( $query );
 
+        //検索条件をバインド
         foreach( $values as $value ) $stmt->bindValue( ...$value );
 
+        //1ページの表示件数を生成
+        $limit = $fuelEconomyQueryConditions->getLimit() ?: self::LIMIT;
+        $limit_bind = [':limit',$limit ,\PDO::PARAM_INT];
+
+        //1ページの表示件数をバインド
         $stmt->bindValue( ...$limit_bind );
+
+        //ページオフセットを生成
+        $offset = $limit *(! empty($fuelEconomyQueryConditions->getPage())? $fuelEconomyQueryConditions->getPage()-1: 0);
+        $offset_bind = [':offset', $offset, \PDO::PARAM_INT];
+
+        //ページオフセットをバインド
         $stmt->bindValue( ...$offset_bind );
 
+        //実行
         $stmt->execute();
 
         $list = $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class );
 
-
         return [$list,$count];
 
     }
+
+    const LIMIT = 5;
+
 }
