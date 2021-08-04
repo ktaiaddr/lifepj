@@ -8,6 +8,7 @@ use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class RefuelingsSearchController extends Controller
 {
@@ -29,6 +30,8 @@ class RefuelingsSearchController extends Controller
      */
     public function __invoke(RefuelingsSearchRequest $request):JsonResponse
     {
+        Log::debug("hoge");
+
         if(! $request->ajax())
             return response()->json( [],400);
 
