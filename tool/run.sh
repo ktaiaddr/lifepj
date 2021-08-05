@@ -1,3 +1,19 @@
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+  echo usage
+  echo "run     コンテナ起動"
+  echo "down      終了"
+  echo "down withv      終了＋ボリューム削除"
+  echo "test      PHPUnit実行"
+  echo "select DB名 テーブル名      select実行"
+  echo "showtable DB名 テーブル名 ・・・ show table実行"
+  echo "desc DB名 テーブル名 ・・・ desc実行"
+  echo "login web|db ・・・ web|db コンテナにログイン"
+  echo "artisan 引き数 ・・・ artisanを実行"
+  echo "webpack  ・・・ webpackを実行"
+  exit 0
+fi
+
+
 #プロジェクトのルートディレクトリの定義
 THISDIR=$(cd $(dirname $0)/..;pwd)
 
