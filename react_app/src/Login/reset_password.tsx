@@ -35,7 +35,7 @@ export default (props: any)=>{
             data: boolean
         }
 
-        const resetResult : resType = await instance.post('http://localhost:9000/api/mypasswordresetexec'
+        const resetResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/mypasswordresetexec'
             , {email:mail,password:password,password_confirmation:passwordConfirmation,token:token}
             ,{ withCredentials: true }
         ).catch( e => {

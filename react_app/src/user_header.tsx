@@ -22,7 +22,7 @@ export default ()=>{
             data: { result: string }
         }
 
-        const logoutResult: resType = await instance.post('http://localhost:9000/api/mylogout'
+        const logoutResult: resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/mylogout'
             , {}
             , {withCredentials: true}
         ).catch(e => {

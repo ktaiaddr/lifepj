@@ -19,7 +19,7 @@ export default (props: {})=>{
             data: boolean
         }
 
-        const forgotResult : resType = await instance.post('http://localhost:9000/api/mypasswordreset'
+        const forgotResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/mypasswordreset'
             , {email:mail}
             ,{ withCredentials: true }
         ).catch( e => {

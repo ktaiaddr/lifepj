@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+const env = dotenv.config().parsed;
 
 module.exports = {
     // 開発用の設定
@@ -38,6 +41,9 @@ module.exports = {
 	// HTML ファイルの出力設定
 	new HtmlWebpackPlugin({
 	    template: './src/index.html'
+	}),
+	new webpack.DefinePlugin({
+	    'process.env': JSON.stringify(env)
 	})
     ]
 };

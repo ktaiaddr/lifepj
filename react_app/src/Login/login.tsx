@@ -14,7 +14,7 @@ interface StateProps {
     loginerror:boolean
 }
 
-
+console.log(process.env.HOGE)
 export default (props:HelloProps)=>{
 
     const [mail,       setMail]:any = useState('ktaiaddr@gmail.com')
@@ -43,7 +43,7 @@ export default (props:HelloProps)=>{
             password:password,
         }
 
-        const loginResult : resType = await instance.post('http://localhost:9000/api/mylogin'
+        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/mylogin'
             , loginParam
             ,{ withCredentials: true }
         ).catch( e => {

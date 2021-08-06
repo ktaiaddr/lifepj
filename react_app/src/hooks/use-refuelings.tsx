@@ -108,7 +108,7 @@ const useRefuelings = (): UseSortType => {
     const f = async ()=>{
         // setReaded(false)
         console.log("api request")
-        const url = 'http://localhost:9000/api/refuelings'
+        const url = 'http://'+process.env.API_ENDPOINT+'/api/refuelings'
         const instance = axios.create({ withCredentials: true })
         const result = await instance.get(url,{
             params:{

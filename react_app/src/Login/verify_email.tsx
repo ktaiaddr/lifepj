@@ -22,7 +22,7 @@ export default (props: any)=>{
         const instance = axios.create({withCredentials: true})
         interface resType {data: boolean}
         const resetResult : resType = await instance.get(
-            'http://localhost:9000/api/myverifyemail'+'/'+id+'/'+hash+location.search
+            'http://'+process.env.API_ENDPOINT+'/api/myverifyemail'+'/'+id+'/'+hash+location.search
         ).catch( e => {
             return {data:false};
         });

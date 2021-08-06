@@ -31,7 +31,7 @@ interface HelloProps {
 const getLogin = async ()=>{
     const instance = axios.create({ withCredentials: true })
 
-    const loginCheckResult = await instance.get('http://localhost:9000/api/mylogincheck').catch(e=> {
+    const loginCheckResult = await instance.get('http://'+process.env.API_ENDPOINT+'/api/mylogincheck').catch(e=> {
         return {data:{result:'fail'}}
     })
     return ( loginCheckResult.data.result == 'ok' )

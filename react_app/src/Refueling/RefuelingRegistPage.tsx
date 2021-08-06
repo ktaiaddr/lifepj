@@ -29,7 +29,7 @@ export default ()=>{
 
         const regsitparam = {date,refueling_amount,refueling_distance,gas_station,memo}
 
-        const loginResult : resType = await instance.post('http://localhost:9000/api/refuelings/regist'
+        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist'
             , regsitparam
             ,{ withCredentials: true }
         ).catch( e => {

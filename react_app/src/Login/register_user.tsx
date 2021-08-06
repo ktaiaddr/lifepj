@@ -32,7 +32,7 @@ export default (props: any)=>{
             data: boolean
         }
 
-        const regsiterResult : resType = await instance.post('http://localhost:9000/api/myregistuser'
+        const regsiterResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/myregistuser'
             , {name:name,email:mail,password:password,password_confirmation:passwordConfirmation
             }
             ,{ withCredentials: true }
