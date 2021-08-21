@@ -37,7 +37,7 @@ class RefuelingsRegistRequest extends FormRequest
     public function rules()
     {
         return [
-            'refuleing_id' => ['numeric','min:1'],
+            'refueling_id' => ['nullable','numeric','min:1'],
             'date' => ['date_format:Y-m-d'],
             'refueling_amount' => ['required','numeric','min:1'],
             'refueling_distance' => ['required','numeric','min:1'],
@@ -54,7 +54,7 @@ class RefuelingsRegistRequest extends FormRequest
     public function transferCommand(): UpdateRefuelingCommand
     {
         return new UpdateRefuelingCommand(
-            $this->refuleing_id ?: null,
+            $this->refueling_id ?: null,
             $this->date ? new \DateTime($this->date):null,
             $this->refueling_amount,
             $this->refueling_distance,

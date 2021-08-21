@@ -13,6 +13,28 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 {
 
     /**
+     * @param int $userId
+     * @param int $refueling_id
+     * @return FuelEconomyQueryModel
+     */
+    function findByUseridAndRefuelingid(int $userId, int $refueling_id){
+
+        $pdo = DB::getPdo();
+
+        $query = ' select * from refuelings where user_id = :user_id and refueling_id = :refueling_id';
+
+        $stmt = $pdo->prepare( $query );
+
+        $stmt->bindValue( 'user_id', $userId );
+        $stmt->bindValue( 'refueling_id', $refueling_id );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class);
+
+    }
+
+    /**
      * @inheritDoc
      */
     function findByUserid(int $userId): array
@@ -93,6 +115,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $count_query  = ' select count(*) as count ';
         $count_query .= '   from refuelings ';
         $count_query .= '  where '. implode( ' and ', $wheres );
+        $count_query .= '    and del_flg = 0 ';
 
         $count_stmt = $pdo->prepare( $count_query );
         foreach( $values as $value ) $count_stmt->bindValue( ...$value );
@@ -121,6 +144,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         $query  = " select * ";
         $query .= " from refuelings ";
         $query .= " where ". implode( ' and ', $wheres );
+        $query .= "   and del_flg = 0 ";
         $query .= " order by ". $order_by_value;
         $query .= " ".$sort_order;
         $query .= " limit :limit ";
