@@ -57,14 +57,26 @@ export default ()=>{
             <Router>
                 <Switch>
                     <Route exact path='/refueling'  render={ ()=> (login!==null&&login!==false?<RefuelingPage /> :<Redirect to={"/mylogin"} />) }/>
-                    <Route exact path='/refueling/regist'  render={ ()=> (login!==null&&login!==false?<RefuelingRegistPage /> :<Redirect to={"/mylogin"} />) }/>
+
+                    {/*:パラメーター?でオプションパラメーターとなる*/}
+                    <Route exact path='/refueling/regist/:refueling_id?'
+                           render={ ({match})=> (
+                               login!==null&&login!==false
+                                   ?<RefuelingRegistPage match={match} />
+                                   :<Redirect to={"/mylogin"} />
+                           ) }
+                    />
+
                     <Route exact path='/household_account' render={ ()=> (login!==null&&login!==false?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
+
                     <Route exact path='/mylogin' render={()=>
                         <Login setLogined={setLogin}/>
                     }/>
+
                     <Route exact path='/myforgetpassword' render={()=>
                         <PasswordForget />
                     }/>
+
                     <Route path='/myresetpassword/:token' render={({match})=>
                         <ResetPassword match={match} />
                     }/>
