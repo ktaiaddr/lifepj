@@ -28,6 +28,7 @@ require __DIR__.'/auth.php';
 Route::get('/mylogin', [baseController::class,'create']);
 Route::get('/refueling', [baseController::class,'create']);
 Route::get('/refueling/regist', [baseController::class,'create']);
+Route::get('/refueling/regist/{refueling_id}', [baseController::class,'create']);
 Route::get('/household_account', [baseController::class,'create']);
 Route::get('/myforgetpassword', [baseController::class,'create']);
 Route::get('/myresetpassword/{token}', [baseController::class,'create']);
