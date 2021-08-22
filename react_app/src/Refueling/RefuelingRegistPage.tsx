@@ -39,7 +39,9 @@ console.log(params)
             data: { result:string ,id?:number}
         }
 
-        const regsitparam = {refueling_id:params.refueling_id||null,date,refueling_amount,refueling_distance,gas_station,memo}
+        const refueling_id = params.refueling_id || null;
+
+        const regsitparam = {refueling_id,date,refueling_amount,refueling_distance,gas_station,memo}
 
         const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist'
             , regsitparam
