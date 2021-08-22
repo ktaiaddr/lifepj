@@ -38,8 +38,8 @@ class RefuelingsSearchController extends Controller
         // 現在認証されているユーザーのID取得
         $user_id = Auth::id();
 
-        $result = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
+        list($list,$count) = $this->fuelEconomyQueryService->findByUseridAndCondition( $user_id, $request->searchCommand($request) );
 
-        return response()->json( ['list'=> $result[0],'count'=>$result[1]],200);
+        return response()->json( ['list'=> $list,'count'=>$count],200);
     }
 }
