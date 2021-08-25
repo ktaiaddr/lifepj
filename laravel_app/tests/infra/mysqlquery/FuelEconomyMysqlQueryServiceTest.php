@@ -34,7 +34,7 @@ class FuelEconomyMysqlQueryServiceTest extends TestCase
                 new \DateTime('2021-'.sprintf('%02d',$i).'-'.sprintf('%02d',$i)),
                 new FuelEconomy((30 + $i),(500+$i)),
                 'gasStation'.$i,
-                'memo'.$i);
+                'memo'.$i, 0);
             $elqRefuelingRepository->save($refueling);
         }
     }

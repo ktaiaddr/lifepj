@@ -49,17 +49,17 @@ class RefuelingTest extends TestCase
         //例外テスト:idが0
         try{
             new Refueling(0, 1,new \DateTime()
-            ,$fuelEconomy,'阪奈','帰省');
+            ,$fuelEconomy,'阪奈','帰省', 0);
         }catch (\Exception $e){
             $this->assertSame('idは1以上の数値です',$e->getMessage());
         }
         $refueling = new Refueling(1,1, new \DateTime()
-            ,$fuelEconomy,'阪奈','帰省');
+            ,$fuelEconomy,'阪奈','帰省', 0);
 
         $this->assertSame(round(393.9/26.15,2),$refueling->calcFuelEconomy());
 
         $refueling = new Refueling(1,1, new \DateTime()
-            ,new FuelEconomy(23.06, 539.6),'阪奈','帰省');
+            ,new FuelEconomy(23.06, 539.6),'阪奈','帰省', 0);
         $this->assertSame(23.4,$refueling->calcFuelEconomy());
 
     }

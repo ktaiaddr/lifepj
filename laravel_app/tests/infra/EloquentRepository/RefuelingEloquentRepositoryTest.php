@@ -40,12 +40,12 @@ class RefuelingEloquentRepositoryTest extends TestCase
 
         $refueling = new Refueling(null, 1, new \DateTime(),
             new FuelEconomy(30,450),
-            'gasStation1','memo1');
+            'gasStation1','memo1', 0);
         $this->elqRefuelingRepository->save($refueling);
 
         $refueling2 = new Refueling(null, 1, new \DateTime('2021-01-02'),
             new FuelEconomy(31,500),
-            'gasStation2','memo2');
+            'gasStation2','memo2', 0);
         $this->elqRefuelingRepository->save($refueling2);
 
         $refueling2 = $this->elqRefuelingRepository->find(2, 1);
@@ -53,7 +53,7 @@ class RefuelingEloquentRepositoryTest extends TestCase
 
         $refueling = new Refueling(null, 1, new \DateTime(),
             new FuelEconomy(30,450),
-            'gasStation1','memo３');
+            'gasStation1','memo３', 0);
         $this->elqRefuelingRepository->save($refueling);
 
         return true;

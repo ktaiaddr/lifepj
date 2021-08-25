@@ -112,6 +112,26 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
             $values[] = [':memo', '%'.$fuelEconomyQueryConditions->getMemo().'%', \PDO::PARAM_STR];
         }
 
+        //件数取得用クエリ
+        $count_query  = "   select  count(*) as count ";
+        $count_query .= "     from  refuelings, ";
+        $count_query .= '           ( ';
+        $count_query .= '              select max(id) as maxid ';
+        $count_query .= '                from refuelings ';
+        $count_query .= '               where user_id = :user_id_group  ';
+        $count_query .= '            group by refueling_id  ';
+        $count_query .= '           ) as max_refueling_ids ';
+        $count_query .= "    where  ". implode( ' and ', $wheres );
+        $count_query .= '      and  refuelings.id = max_refueling_ids.maxid ';
+        $count_query .= "      and  del_flg = 0 ";
+
+        $count_stmt = $pdo->prepare( $count_query );
+        foreach( $values as $value ) $count_stmt->bindValue( ...$value );
+        //件数取得
+        $count_stmt->execute();
+        $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
+        $count = $result['count'];
+
         // order by 値
         $order_by_value = match ($fuelEconomyQueryConditions->getSortKey()) {
             RefuelingsSearchRequest::SORT_KEY_DISTANCE => ' refueling_distance ',
@@ -170,7 +190,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 
         $list = $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class );
 
-        return [$list,count($list)];
+        return [$list,$count];
 
     }
 
