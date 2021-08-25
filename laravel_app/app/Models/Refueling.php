@@ -24,6 +24,19 @@ class Refueling extends Model
 
     protected $table = 'refuelings';
 
-    protected $primaryKey = 'refueling_id';
-
+    protected $primaryKey = 'id';
+    /**
+     * 複数代入可能な属性
+     *
+     * @var array
+     */
+    protected $fillable = ['refueling_id',
+        'user_id',
+        'date',
+        'refueling_amount',
+        'refueling_distance',
+        'gas_station',
+        'memo',
+        'del_flg',
+        ];
 }

@@ -26,7 +26,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/refuelings', RefuelingsSearchController::class );
-Route::post('/refuelings/regist', RefuelingsRegistController::class );
+Route::get('/refuelings/regist/{refueling_id?}', [RefuelingsRegistController::class,'entry'] );
+Route::delete('/refuelings/regist/{refueling_id}', [RefuelingsRegistController::class,'delete']);
+Route::post('/refuelings/regist/{refueling_id?}', [RefuelingsRegistController::class,'submit']);
 
 Route::post('/mylogin', LoginController::class );
 Route::post('/mylogout', LogoutController::class );

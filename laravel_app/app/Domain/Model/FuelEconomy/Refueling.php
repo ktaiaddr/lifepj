@@ -28,6 +28,9 @@ class Refueling extends \App\Domain\Model\Entity
     /** @var ?string  */
     private ?string $memo;
 
+    /** @var ?int  */
+    private ?int $delFlg;
+
     /**
      * Refueling constructor.
      * @param ?int $refuelingId
@@ -35,9 +38,10 @@ class Refueling extends \App\Domain\Model\Entity
      * @param FuelEconomy $fuelEconomy
      * @param ?string $gasStation
      * @param ?string $memo
+     * @param ?int $del_flg
      * @throws \Exception
      */
-    public function __construct(?int $refuelingId, int $userId, \DateTime $date, FuelEconomy $fuelEconomy, ?string $gasStation, ?string $memo)
+    public function __construct(?int $refuelingId, int $userId, \DateTime $date, FuelEconomy $fuelEconomy, ?string $gasStation, ?string $memo, ?int $del_flg)
     {
         if( $refuelingId !== null && $refuelingId < 1 ) throw new \Exception('idは1以上の数値です', 4101);
         $this->refuelingId = $refuelingId;
@@ -46,6 +50,7 @@ class Refueling extends \App\Domain\Model\Entity
         $this->fuelEconomy = $fuelEconomy;
         $this->gasStation  = $gasStation;
         $this->memo        = $memo;
+        $this->delFlg      = $del_flg;
     }
 
     /**
@@ -67,6 +72,7 @@ class Refueling extends \App\Domain\Model\Entity
         $refuelingModelBuilder->date       ( $this->date        );
         $refuelingModelBuilder->gasStation ( $this->gasStation  );
         $refuelingModelBuilder->memo       ( $this->memo        );
+        $refuelingModelBuilder->delFlg     ( $this->delFlg       );
 
         $this->fuelEconomy->notify( $refuelingModelBuilder      );
     }
@@ -89,6 +95,9 @@ class Refueling extends \App\Domain\Model\Entity
 
         if($updateRefuelingCommand->memo != null)
             $this->memo = $updateRefuelingCommand->memo;
+
+        if($updateRefuelingCommand->delFlg != null)
+            $this->delFlg = $updateRefuelingCommand->delFlg;
     }
 
 }

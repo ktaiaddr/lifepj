@@ -13,4 +13,5 @@ interface IRefuelingNotification
     function refuelingDistance (float $refuelingDistance) :void;
     function gasStation        (?string $gasStation)       :void;
     function memo              (?string $memo)             :void;
+    function delFlg            (?int $delFlg)             :void;
 }

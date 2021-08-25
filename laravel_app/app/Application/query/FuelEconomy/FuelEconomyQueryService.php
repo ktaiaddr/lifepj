@@ -6,6 +6,9 @@ namespace App\Application\query\FuelEconomy;
 
 interface FuelEconomyQueryService
 {
+
+    function findByUseridAndRefuelingid(int $userId, int $refueling_id);
+
     /**
      * @param int $userId
      * @return FuelEconomyQueryModel[]

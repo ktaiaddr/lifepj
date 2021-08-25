@@ -38,7 +38,8 @@ class RegisterService
                     $refuelingCommand->date,
                     new FuelEconomy( $refuelingCommand->refuelingAmount, $refuelingCommand->refuelingDistance ),
                     $refuelingCommand->gasStation,
-                    $refuelingCommand->memo
+                    $refuelingCommand->memo,
+                    0
                 )
             );
 
@@ -49,4 +50,5 @@ class RegisterService
         $refueling->update( $refuelingCommand );
         return $this->refuelingRepository->save($refueling);
     }
+
 }

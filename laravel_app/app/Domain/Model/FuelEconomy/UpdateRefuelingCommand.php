@@ -12,6 +12,7 @@ class UpdateRefuelingCommand
     public ?float $refuelingDistance;
     public ?string $gasStation;
     public ?string $memo;
+    public ?int $delFlg;
 
     /**
      * UpdateRefuelingCommand constructor.
@@ -21,8 +22,12 @@ class UpdateRefuelingCommand
      * @param float|null $refuelingDistance
      * @param string|null $gasStation
      * @param string|null $memo
+     * @param int|null $del_flg
      */
-    public function __construct(int $refuelingId=null, \DateTime $date=null,float $refuelingAmount=null, float $refuelingDistance=null, string $gasStation=null, string $memo=null)
+    public function __construct(
+        int $refuelingId=null, \DateTime $date=null, float $refuelingAmount=null,
+        float $refuelingDistance=null, string $gasStation=null, string $memo=null,
+        ?int $del_flg =0)
     {
         $this->refuelingId = $refuelingId;
         $this->date = $date;
@@ -30,6 +35,7 @@ class UpdateRefuelingCommand
         $this->refuelingDistance = $refuelingDistance;
         $this->gasStation = $gasStation;
         $this->memo = $memo;
+        $this->delFlg = $del_flg;
     }
 
     public function isNew():bool {

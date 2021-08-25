@@ -13,6 +13,29 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 {
 
     /**
+     * @param int $userId
+     * @param int $refueling_id
+     * @return FuelEconomyQueryModel
+     */
+    function findByUseridAndRefuelingid(int $userId, int $refueling_id){
+
+        $pdo = DB::getPdo();
+
+//        $query = ' select * from refuelings where user_id = :user_id and refueling_id = :refueling_id and del_flg = 0 order by id desc limit 1';
+        $query = ' select * from refuelings where id = (select max(id)  from refuelings where user_id = :user_id and  refueling_id = :refueling_id) and del_flg = 0';
+
+        $stmt = $pdo->prepare( $query );
+
+        $stmt->bindValue( 'user_id', $userId );
+        $stmt->bindValue( 'refueling_id', $refueling_id );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class);
+
+    }
+
+    /**
      * @inheritDoc
      */
     function findByUserid(int $userId): array
@@ -45,7 +68,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         // ユーザID
         $wheres[] = ' user_id = :user_id ';
         $values[] = [':user_id', $userId, \PDO::PARAM_INT];
-
+        $values[] = [':user_id_group', $userId, \PDO::PARAM_INT];
         //日付開始日
         if( $fuelEconomyQueryConditions->getDateStart() !==null ){
             $wheres[] = 'date >= :date_start';
@@ -89,18 +112,6 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
             $values[] = [':memo', '%'.$fuelEconomyQueryConditions->getMemo().'%', \PDO::PARAM_STR];
         }
 
-        //件数取得用クエリ
-        $count_query  = ' select count(*) as count ';
-        $count_query .= '   from refuelings ';
-        $count_query .= '  where '. implode( ' and ', $wheres );
-
-        $count_stmt = $pdo->prepare( $count_query );
-        foreach( $values as $value ) $count_stmt->bindValue( ...$value );
-        //件数取得
-        $count_stmt->execute();
-        $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
-        $count = $result['count'];
-
         // order by 値
         $order_by_value = match ($fuelEconomyQueryConditions->getSortKey()) {
             RefuelingsSearchRequest::SORT_KEY_DISTANCE => ' refueling_distance ',
@@ -118,13 +129,21 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
         };
 
         //クエリ組み立て
-        $query  = " select * ";
-        $query .= " from refuelings ";
-        $query .= " where ". implode( ' and ', $wheres );
+        $query  = "   select  * ";
+        $query .= "     from  refuelings, ";
+        $query .= '           ( ';
+        $query .= '              select max(id) as maxid ';
+        $query .= '                from refuelings ';
+        $query .= '               where user_id = :user_id_group  ';
+        $query .= '            group by refueling_id  ';
+        $query .= '           ) as max_refueling_ids ';
+        $query .= "    where  ". implode( ' and ', $wheres );
+        $query .= '      and  refuelings.id = max_refueling_ids.maxid ';
+        $query .= "      and  del_flg = 0 ";
         $query .= " order by ". $order_by_value;
         $query .= " ".$sort_order;
-        $query .= " limit :limit ";
-        $query .= " offset :offset ";
+        $query .= "    limit  :limit ";
+        $query .= "   offset  :offset ";
 
         //ステートメント作成
         $stmt = $pdo->prepare( $query );
@@ -151,7 +170,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 
         $list = $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class );
 
-        return [$list,$count];
+        return [$list,count($list)];
 
     }
 
