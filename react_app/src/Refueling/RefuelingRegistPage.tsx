@@ -17,6 +17,7 @@ export default (props: any)=>{
 
     const [done,setDone] = useState(false);
     const [doneRefuelingId,setDoneRefuelingId]  = useState<number|null>(null);
+    const [doneDelete,setDoneDelete] = useState(false);
 
 
     const {params} = props.match
@@ -29,6 +30,34 @@ console.log(params)
         if(e.target.name == 'refueling_distance') {setRefuelingDistance(e.target.value);return;}
         if(e.target.name == 'gas_station') {setGasStation(e.target.value);return;}
         if(e.target.name == 'memo') {setMemo(e.target.value);return;}
+    }
+
+    async function delete_(){
+        const instance = axios.create({withCredentials: true})
+
+        interface resType {
+            data: { result:string ,id?:number}
+        }
+
+        const refueling_id = params.refueling_id;
+
+        const deleteParam = {refueling_id,delete:1,_method:'DELETE'}
+
+        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist/'+refueling_id
+            , deleteParam
+            , {withCredentials: true}
+        ).catch( e => {
+            return {data:{result:'ng'}};
+        });
+
+        setDoneDelete(true)
+
+        if( loginResult )
+            if( loginResult.data.result =='ok' ){
+                // props.setLogined(true)
+                // setLogin( true);
+            }
+
     }
 
     async function submit(){
@@ -81,6 +110,9 @@ console.log(params)
 
     },[])
 
+    if(doneDelete){
+        location.href = "/refueling"
+    }
 
     if(done){
         location.href = "/refueling/regist/"+doneRefuelingId
@@ -101,6 +133,10 @@ console.log(params)
                             <input type="text" className="form-control" placeholder={'給油ステーション'} name="gas_station" value={gas_station} onInput={inputHandle}/>
                             <input type="text" className="form-control" placeholder={'メモ'} name="memo" value={memo} onInput={inputHandle}/>
                             <button type="button" className="btn btn-outline-success" onClick={submit}>登録する</button>
+                            {
+                                params.refueling_id &&
+                                <button type="button" className="btn btn-outline-danger" onClick={delete_}>削除する</button>
+                            }
                         </div>
                     </form>
                 </div>

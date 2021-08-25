@@ -18,6 +18,7 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
     private float $refuelingDistance;
     private ?string $gasStation;
     private ?string $memo;
+    private ?int $delFlg;
 
     function refuelingId(?int $refuelingId): void
     {
@@ -54,6 +55,11 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
         $this->memo = $memo;
     }
 
+    function delFlg(?int $delFlg): void
+    {
+        $this->delFlg = $delFlg;
+    }
+
     /**
      * @return Refueling
      */
@@ -72,7 +78,8 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
             'refueling_amount' =>$this->refuelingAmount,
             'refueling_distance' =>$this->refuelingDistance,
             'gas_station' =>$this->gasStation,
-            'memo' =>$this->memo
+            'memo' =>$this->memo,
+            'del_flg' =>$this->delFlg
         ]);
 
         Refueling::where('refueling_id',$refueling_id)

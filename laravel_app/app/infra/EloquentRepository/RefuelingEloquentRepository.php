@@ -53,7 +53,8 @@ class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefu
                 $elqReueling->refueling_amount,
                 $elqReueling->refueling_distance),
             $elqReueling->gas_station,
-            $elqReueling->memo
+            $elqReueling->memo,
+            $elqReueling->del_flg,
         );
     }
 }

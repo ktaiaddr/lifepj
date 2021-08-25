@@ -37,5 +37,6 @@ class Refueling extends Model
         'refueling_distance',
         'gas_station',
         'memo',
+        'del_flg',
         ];
 }
