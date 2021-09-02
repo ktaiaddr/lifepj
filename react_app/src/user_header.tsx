@@ -57,7 +57,7 @@ export default ()=>{
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><Link className="dropdown-item" to="/refueling">一覧</Link></li>
-                                <li> <Link className="dropdown-item" to="/refueling/regist">登録</Link></li>
+                                <li> <a className="dropdown-item" href="/refueling/regist">登録</a></li>
                             </ul>
                         </li>
 

@@ -57,14 +57,14 @@ class RegisterServiceTest extends TestCase
 
         $refueling_id2 = $this->registerService->regist($updateRefuelingCommand2, 1);
 
-//        sleep(1);
+        //        sleep(1);
 
         $refueling = $this->refuelingRepository->find($refueling_id2,1 );
         $updateRefuelingCommand3 = new UpdateRefuelingCommand(
             $refueling->getId()
             ,new \DateTime('2021-07-01')
             ,41
-            ,null
+            ,556
             ,'mikisi'
             ,'yasumisi');
         $refueling_id3 = $this->registerService->regist($updateRefuelingCommand3, 1);

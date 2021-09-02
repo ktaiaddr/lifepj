@@ -25,10 +25,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/refuelings', RefuelingsSearchController::class );
-Route::get('/refuelings/regist/{refueling_id?}', [RefuelingsRegistController::class,'entry'] );
-Route::delete('/refuelings/regist/{refueling_id}', [RefuelingsRegistController::class,'delete']);
-Route::post('/refuelings/regist/{refueling_id?}', [RefuelingsRegistController::class,'submit']);
+//給油
+/*一覧のリストを取得  */ Route::get('/refuelings', RefuelingsSearchController::class );
+/*新規データを登録   */  Route::post('/refuelings', [RefuelingsRegistController::class,'regist']);
+/*指定IDのデータを取得*/ Route::get('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'entry'] );
+/*指定IDのデータを更新*/ Route::put('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'update']);
+/*指定IDのデータを削除*/ Route::delete('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'delete']);
 
 Route::post('/mylogin', LoginController::class );
 Route::post('/mylogout', LogoutController::class );

@@ -35,15 +35,15 @@ class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefu
      */
     function find(int $refuelingId,int $userId): ?Refueling
     {
-        $elqReueling = \App\Models\Refueling
-            ::where('refueling_id', $refuelingId)
+        $elqReueling = \App\Models\Refueling::where('refueling_id', $refuelingId)
             ->where('user_id',$userId)
             ->where('del_flg',0)
             ->get()
             ->first();
-//dd($elqReueling);
-        if(! $elqReueling)
-            return null;
+
+
+        if(! $elqReueling) return null;
+
 
         return new Refueling(
             $elqReueling->refueling_id,
@@ -51,7 +51,8 @@ class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefu
             new \DateTime($elqReueling->date),
             new FuelEconomy(
                 $elqReueling->refueling_amount,
-                $elqReueling->refueling_distance),
+                $elqReueling->refueling_distance
+            ),
             $elqReueling->gas_station,
             $elqReueling->memo,
             $elqReueling->del_flg,

@@ -34,8 +34,7 @@ class RefuelingsRegistController extends Controller
 
     public function entry(Request $request, int $refueling_id ){
 
-        if(! $request->ajax())
-            return response()->json( [],400);
+        if (! $request->ajax()) return response()->json( [],400);
 
         try{
             // 現在認証されているユーザーのID取得
@@ -58,7 +57,7 @@ class RefuelingsRegistController extends Controller
      * @param RefuelingsRegistRequest $request
      * @return JsonResponse
      */
-    public function submit(RefuelingsRegistRequest $request):JsonResponse{
+    public function regist(RefuelingsRegistRequest $request):JsonResponse{
 
         if(! $request->ajax())
             return response()->json( [],400);
@@ -74,10 +73,47 @@ class RefuelingsRegistController extends Controller
             $updateCommand = $request->transferCommand();
 
             // updateコマンドで登録又は更新
-            $refueling_id = $this->registerService->regist( $updateCommand, $user_id );
+//            if($updateCommand->isNew())
+                $refueling_id = $this->registerService->regist( $updateCommand, $user_id );
+//            else
+//                $refueling_id = $this->registerService->update( $updateCommand, $user_id );
 
             // レスポンス
-            return response()->json(['id'=>$refueling_id] );
+            return response()->json( ['id'=> $refueling_id] );
+        }
+        catch(\Exception $e){
+            return response()->json([],400);
+        }
+
+    }
+
+    /**
+     * @param RefuelingsRegistRequest $request
+     * @return JsonResponse
+     */
+    public function update(RefuelingsRegistRequest $request):JsonResponse{
+
+        if(! $request->ajax())
+            return response()->json( [],400);
+
+        try{
+            // 現在認証されているユーザーのID取得
+            $user_id = Auth::id();
+
+            if(! $user_id)
+                throw new \Exception('ユーザIDがありません');
+
+            // リクエストをupdateコマンドに変換
+            $updateCommand = $request->transferCommand();
+
+            // updateコマンドで登録又は更新
+//            if($updateCommand->isNew())
+//                $refueling_id = $this->registerService->regist( $updateCommand, $user_id );
+//            else
+                $refueling_id = $this->registerService->update( $updateCommand, $user_id );
+
+            // レスポンス
+            return response()->json( ['id'=> $refueling_id] );
         }
         catch(\Exception $e){
             return response()->json([],400);
@@ -105,10 +141,11 @@ class RefuelingsRegistController extends Controller
             $updateCommand = $request->transferCommand();
 
             // updateコマンドで登録又は更新
-            $refueling_id = $this->registerService->regist( $updateCommand, $user_id );
+            $refueling_id = $this->registerService->update( $updateCommand, $user_id );
 
             // レスポンス
             return response()->json(['id'=>$refueling_id] );
+
         }
         catch(\Exception $e){
             return response()->json([],400);

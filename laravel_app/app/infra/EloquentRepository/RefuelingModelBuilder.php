@@ -66,28 +66,37 @@ class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingN
     public function build(): Refueling
     {
         $refueling_id = $this->refuelingId;
-        if(!$refueling_id)
-            $refueling_id = Refueling::max('refueling_id')+1;
 
+        //新規登録の場合は、refueling_idのmax+1で登録する
+        if(! $refueling_id) $refueling_id = Refueling::max('refueling_id')+1;
 
+        try {
 
-        $refueling = Refueling::create([
-            'refueling_id' => $refueling_id,
-            'user_id' => $this->userId,
-            'date' => $this->date,
-            'refueling_amount' =>$this->refuelingAmount,
-            'refueling_distance' =>$this->refuelingDistance,
-            'gas_station' =>$this->gasStation,
-            'memo' =>$this->memo,
-            'del_flg' =>$this->delFlg
-        ]);
+            DB::beginTransaction();
 
-        Refueling::where('refueling_id',$refueling_id)
-            ->where('id', '<>',$refueling->id)
-            ->where('del_flg',0)
-            ->update(['del_flg'=>1]);
+            $elqrefueling = Refueling::create([
+                'refueling_id' => $refueling_id,
+                'user_id' => $this->userId,
+                'date' => $this->date,
+                'refueling_amount' => $this->refuelingAmount,
+                'refueling_distance' => $this->refuelingDistance,
+                'gas_station' => $this->gasStation,
+                'memo' => $this->memo,
+                'del_flg' => $this->delFlg
+            ]);
 
-        return $refueling;
+            Refueling::where('refueling_id', $refueling_id)
+                ->where('id', '<>', $elqrefueling->id)
+                ->where('del_flg', 0)
+                ->update(['del_flg' => 1]);
+
+            DB::commit();
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+        }
+
+        return $elqrefueling;
 
         //新規EloqModel
         if(!$this->refuelingId){

@@ -43,7 +43,7 @@ console.log(params)
 
         const deleteParam = {refueling_id,delete:1,_method:'DELETE'}
 
-        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist/'+refueling_id
+        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/'+refueling_id
             , deleteParam
             , {withCredentials: true}
         ).catch( e => {
@@ -70,9 +70,13 @@ console.log(params)
 
         const refueling_id = params.refueling_id || null;
 
-        const regsitparam = {refueling_id,date,refueling_amount,refueling_distance,gas_station,memo}
+        const regsitparam = {refueling_id,date,refueling_amount,refueling_distance,gas_station,memo,_method:'POST'}
 
-        const loginResult : resType = await instance.post('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist'
+        if(refueling_id) regsitparam._method = 'PUT'
+
+        const endpoint = 'http://'+process.env.API_ENDPOINT+'/api/refuelings'+ (refueling_id ? '/' + refueling_id : '');
+
+        const loginResult : resType = await instance.post(endpoint
             , regsitparam
             ,{ withCredentials: true }
         ).catch( e => {
@@ -91,7 +95,7 @@ console.log(params)
 
     const f = async(refueling_id: number)=>{
         const instance = axios.create({withCredentials: true})
-        const refueling : any = await instance.get('http://'+process.env.API_ENDPOINT+'/api/refuelings/regist/'+refueling_id
+        const refueling : any = await instance.get('http://'+process.env.API_ENDPOINT+'/api/refuelings/'+refueling_id
         ).catch( e => {
             return {data:{result:'ng'}};
         });
