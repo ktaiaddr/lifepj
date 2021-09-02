@@ -11,7 +11,7 @@ class RefuelingsTest extends TestCase
 
         $user = new User();
         $user->id = 9;
-        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
+        $response = $this->actingAs($user)->json('POST','/api/refuelings',[
             'refueling_id'       =>  null         ,//nullは新規登録
             'date'               =>  '2021-07-01' ,
             'refueling_amount'   =>  0            ,//エラー箇所
@@ -31,7 +31,7 @@ class RefuelingsTest extends TestCase
         $user->id = 9;
 
         //refueling_amountがないのでエラーになる
-        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
+        $response = $this->actingAs($user)->json('POST','/api/refuelings',[
             'refueling_distance'=>500,
             'gas_station'=> "g",
             'memo'=>"m",
@@ -46,7 +46,7 @@ class RefuelingsTest extends TestCase
         $user->id = 9;
 
         //refueling_distanceがないのでエラーになる
-        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
+        $response = $this->actingAs($user)->json('POST','/api/refuelings',[
             'refueling_amount'=>500,
             'gas_station'=> "g",
             'memo'=>"m",
@@ -60,7 +60,7 @@ class RefuelingsTest extends TestCase
      */
     public function test_RefuelingsRegistNewStatusIs400(){
 
-        $response = $this->json('POST','/api/refuelings/regist',[
+        $response = $this->json('POST','/api/refuelings',[
             'date'                =>  '2021-07-05',
             'refueling_amount'    =>  1,
             'refueling_distance'  =>  1,
@@ -79,7 +79,7 @@ class RefuelingsTest extends TestCase
         $user = new User();
         $user->id = 9;
 
-        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
+        $response = $this->actingAs($user)->json('POST','/api/refuelings',[
             'date'                => '2021-07-05',
             'refueling_amount'    => 1,
             'refueling_distance'  => 500,
@@ -102,7 +102,7 @@ class RefuelingsTest extends TestCase
 
         $user = new User();
         $user->id = 9;
-        $response = $this->actingAs($user)->json('POST','/api/refuelings/regist',[
+        $response = $this->actingAs($user)->json('POST','/api/refuelings',[
             'refueling_id'       =>  1,
             'date'               =>  '2021-08-01',
             'refueling_amount'   =>  2,
