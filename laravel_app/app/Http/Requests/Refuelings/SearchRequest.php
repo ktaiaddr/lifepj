@@ -4,7 +4,7 @@
 namespace App\Http\Requests\Refuelings;
 
 
-use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
+use App\Application\query\Refuelings\FuelEconomyQueryConditions;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SearchRequest extends FormRequest

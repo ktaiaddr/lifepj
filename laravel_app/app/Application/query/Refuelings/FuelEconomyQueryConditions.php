@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Application\query\FuelEconomy;
+namespace App\Application\query\Refuelings;
 
 
 class FuelEconomyQueryConditions

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Refuelings;
 
-use App\Application\query\FuelEconomy\FuelEconomyQueryService;
-use App\Application\Service\FuelEconomy\RegisterService;
-use App\Domain\Model\FuelEconomy\IRefuelingRepository;
-use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
+use App\Application\query\Refuelings\FuelEconomyQueryService;
+use App\Application\Service\Refuelings\RegisterService;
+use App\Domain\Model\Refuelings\IRefuelingRepository;
+use App\Domain\Model\Refuelings\UpdateRefuelingCommand;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Refuelings\DeleteRequest;
 use App\Http\Requests\Refuelings\RegistRequest;

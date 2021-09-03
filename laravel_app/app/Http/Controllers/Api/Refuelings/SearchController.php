@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Refuelings;
 
-use App\Application\query\FuelEconomy\FuelEconomyQueryService;
+use App\Application\query\Refuelings\FuelEconomyQueryService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Refuelings\SearchRequest;
 use Illuminate\Http\JsonResponse;

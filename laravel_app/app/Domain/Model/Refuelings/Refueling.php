@@ -1,5 +1,5 @@
 <?php
-namespace App\Domain\Model\FuelEconomy;
+namespace App\Domain\Model\Refuelings;
 use JetBrains\PhpStorm\Pure;
 
 /**

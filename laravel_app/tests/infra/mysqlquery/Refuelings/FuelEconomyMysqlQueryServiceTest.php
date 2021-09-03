@@ -2,10 +2,10 @@
 
 namespace Tests\infra\mysqlquery;
 
-use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
-use App\Application\query\FuelEconomy\FuelEconomyQueryModel;
-use App\Domain\Model\FuelEconomy\FuelEconomy;
-use App\Domain\Model\FuelEconomy\Refueling;
+use App\Application\query\Refuelings\FuelEconomyQueryConditions;
+use App\Application\query\Refuelings\FuelEconomyQueryModel;
+use App\Domain\Model\Refuelings\FuelEconomy;
+use App\Domain\Model\Refuelings\Refueling;
 use App\infra\EloquentRepository\Refuelings\RefuelingEloquentRepository;
 use App\infra\mysqlquery\Refuelings\FuelEconomyMysqlQueryService;
 //use PHPUnit\Framework\TestCase;

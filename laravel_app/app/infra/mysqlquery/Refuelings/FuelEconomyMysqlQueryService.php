@@ -4,12 +4,12 @@
 namespace App\infra\mysqlquery\Refuelings;
 
 
-use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
-use App\Application\query\FuelEconomy\FuelEconomyQueryModel;
+use App\Application\query\Refuelings\FuelEconomyQueryConditions;
+use App\Application\query\Refuelings\FuelEconomyQueryModel;
 use App\Http\Requests\Refuelings\SearchRequest;
 use Illuminate\Support\Facades\DB;
 
-class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy\FuelEconomyQueryService
+class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\FuelEconomyQueryService
 {
 
     /**

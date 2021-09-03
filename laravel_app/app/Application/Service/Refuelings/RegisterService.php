@@ -1,10 +1,10 @@
 <?php
-namespace App\Application\Service\FuelEconomy;
+namespace App\Application\Service\Refuelings;
 
-use App\Domain\Model\FuelEconomy\FuelEconomy;
-use App\Domain\Model\FuelEconomy\IRefuelingRepository;
-use App\Domain\Model\FuelEconomy\Refueling;
-use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
+use App\Domain\Model\Refuelings\FuelEconomy;
+use App\Domain\Model\Refuelings\IRefuelingRepository;
+use App\Domain\Model\Refuelings\Refueling;
+use App\Domain\Model\Refuelings\UpdateRefuelingCommand;
 use App\Presentation\FuelEconomy\RefuelingData;
 
 class RegisterService

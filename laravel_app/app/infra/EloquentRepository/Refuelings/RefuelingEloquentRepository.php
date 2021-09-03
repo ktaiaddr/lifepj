@@ -1,15 +1,15 @@
 <?php
 namespace App\infra\EloquentRepository\Refuelings;
 
-use App\Domain\Model\FuelEconomy\FuelEconomy;
-use App\Domain\Model\FuelEconomy\Refueling;
+use App\Domain\Model\Refuelings\FuelEconomy;
+use App\Domain\Model\Refuelings\Refueling;
 
 /**
  * 給油クラス リポジトリ 実装クラス
  * Class RefuelingEloquentRepository
  * @package App\infra\EloquentRepository
  */
-class RefuelingEloquentRepository implements \App\Domain\Model\FuelEconomy\IRefuelingRepository
+class RefuelingEloquentRepository implements \App\Domain\Model\Refuelings\IRefuelingRepository
 {
 
     /**

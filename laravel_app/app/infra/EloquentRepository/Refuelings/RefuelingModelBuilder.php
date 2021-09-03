@@ -4,12 +4,12 @@
 namespace App\infra\EloquentRepository\Refuelings;
 
 
-use App\Domain\Model\FuelEconomy\FuelEconomy;
+use App\Domain\Model\Refuelings\FuelEconomy;
 use App\Models\Refueling;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class RefuelingModelBuilder implements \App\Domain\Model\FuelEconomy\IRefuelingNotification
+class RefuelingModelBuilder implements \App\Domain\Model\Refuelings\IRefuelingNotification
 {
     private ?int $refuelingId;
     private int $userId;

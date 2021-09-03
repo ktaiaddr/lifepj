@@ -4,7 +4,7 @@
 namespace App\Http\Requests\Refuelings;
 
 
-use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
+use App\Domain\Model\Refuelings\UpdateRefuelingCommand;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Domain\Model\FuelEconomy;
+namespace App\Domain\Model\Refuelings;
 
 //通知用データ
 interface IRefuelingNotification

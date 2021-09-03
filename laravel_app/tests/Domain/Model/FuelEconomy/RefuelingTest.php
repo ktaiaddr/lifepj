@@ -2,8 +2,8 @@
 
 namespace Tests\Domain\Model\MoneyStorage;
 
-use App\Domain\Model\FuelEconomy\FuelEconomy;
-use App\Domain\Model\FuelEconomy\Refueling;
+use App\Domain\Model\Refuelings\FuelEconomy;
+use App\Domain\Model\Refuelings\Refueling;
 //use App\Domain\Model\FuelEconomy\RefuelingAmount;
 //use App\Domain\Model\FuelEconomy\RefuelingDistance;
 use PHPUnit\Framework\TestCase;

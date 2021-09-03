@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Application\query\FuelEconomy;
+namespace App\Application\query\Refuelings;
 
 
-use App\Domain\Model\FuelEconomy\FuelEconomy;
+use App\Domain\Model\Refuelings\FuelEconomy;
 
 class FuelEconomyQueryModel
 {
