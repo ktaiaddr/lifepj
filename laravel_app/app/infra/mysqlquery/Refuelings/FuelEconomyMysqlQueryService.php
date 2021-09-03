@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\infra\mysqlquery;
+namespace App\infra\mysqlquery\Refuelings;
 
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;

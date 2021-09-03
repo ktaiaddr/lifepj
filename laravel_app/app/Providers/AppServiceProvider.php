@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Application\query\FuelEconomy\FuelEconomyQueryService;
 use App\Domain\Model\FuelEconomy\IRefuelingRepository;
 use App\infra\EloquentRepository\Refuelings\RefuelingEloquentRepository;
-use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
+use App\infra\mysqlquery\Refuelings\FuelEconomyMysqlQueryService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
