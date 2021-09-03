@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Refuelings;
 
 
 use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
@@ -10,10 +10,14 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Class RefuelingsRegistRequest
  * @property int $refuleing_id
- * @property int $delete
+ * @property string $date
+ * @property float $refueling_amount
+ * @property float $refueling_distance
+ * @property string $gas_station
+ * @property string $memo
  * @package App\Http\Requests
  */
-class RefuelingsDeleteRequest extends FormRequest
+class RegistRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +38,11 @@ class RefuelingsDeleteRequest extends FormRequest
     {
         return [
             'refueling_id' => ['nullable','numeric','min:1'],
-            'delete' => ['numeric','min:1'],
+            'date' => ['date_format:Y-m-d'],
+            'refueling_amount' => ['required','numeric','min:1'],
+            'refueling_distance' => ['required','numeric','min:1'],
+            'gas_station' => ['string'],
+            'memo' => ['string'],
         ];
     }
 
@@ -46,13 +54,13 @@ class RefuelingsDeleteRequest extends FormRequest
     public function transferCommand(): UpdateRefuelingCommand
     {
         return new UpdateRefuelingCommand(
-            $this->refueling_id,
-            null,
-            null,
-            null,
-            '',
-             '',
-            1
+            $this->refueling_id ?: null,
+            $this->date ? new \DateTime($this->date):null,
+            $this->refueling_amount,
+            $this->refueling_distance,
+            $this->gas_station ?: '',
+            $this->memo?: '',
+            0
         );
     }
 }

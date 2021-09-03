@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Refuelings;
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryService;
 use App\Application\Service\FuelEconomy\RegisterService;
 use App\Domain\Model\FuelEconomy\IRefuelingRepository;
 use App\Domain\Model\FuelEconomy\UpdateRefuelingCommand;
-use App\Http\Requests\RefuelingsDeleteRequest;
-use App\Http\Requests\RefuelingsRegistRequest;
-use App\infra\EloquentRepository\RefuelingEloquentRepository;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Refuelings\DeleteRequest;
+use App\Http\Requests\Refuelings\RegistRequest;
+use App\infra\EloquentRepository\Refuelings\RefuelingEloquentRepository;
 use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RefuelingsRegistController extends Controller
+class RegistController extends Controller
 {
 
     private RegisterService $registerService;
@@ -54,10 +55,10 @@ class RefuelingsRegistController extends Controller
     }
 
     /**
-     * @param RefuelingsRegistRequest $request
+     * @param RegistRequest $request
      * @return JsonResponse
      */
-    public function regist(RefuelingsRegistRequest $request):JsonResponse{
+    public function regist(RegistRequest $request):JsonResponse{
 
         if(! $request->ajax())
             return response()->json( [],400);
@@ -88,10 +89,10 @@ class RefuelingsRegistController extends Controller
     }
 
     /**
-     * @param RefuelingsRegistRequest $request
+     * @param RegistRequest $request
      * @return JsonResponse
      */
-    public function update(RefuelingsRegistRequest $request):JsonResponse{
+    public function update(RegistRequest $request):JsonResponse{
 
         if(! $request->ajax())
             return response()->json( [],400);
@@ -122,10 +123,10 @@ class RefuelingsRegistController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param DeleteRequest $request
      * @return JsonResponse
      */
-    public function delete(RefuelingsDeleteRequest $request):JsonResponse{
+    public function delete(DeleteRequest $request):JsonResponse{
 
         if(! $request->ajax())
             return response()->json( [],400);

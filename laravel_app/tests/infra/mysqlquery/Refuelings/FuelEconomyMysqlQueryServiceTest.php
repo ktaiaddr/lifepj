@@ -6,7 +6,7 @@ use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
 use App\Application\query\FuelEconomy\FuelEconomyQueryModel;
 use App\Domain\Model\FuelEconomy\FuelEconomy;
 use App\Domain\Model\FuelEconomy\Refueling;
-use App\infra\EloquentRepository\RefuelingEloquentRepository;
+use App\infra\EloquentRepository\Refuelings\RefuelingEloquentRepository;
 use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
 //use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Facades\DB;

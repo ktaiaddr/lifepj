@@ -6,7 +6,7 @@ namespace App\infra\mysqlquery;
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
 use App\Application\query\FuelEconomy\FuelEconomyQueryModel;
-use App\Http\Requests\RefuelingsSearchRequest;
+use App\Http\Requests\Refuelings\SearchRequest;
 use Illuminate\Support\Facades\DB;
 
 class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy\FuelEconomyQueryService
@@ -134,17 +134,17 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\FuelEconomy
 
         // order by 値
         $order_by_value = match ($fuelEconomyQueryConditions->getSortKey()) {
-            RefuelingsSearchRequest::SORT_KEY_DISTANCE => ' refueling_distance ',
-            RefuelingsSearchRequest::SORT_KEY_AMOUNT => ' refueling_amount ',
-            RefuelingsSearchRequest::SORT_KEY_FUELECONOMY => ' (refueling_distance / refueling_amount) ',
-            RefuelingsSearchRequest::SORT_KEY_GASSTATION => ' gas_station ',
-            RefuelingsSearchRequest::SORT_KEY_MEMO => ' memo ',
+            SearchRequest::SORT_KEY_DISTANCE => ' refueling_distance ',
+            SearchRequest::SORT_KEY_AMOUNT => ' refueling_amount ',
+            SearchRequest::SORT_KEY_FUELECONOMY => ' (refueling_distance / refueling_amount) ',
+            SearchRequest::SORT_KEY_GASSTATION => ' gas_station ',
+            SearchRequest::SORT_KEY_MEMO => ' memo ',
             default => ' date ',
         };
 
         // 並び
         $sort_order = match ($fuelEconomyQueryConditions->getSortOrder()) {
-            RefuelingsSearchRequest::SORT_ASC => ' asc ',
+            SearchRequest::SORT_ASC => ' asc ',
             default => ' desc ',
         };
 

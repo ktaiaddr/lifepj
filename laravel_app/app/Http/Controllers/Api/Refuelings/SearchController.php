@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Refuelings;
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryService;
-use App\Http\Requests\RefuelingsSearchRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Refuelings\SearchRequest;
 use App\infra\mysqlquery\FuelEconomyMysqlQueryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class RefuelingsSearchController extends Controller
+class SearchController extends Controller
 {
     private FuelEconomyQueryService $fuelEconomyQueryService;
 
@@ -25,10 +26,10 @@ class RefuelingsSearchController extends Controller
 
     /**
      * Handle the incoming request.
-     * @param RefuelingsSearchRequest $request
+     * @param SearchRequest $request
      * @return JsonResponse
      */
-    public function __invoke(RefuelingsSearchRequest $request):JsonResponse
+    public function __invoke(SearchRequest $request):JsonResponse
     {
         Log::debug("hoge");
 

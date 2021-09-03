@@ -5,7 +5,7 @@ namespace Tests\infra\EloquentRepository;
 use App\Domain\Model\FuelEconomy\FuelEconomy;
 use App\Domain\Model\FuelEconomy\IRefuelingRepository;
 use App\Domain\Model\FuelEconomy\Refueling;
-use App\infra\EloquentRepository\RefuelingEloquentRepository;
+use App\infra\EloquentRepository\Refuelings\RefuelingEloquentRepository;
 //use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

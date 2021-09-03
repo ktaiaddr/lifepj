@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Refuelings;
 
 
 use App\Application\query\FuelEconomy\FuelEconomyQueryConditions;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RefuelingsSearchRequest extends FormRequest
+class SearchRequest extends FormRequest
 {
 
     const SORT_KEY_DATE = 1;
@@ -53,7 +53,7 @@ class RefuelingsSearchRequest extends FormRequest
         ];
     }
 
-    public function searchCommand(RefuelingsSearchRequest $request):FuelEconomyQueryConditions
+    public function searchCommand(SearchRequest $request):FuelEconomyQueryConditions
     {
         return new FuelEconomyQueryConditions(
             $this->date_start ? new \DateTime($this->date_start) : null ,

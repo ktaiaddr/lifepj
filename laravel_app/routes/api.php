@@ -8,8 +8,8 @@ use App\Http\Controllers\MyLogin\PasswordResetController;
 use App\Http\Controllers\MyLogin\PasswordResetExecController;
 use App\Http\Controllers\MyLogin\RegisterUserController;
 use App\Http\Controllers\MyLogin\VerifyEmailController;
-use App\Http\Controllers\RefuelingsRegistController;
-use App\Http\Controllers\RefuelingsSearchController;
+use App\Http\Controllers\Api\Refuelings\RegistController;
+use App\Http\Controllers\Api\Refuelings\SearchController;
 use App\Http\Controllers\UI\baseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,11 +26,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 //給油
-/*一覧のリストを取得  */ Route::get('/refuelings', RefuelingsSearchController::class );
-/*新規データを登録   */  Route::post('/refuelings', [RefuelingsRegistController::class,'regist']);
-/*指定IDのデータを取得*/ Route::get('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'entry'] );
-/*指定IDのデータを更新*/ Route::put('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'update']);
-/*指定IDのデータを削除*/ Route::delete('/refuelings/{refueling_id}', [RefuelingsRegistController::class,'delete']);
+/*一覧のリストを取得  */ Route::get('/refuelings', SearchController::class );
+/*新規データを登録   */  Route::post('/refuelings', [RegistController::class,'regist']);
+/*指定IDのデータを取得*/ Route::get('/refuelings/{refueling_id}', [RegistController::class,'entry'] );
+/*指定IDのデータを更新*/ Route::put('/refuelings/{refueling_id}', [RegistController::class,'update']);
+/*指定IDのデータを削除*/ Route::delete('/refuelings/{refueling_id}', [RegistController::class,'delete']);
 
 Route::post('/mylogin', LoginController::class );
 Route::post('/mylogout', LogoutController::class );

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\infra\EloquentRepository;
+namespace App\infra\EloquentRepository\Refuelings;
 
 
 use App\Domain\Model\FuelEconomy\FuelEconomy;
