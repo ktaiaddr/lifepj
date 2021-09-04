@@ -78,7 +78,7 @@ console.log(params)
 
         if(gas_station.length===0) errors.push("給油ステーションは必須入力です")
 
-        if(memo.length===0) errors.push("メモが入力されていません")
+        // if(memo.length===0) errors.push("メモが入力されていません")
 
         if( errors.length > 0 ){
             alert(errors.join("\n"))
