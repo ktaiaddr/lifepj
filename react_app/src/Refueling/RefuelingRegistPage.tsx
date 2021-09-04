@@ -62,6 +62,29 @@ console.log(params)
 
     async function submit(){
 
+        const errors = []
+
+        if(date.length===0) errors.push("日付が入力されていません")
+
+        if(refueling_amount.length===0) errors.push("給油量が入力されていません")
+        if( refueling_amount.length>0 ){
+            const amount_match = refueling_amount.match(/^(\d{1,3})(\.(\d{1,2}))?$/)
+            if(amount_match===null) errors.push("給油量は3桁(小数は2桁まで)の数値で入力してください")
+        }
+
+        if(refueling_distance.length===0) errors.push("走行距離が入力されていません")
+        if(refueling_distance.length>0 && !refueling_distance.match(/^\d{1,4}(\.\d{1,2})?$/))
+            errors.push("走行距離は4桁(小数2桁まで)の数値で入力してください")
+
+        if(gas_station.length===0) errors.push("給油ステーションは必須入力です")
+
+        if(memo.length===0) errors.push("メモが入力されていません")
+
+        if( errors.length > 0 ){
+            alert(errors.join("\n"))
+            return
+        }
+
         const instance = axios.create({withCredentials: true})
 
         interface resType {
