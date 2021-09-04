@@ -6,6 +6,7 @@ namespace App\infra\mysqlquery\Refuelings;
 
 use App\Application\query\Refuelings\FuelEconomyQueryConditions;
 use App\Application\query\Refuelings\FuelEconomyQueryModel;
+use App\Domain\Model\Refuelings\FuelEconomy;
 use App\Http\Requests\Refuelings\SearchRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -113,17 +114,20 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\
         }
 
         //件数取得用クエリ
-        $count_query  = "   select  count(*) as count ";
+        $count_query  = "   select  count(*) as count, ";
+        $count_query .= "   sum(refuelings.refueling_distance)  as total_refueling_distance, ";
+        $count_query .= "   sum(refuelings.refueling_amount)  as total_refueling_amount ";
         $count_query .= "     from  refuelings, ";
         $count_query .= '           ( ';
         $count_query .= '              select max(id) as maxid ';
         $count_query .= '                from refuelings ';
         $count_query .= '               where user_id = :user_id_group  ';
+        $count_query .= "                 and  del_flg = 0 ";
         $count_query .= '            group by refueling_id  ';
+        $count_query .= '              having count(refueling_id) = 1  ';
         $count_query .= '           ) as max_refueling_ids ';
         $count_query .= "    where  ". implode( ' and ', $wheres );
         $count_query .= '      and  refuelings.id = max_refueling_ids.maxid ';
-        $count_query .= "      and  del_flg = 0 ";
 
         $count_stmt = $pdo->prepare( $count_query );
         foreach( $values as $value ) $count_stmt->bindValue( ...$value );
@@ -131,6 +135,10 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\
         $count_stmt->execute();
         $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
         $count = $result['count'];
+        $total_refueling_distance = $result['total_refueling_distance'];
+        $total_refueling_amount = $result['total_refueling_amount'];
+        $total_fuel_economy =         (new FuelEconomy($total_refueling_amount,$total_refueling_distance))->calcFuelEconomy();
+        ;
 
         // order by 値
         $order_by_value = match ($fuelEconomyQueryConditions->getSortKey()) {
@@ -155,11 +163,12 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\
         $query .= '              select max(id) as maxid ';
         $query .= '                from refuelings ';
         $query .= '               where user_id = :user_id_group  ';
+        $query .= "                 and del_flg = 0 ";
         $query .= '            group by refueling_id  ';
+        $query .= '              having count(refueling_id) = 1  ';
         $query .= '           ) as max_refueling_ids ';
         $query .= "    where  ". implode( ' and ', $wheres );
         $query .= '      and  refuelings.id = max_refueling_ids.maxid ';
-        $query .= "      and  del_flg = 0 ";
         $query .= " order by ". $order_by_value;
         $query .= " ".$sort_order;
         $query .= "    limit  :limit ";
@@ -190,7 +199,7 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\
 
         $list = $stmt->fetchAll( \PDO::FETCH_CLASS, FuelEconomyQueryModel::class );
 
-        return [$list,$count];
+        return [$list,$count,$total_refueling_distance,$total_refueling_amount,$total_fuel_economy];
 
     }
 

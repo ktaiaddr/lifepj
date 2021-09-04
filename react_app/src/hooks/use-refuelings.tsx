@@ -25,6 +25,9 @@ interface MySearchInputElement extends HTMLInputElement{
 type UseSortType = {
     refuelings_data_list: refuelings[],//給油データ一覧データ
     refuelingsCount     : number,      //給油データ件数
+    totalAmount         : number,      //合計給油量
+    totalDistance       : number,      //合計走行距離
+    totalFuelEconomy    : number,      //全体の燃費
     readed              : boolean,     //読込完了
     pageLimitSelect     : number,      //1ページ表示件数
     pagingNumber        : number,      //ページング位置（ページ番号）
@@ -47,6 +50,9 @@ type UseSortType = {
 const useRefuelings = (): UseSortType => {
     const [refuelings_data_list,setRefuelings_data_list] = useState<refuelings[]>([])        //給油データのリスト
     const [refuelingsCount     ,setRefuelingsCount     ] = useState<number>(0)               //給油データの件数
+    const [totalAmount         ,setTotalAmount         ] = useState<number>(0)               //合計給油量
+    const [totalDistance       ,setTotalDistance       ] = useState<number>(0)               //合計走行距離
+    const [totalFuelEconomy    ,setTotalFuelEconomy    ] = useState<number>(0)               //全体の燃費
     const [readed              ,setReaded              ] = useState<boolean>(true)           //読み込み状態完了フラグ
     const [pageLimitSelect     ,setPageLimitSelect     ] = useState<number>(10)              //表示件数設定値
     const [pagingNumber        ,setPagingNumber        ] = useState<number>(1)               //ページング（現在ページ）
@@ -128,6 +134,7 @@ const useRefuelings = (): UseSortType => {
         }).catch(e=> {
             return {data:{result:'fail'}}
         })
+        console.log(result)
         return result;
     };
 
@@ -137,6 +144,9 @@ const useRefuelings = (): UseSortType => {
             if(result){
                 setRefuelings_data_list(result.data.list)
                 setRefuelingsCount(result.data.count)
+                setTotalAmount(result.data.total_refueling_amount)
+                setTotalDistance(result.data.total_refueling_distance)
+                setTotalFuelEconomy(result.data.total_fuel_economy)
                 setPagingSelectable([...Array(Math.ceil(result.data.count/pageLimitSelect)).keys()].map(i => ++i))
                 setReaded(true)
             }
@@ -173,7 +183,9 @@ const useRefuelings = (): UseSortType => {
             if(result && !cleanedUp){
                 setRefuelings_data_list(result.data.list)
                 setRefuelingsCount(result.data.count)
-
+                setTotalAmount(result.data.total_refueling_amount)
+                setTotalDistance(result.data.total_refueling_distance)
+                setTotalFuelEconomy(result.data.total_fuel_economy)
                 setPagingSelectable([...Array(Math.ceil(result.data.count/pageLimitSelect)).keys()].map(i => ++i))
                 setReaded(true)
             }
@@ -195,6 +207,9 @@ const useRefuelings = (): UseSortType => {
     return {
         refuelings_data_list,
         refuelingsCount,
+        totalAmount,
+        totalDistance,
+        totalFuelEconomy,
         readed,
         pageLimitSelect,
         pagingNumber,

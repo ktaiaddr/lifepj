@@ -3,6 +3,7 @@ import * as React from "react";
 import UserHeader from "../user_header";
 import RefuelingSearchCondition from "./RefuelingSearchCondition";
 import RefuelingPageLimitSelect from "./RefuelingPageLimitSelect";
+import RefuelingResultTotalData from "./RefuelingResultTotalData";
 import RefuelingPagenation      from "./RefuelingPagenation";
 import RefuelingResultTable     from "./RefuelingResultTable";
 import useRefuelings            from "../hooks/use-refuelings";
@@ -25,6 +26,11 @@ export default ()=>{
 
                     </div>
 
+                    <div className="row mb-4 ">
+
+                        <RefuelingResultTotalData refuelingHook={refuelingHook} />
+
+                    </div>
                     {
                         refuelingHook.readed &&(<>
                             <div>{refuelingHook.refuelingsCount}件</div>
