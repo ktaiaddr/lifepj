@@ -37,7 +37,7 @@ class RegistRequest extends FormRequest
     public function rules()
     {
         return [
-            'refueling_id' => ['present','numeric','min:1'],
+            'refueling_id' => ['nullable','numeric','min:1'],
             'date' => ['required','date_format:Y-m-d'],
             'refueling_amount' => ['required','numeric','min:1'],
             'refueling_distance' => ['required','numeric','min:1'],
