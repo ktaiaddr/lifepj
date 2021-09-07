@@ -13,14 +13,16 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
             refuelings_data_list } = refuelingHook
 
     return (
-        <table className="table">
+        <div className="table-responsive">
+            <table className="table">
 
-            <RefuelingResultTableHeader sortKey={sortKey}
-                                        sortOrder={sortOrder}
-                                        changeSort={changeSort} />
+                <RefuelingResultTableHeader sortKey={sortKey}
+                                            sortOrder={sortOrder}
+                                            changeSort={changeSort} />
 
-            <RefuelingResultTableBody refuelings_data_list={refuelings_data_list} />
+                <RefuelingResultTableBody refuelings_data_list={refuelings_data_list} />
 
-        </table>
+            </table>
+        </div>
     )
 }

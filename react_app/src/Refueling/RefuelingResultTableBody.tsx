@@ -12,12 +12,12 @@ export default (props:any)=> {
         <tbody>
         {refuelings_data_list.map((value,index)=>(
             <tr key={ value.refueling_id } style={rowColor(index)}>
-                <td><Link to={ 'refueling/regist/'+value.refueling_id }>{ value.date               }</Link></td>
-                <td>{ value.refueling_distance }</td>
-                <td>{ value.refueling_amount   }</td>
-                <td>{ value.fuel_economy       }</td>
-                <td>{ value.gas_station        }</td>
-                <td>{ value.memo               }</td>
+                <td className={'text-nowrap'}><Link to={ 'refueling/regist/'+value.refueling_id }>{ value.date               }</Link></td>
+                <td className={'text-nowrap'}>{ value.refueling_distance }</td>
+                <td className={'text-nowrap'}>{ value.refueling_amount   }</td>
+                <td className={'text-nowrap'}>{ value.fuel_economy       }</td>
+                <td className={'text-nowrap'}>{ value.gas_station        }</td>
+                <td className={'text-nowrap'}>{ value.memo               }</td>
             </tr>
         ))}
         </tbody>

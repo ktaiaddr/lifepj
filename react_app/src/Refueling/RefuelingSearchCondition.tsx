@@ -20,7 +20,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-5">
                             <input type="date"
                                    className="form-control"
                                    placeholder="日付"
@@ -29,7 +29,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                                    onInput={_setSearchCondition} />
                         </div>
                         ～
-                        <div className="col-lg-5">
+                        <div className="col-6">
                             <input type="date"
                                    value={searchCondition.date_end}
                                    className="form-control"
@@ -46,7 +46,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-5">
                             <input type="number"
                                    className="form-control"
                                    value={searchCondition.distance_lower}
@@ -56,7 +56,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                                    onInput={_setSearchCondition} />
                         </div>
                         ～
-                        <div className="col-lg-5">
+                        <div className="col-6">
                             <input type="number"
                                    value={searchCondition.distance_high}
                                    className="form-control"
@@ -75,7 +75,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-5">
                             <input type="number"
                                    className="form-control"
                                    placeholder="数量下限"
@@ -84,7 +84,7 @@ export default ({refuelingHook}:{refuelingHook:UseSortType})=> {
                                    name="amount_lower" onChange={_setSearchCondition} />
                         </div>
                         ～
-                        <div className="col-lg-5">
+                        <div className="col-6">
                             <input type="number" className="form-control" placeholder="数量上限" min="0" max="100"
                                    value={searchCondition.amount_high}
                                    name="amount_high" onInput={_setSearchCondition} />
