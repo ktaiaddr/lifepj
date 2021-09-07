@@ -33,6 +33,10 @@ console.log(params)
     }
 
     async function delete_(){
+
+        if(! confirm("データを削除してよろしいですか？"))
+            return
+
         const instance = axios.create({withCredentials: true})
 
         interface resType {
@@ -62,7 +66,7 @@ console.log(params)
 
     async function submit(){
 
-        const errors = []
+         const errors = []
 
         if(date.length===0) errors.push("日付が入力されていません")
 
@@ -84,6 +88,9 @@ console.log(params)
             alert(errors.join("\n"))
             return
         }
+
+        if(! confirm("データを登録しますか？"))
+            return
 
         const instance = axios.create({withCredentials: true})
 
