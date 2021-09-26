@@ -1,4 +1,5 @@
-FROM php:8.0.6-fpm-alpine3.13
+#FROM php:8.0.6-fpm-alpine3.13
+FROM php:8.1.0RC1-fpm-alpine3.13
 
 RUN apk update && \
     apk upgrade && \
@@ -13,8 +14,9 @@ RUN apk add --update --no-cache tzdata && \
 RUN docker-php-ext-install pdo_mysql
 
 RUN apk add autoconf build-base && \
-    pecl install xdebug && \
+    pecl install xdebug-3.1.0beta2 && \
     docker-php-ext-enable xdebug
+#pecl install xdebug
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"  && \
 	php composer-setup.php  && \

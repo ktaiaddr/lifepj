@@ -10,7 +10,9 @@
 <!--        <testsuite name="Unit">-->
 <!--            <directory suffix="Test.php">./tests/Unit</directory>-->
 <!--        </testsuite>-->
-
+        <testsuite name="HouseholdAccount">
+            <directory suffix="Test.php">./tests/Domain/HouseholdAccount</directory>
+        </testsuite>
         <testsuite name="Domain">
             <directory suffix="Test.php">./tests/Domain/Model</directory>
         </testsuite>
@@ -27,6 +29,7 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
+
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

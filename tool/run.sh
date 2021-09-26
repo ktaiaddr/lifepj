@@ -22,6 +22,7 @@ THISDIR=$(cd $(dirname $0)/..;pwd)
 CONTAINER_NETWORK="lifenetwork"
 #イメージ名
 WEB_IMAGE_NAME="alpine-fpm_nginx:latest"
+#WEB_IMAGE_NAME="lifepj---php--8.1.0rc1-fpm-alpine3.13:20210921"
 MYSQL_IMAGE_NAME="mysql:8.0.24"
 NODEJS_IMAGE_NAME="node:14.16.1-alpine"
 #コンテナ名
