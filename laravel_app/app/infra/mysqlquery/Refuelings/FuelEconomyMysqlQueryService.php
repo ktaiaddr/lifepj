@@ -135,9 +135,16 @@ class FuelEconomyMysqlQueryService implements \App\Application\query\Refuelings\
         $count_stmt->execute();
         $result = $count_stmt->fetch( \PDO::FETCH_ASSOC );
         $count = $result['count'];
-        $total_refueling_distance = $result['total_refueling_distance'];
-        $total_refueling_amount = $result['total_refueling_amount'];
-        $total_fuel_economy =         (new FuelEconomy($total_refueling_amount,$total_refueling_distance))->calcFuelEconomy();
+        if((int)$count === 0){
+            $total_refueling_distance = 0;
+            $total_refueling_amount = 0;
+            $total_fuel_economy =   0;
+        }else{
+            $total_refueling_distance = $result['total_refueling_distance'];
+            $total_refueling_amount = $result['total_refueling_amount'];
+            $total_fuel_economy =         (new FuelEconomy($total_refueling_amount,$total_refueling_distance))->calcFuelEconomy();
+        }
+
         ;
 
         // order by 値

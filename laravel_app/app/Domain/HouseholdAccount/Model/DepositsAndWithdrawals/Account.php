@@ -1,51 +1,52 @@
 <?php
 
-namespace App\Domain\HouseholdAccount;
+namespace App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals;
 
 use App\Domain\HouseholdAccount\Model\Notification\Balance;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
 use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 
-class AccountBalance
+class Account
 {
     /**
      * @var int 口座ID
      */
     private int $accountId;
 
+
     /**
      * @var int 残高
      */
     private int $balance;
 
-
-    const TYPE_BANK = 1;//銀行
-    const TYPE_HAND_MONEY = 2;//ハンドマネー
     /**
-     * @var int アカウント種別
+     * @var AccountType アカウント種別
      */
-    private int $accountType;
+    private AccountType $accountType;
+
+    public function getAccountId(){
+        return $this->accountId;
+    }
     /**
      * アカウントのタイプが銀行ならtrue
      * @return bool
      */
     public function isBank(){
-        return $this->accountType == self::TYPE_BANK;
+        return $this->accountType->isBank();
     }
     /**
      * @return bool
      */
     public function isHandMoney(){
-        return $this->accountType == self::TYPE_HAND_MONEY;
+        return $this->accountType->isHandMoney();
     }
-
 
     /**
      * @param int $accountId
      * @param int $balance
-     * @param int $accountType
+     * @param AccountType $accountType
      */
-    public function __construct(int $accountId, int $balance, int $accountType)
+    public function __construct(int $accountId, int $balance, AccountType $accountType)
     {
         $this->accountId = $accountId;
         $this->balance = $balance;
@@ -55,15 +56,14 @@ class AccountBalance
     /**
      * @param TransactionAmount $transactionAmount
      */
-    public function increaseBalance(TransactionAmount $transactionAmount){
+    public function increase(TransactionAmount $transactionAmount){
 
         $this->balance = $transactionAmount->increaseBalance($this->balance);
-
     }
     /**
      * @param TransactionAmount $transactionAmount
      */
-    public function reduceBalance(TransactionAmount $transactionAmount){
+    public function reduce(TransactionAmount $transactionAmount){
         $this->balance = $transactionAmount->reduceBalance($this->balance);
     }
 

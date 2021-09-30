@@ -10,6 +10,7 @@ interface Transaction
      * 口座振替
      */
     const CLASSIFICATION_ACCOUNT_TRANSFER = 1;
+
     /**
      * 現金加算
      */

@@ -2,17 +2,15 @@
 
 namespace App\Domain\HouseholdAccount\Model\Transaction;
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Deposits;
+use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Balancers;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
 use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 
-/**
- * 現金加算
- */
-class CashAddition implements Transaction
+class TransactionImpl implements Transaction
 {
+
     /**
-     * 取引ID
+     * 取引ID Str::orderedUuid()で発行
      * @var string
      */
     private string $transactionId;
@@ -26,45 +24,43 @@ class CashAddition implements Transaction
      */
     private TransactionAmount $transactionAmount;
     /**
-     * 入金
-     * @var Deposits
+     * @var Balancers
      */
-    private Deposits $deposits;
+    private Balancers $updateBalances;
 
     /**
      * @param string $transactionId
      * @param \DateTime $date
      * @param TransactionAmount $transactionAmount
-     * @param Deposits $deposits
-     * @throws \Exception
+     * @param Balancers $updateBalances
      */
-    public function __construct(string $transactionId, \DateTime $date, TransactionAmount $transactionAmount, Deposits $deposits)
+    public function __construct(string $transactionId, \DateTime $date, TransactionAmount $transactionAmount, Balancers $updateBalances)
     {
-        if(! $deposits->isHandMoney())
-            throw new \Exception("移動先の口座種別が不正です");
-
         $this->transactionId = $transactionId;
         $this->date = $date;
         $this->transactionAmount = $transactionAmount;
-        $this->deposits = $deposits;
+        $this->updateBalances = $updateBalances;
     }
+
 
     /**
      * @inheritDoc
      */
     public function updateBalance()
     {
-        $this->deposits->updateBalance($this->transactionAmount);
+        $this->updateBalances->updateBalance($this->transactionAmount);
     }
 
     public function notify(NotificationTransaction $modelBuilder){
 
         $modelBuilder->transactionId($this->transactionId);
         $modelBuilder->transactionDate($this->date);
-        $modelBuilder->transactionClass(Transaction::CLASSIFICATION_CASH_ADDITION);
+        $modelBuilder->transactionClass(Transaction::CLASSIFICATION_ACCOUNT_TRANSFER);
 
         $this->transactionAmount->notify($modelBuilder);
-        $this->deposits->notify($this->transactionId,$modelBuilder);
+
+        $this->updateBalances->notify($this->transactionId,$modelBuilder);
+
 
     }
 }

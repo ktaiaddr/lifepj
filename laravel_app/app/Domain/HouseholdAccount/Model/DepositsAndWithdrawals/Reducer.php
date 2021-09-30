@@ -2,39 +2,36 @@
 
 namespace App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals;
 
-use App\Domain\HouseholdAccount\AccountBalance;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
 use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 
-class Withdrawals implements Updater
+class Reducer implements Balancer
 {
-
-    private AccountBalance $accountBalance;
-
+    private Account $accountBalance;
     /**
-     * @param AccountBalance $accountBalance
+     * @param Account $accountBalance
      */
-    public function __construct(AccountBalance $accountBalance)
+    public function __construct(Account $accountBalance)
     {
         $this->accountBalance = $accountBalance;
     }
 
-    /**
-     * @param TransactionAmount $transactionAmount
-     */
     public function updateBalance(TransactionAmount $transactionAmount)
     {
-            $this->accountBalance->reduceBalance($transactionAmount);
+            $this->accountBalance->reduce($transactionAmount);
     }
 
     public function notify(string $transactionId, NotificationTransaction $modelBuilder){
         $this->accountBalance->notify($transactionId,  $modelBuilder);
     }
 
-    public function isBank(){
+    public function hasBankTypeAccount(): bool
+    {
         return $this->accountBalance->isBank();
     }
-    public function isHandMoney(){
+
+    public function hasHandMoneyAccount(): bool
+    {
         return $this->accountBalance->isHandMoney();
     }
 

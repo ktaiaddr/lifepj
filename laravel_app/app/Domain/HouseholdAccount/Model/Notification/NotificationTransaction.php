@@ -4,8 +4,7 @@ namespace App\Domain\HouseholdAccount\Model\Notification;
 
 interface NotificationTransaction
 {
-
-    public function transactionId( int $transactionId ):void;
+    public function transactionId( string $transactionId ):void;
 
     public function transactionDate( \Datetime $transactionDate ):void;
 

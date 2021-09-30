@@ -7,17 +7,17 @@ use App\Domain\HouseholdAccount\Model\Notification\Balance;
 class ModelBuilder implements \App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction
 {
     /**
-     * @var int
+     * @var string
      */
-    public int $transactionId;
+    public string $transactionId;
 
-    public function transactionId(int $transactionId): void
+    public function transactionId(string $transactionId): void
     {
         // TODO: Implement transactionId() method.
         $this->transactionId = $transactionId;
     }
 
-    public int $transactionDate;
+    public \DateTime $transactionDate;
 
     public function transactionDate( \Datetime $transactionDate ):void {
         $this->transactionDate = $transactionDate;
