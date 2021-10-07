@@ -9,8 +9,9 @@ interface NotificationTransaction
     public function transactionDate( \Datetime $transactionDate ):void;
 
     public function transactionAmount( int $transactionAmount ):void;
+    public function transactionContents( string $transactionContents ):void;
 
-    public function transactionClass( int $transactionClass ):void;
+    public function transactionType( int $transactionType ):void;
 
     public function addBalance(Balance $balance):void;
 }

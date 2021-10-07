@@ -1,39 +1,63 @@
 <?php
 
-
 namespace App\Domain\HouseholdAccount\Model\Transaction;
 
+use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Balancers;
+use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
+use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 
-interface Transaction
+class Transaction
 {
-    /**
-     * 口座振替
-     */
-    const CLASSIFICATION_ACCOUNT_TRANSFER = 1;
 
     /**
-     * 現金加算
+     * 取引ID Str::orderedUuid()で発行
+     * @var string
      */
-    const CLASSIFICATION_CASH_ADDITION = 2;
+    private string $transactionId;
     /**
-     * 現金払い
+     * @var \DateTime
      */
-    const CLASSIFICATION_CASH_PAYMENT = 3;
+    private \DateTime $date;
     /**
-     * 口座引落し
+     * 金額
+     * @var TransactionAmount
      */
-    const CLASSIFICATION_DIRECT_DEVIT = 4;
+    private TransactionAmount $transactionAmount;
+
     /**
-     * 入金
+     * @var string 取引内容
      */
-    const CLASSIFICATION_MONEY_RECEIVED = 5;
+    private string $transactionContents;
+
     /**
-     * 引き出し
+     * @param string $transactionId
+     * @param \DateTime $date
+     * @param TransactionAmount $transactionAmount
+     * @param string $transactionContents
+//     * @param Balancers $updateBalances
      */
-    const CLASSIFICATION_WITHDRAWAL_DEPOSIT = 6;
-    /**
-     * 取引の記録
-     * @return mixed
-     */
-    public function updateBalance();
+    public function __construct(string $transactionId
+        , \DateTime $date
+        , TransactionAmount $transactionAmount
+        , string $transactionContents
+    )
+    {
+        $this->transactionId = $transactionId;
+        $this->date = $date;
+        $this->transactionAmount = $transactionAmount;
+        $this->transactionContents = $transactionContents;
+    }
+
+
+
+    public function notify(NotificationTransaction $modelBuilder){
+
+        $modelBuilder->transactionId($this->transactionId);
+        $modelBuilder->transactionDate($this->date);
+        $modelBuilder->transactionContents($this->transactionContents);
+
+        $this->transactionAmount->notify($modelBuilder);
+
+//        $this->updateBalances->notify($this->transactionId,$modelBuilder);
+    }
 }

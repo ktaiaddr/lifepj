@@ -24,36 +24,19 @@ class Balancers
         if(! $transactionType->inspectionBalancers($reducer,$increaser))
             throw new \Exception($transactionType->getLabel().'アカウントエラー');
 
-        //口座間転送
-        if($transactionType->isAccountTransfer()) $this->values = [$reducer,$increaser];
-        //現金加算
-        if($transactionType->isCashAddition()) $this->values = [$increaser];
-        //現金払い
-        if($transactionType->isCashPayment()) $this->values = [$reducer];
-        //引き落とし
-        if($transactionType->isDirectDevit()) $this->values = [$reducer];
-        //入金
-        if($transactionType->isMoneyReceived()) $this->values = [$increaser];
-        //現金引き出し
-        if($transactionType->isWithdrawalDeposit()) $this->values = [$reducer,$increaser];
+        $this->values = $transactionType->takeBalancers($reducer,$increaser);
+
     }
 
     /**
      * @param TransactionAmount $transactionAmount
+     * @return Account[]
      */
     public function updateBalance(TransactionAmount $transactionAmount){
-        foreach($this->values as $updateBalance){
-            $updateBalance->updateBalance($transactionAmount);
-        }
+
+        $fn = fn(Balancer $updateBalance):Account=>$updateBalance->updateBalance($transactionAmount);
+        return array_map($fn,$this->values);
+
     }
 
-    /**
-     * @param string $transactionId
-     * @param NotificationTransaction $modelBuilder
-     */
-    public function notify(string $transactionId, NotificationTransaction $modelBuilder){
-        foreach($this->values as $updateBalance){
-            $updateBalance->notify($transactionId,$modelBuilder);
-        }
-    }
 }

@@ -10,6 +10,27 @@ class ModelBuilder implements \App\Domain\HouseholdAccount\Model\Notification\No
      * @var string
      */
     public string $transactionId;
+    /**
+     * @var \DateTime
+     */
+    public \DateTime $transactionDate;
+    /**
+     * @var int
+     */
+    public int $transactionAmount;
+    /**
+     * @var string
+     */
+    public string $transactionContents;
+    /**
+     * @var int
+     */
+    public int $transactionType;
+
+    /**
+     * @var Balance[]
+     */
+    public array $balances;
 
     public function transactionId(string $transactionId): void
     {
@@ -17,17 +38,10 @@ class ModelBuilder implements \App\Domain\HouseholdAccount\Model\Notification\No
         $this->transactionId = $transactionId;
     }
 
-    public \DateTime $transactionDate;
-
     public function transactionDate( \Datetime $transactionDate ):void {
         $this->transactionDate = $transactionDate;
 
     }
-
-    /**
-     * @var int
-     */
-    public int $transactionAmount;
 
     public function transactionAmount(int $transactionAmount): void
     {
@@ -35,20 +49,17 @@ class ModelBuilder implements \App\Domain\HouseholdAccount\Model\Notification\No
         $this->transactionAmount = $transactionAmount;
     }
 
-    /**
-     * @var int
-     */
-    public int $transactionClass;
-    public function transactionClass(int $transactionClass): void
+    public function transactionContents(string $transactionContents): void
     {
-        // TODO: Implement transactionClass() method.
-        $this->transactionClass = $transactionClass;
+        $this->transactionContents = $transactionContents;
     }
 
-    /**
-     * @var Balance[]
-     */
-    public array $balances;
+
+    public function transactionType(int $transactionType): void
+    {
+        $this->transactionType = $transactionType;
+    }
+
     public function addBalance(Balance $balance): void
     {
         $this->balances[] = $balance;

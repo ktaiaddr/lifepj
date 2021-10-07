@@ -16,9 +16,14 @@ class Reducer implements Balancer
         $this->accountBalance = $accountBalance;
     }
 
-    public function updateBalance(TransactionAmount $transactionAmount)
+    /**
+     * @param TransactionAmount $transactionAmount
+     * @return Account
+     * @throws \Exception
+     */
+    public function updateBalance(TransactionAmount $transactionAmount):Account
     {
-            $this->accountBalance->reduce($transactionAmount);
+            return $this->accountBalance->reduce($transactionAmount);
     }
 
     public function notify(string $transactionId, NotificationTransaction $modelBuilder){

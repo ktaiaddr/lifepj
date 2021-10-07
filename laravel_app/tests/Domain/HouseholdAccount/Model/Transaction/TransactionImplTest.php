@@ -7,7 +7,7 @@ use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Increaser;
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Balancers;
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Reducer;
-use App\Domain\HouseholdAccount\Model\Transaction\TransactionImpl;
+use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 use App\infra\HouseholdAccount\EloquentRepository\ModelBuilder;
@@ -29,30 +29,40 @@ class TransactionImplTest extends TestCase
         );
 
 
-        $transactionId = (string)Str::orderedUuid();
-        $transactionDate = new \Datetime();
-        $transactionAmount = new TransactionAmount(199);
-
-        $wAccount = $accountBalanceInmemoryQuery->find(1);
-        $reducer = new Reducer($wAccount);
-        $dAccount = $accountBalanceInmemoryQuery->find(2);
-        $increaser = new Increaser($dAccount);
-
-
         $result = "正常生成";
         try{
 
+            $transactionId = (string)Str::orderedUuid();
+
+            $transactionDate = new \Datetime();
+
+            $transactionContents = "";
+            $transactionAmount = new TransactionAmount(199);
+
             $transactionType = new TransactionType(TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER);
 
-            $updateBalances = new Balancers($transactionType,$reducer,$increaser);
+            $wAccount = $accountBalanceInmemoryQuery->find(1);
+            $reducer = new Reducer($wAccount);
+            $dAccount = $accountBalanceInmemoryQuery->find(2);
+            $increaser = new Increaser($dAccount);
 
-            $transaction = new TransactionImpl($transactionId,$transactionDate,$transactionAmount,$updateBalances);
 
-            $transaction->updateBalance();
+//            $updateBalances = new Balancers($transactionType,$reducer,$increaser);
+//            $accounts = $updateBalances->updateBalance($transactionAmount);
+            $accounts = $transactionType->updateBalance($transactionAmount,$reducer,$increaser);
+
+            $transaction = new Transaction($transactionId,$transactionDate,$transactionAmount,$transactionContents/*,$updateBalances*/);
+
 
             $modelBuilder = new ModelBuilder();
 
             $transaction->notify($modelBuilder);
+
+            $transactionType->notify($modelBuilder);
+
+            for($i=0;$i<count($accounts);$i++){
+                $accounts[$i]->notify($transactionId,$modelBuilder);
+            }
 
         }catch (\Exception $e){
             $result = $e->getMessage();

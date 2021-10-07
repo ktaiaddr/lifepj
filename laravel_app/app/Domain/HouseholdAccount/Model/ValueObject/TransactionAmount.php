@@ -46,7 +46,7 @@ class TransactionAmount
             throw new \Exception("残高不足で処理できません");
         }
 
-        return ($accountBalanceValue - $this->value);
+        return $afterBalance;
     }
 
 }

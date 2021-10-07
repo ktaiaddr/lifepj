@@ -17,9 +17,13 @@ class Increaser implements Balancer
         $this->accountBalance = $accountBalance;
     }
 
-    public function updateBalance(TransactionAmount $transactionAmount)
+    /**
+     * @param TransactionAmount $transactionAmount
+     * @return Account
+     */
+    public function updateBalance(TransactionAmount $transactionAmount):Account
     {
-        $this->accountBalance->increase($transactionAmount);
+        return $this->accountBalance->increase($transactionAmount);
     }
 
     public function notify(string $transactionId, NotificationTransaction $modelBuilder){
