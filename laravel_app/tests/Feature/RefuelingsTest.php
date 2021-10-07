@@ -20,7 +20,7 @@ class RefuelingsTest extends TestCase
             'memo'               =>  "m"          ,
         ],['X-Requested-With' => 'XMLHttpRequest']);
 
-        $response->dump();
+//        $response->dump();
 
         $response->assertStatus(422);
     }
@@ -89,7 +89,7 @@ class RefuelingsTest extends TestCase
 
 //        $response->dumpHeaders();
 //        $response->dumpSession();
-        $response->dump();
+//        $response->dump();
         $response->assertStatus(200);
     }
 
@@ -135,7 +135,7 @@ class RefuelingsTest extends TestCase
             'page'            =>  1,
         ],['X-Requested-With' => 'XMLHttpRequest']);
 
-        $response->dump();
+//        $response->dump();
         $response->assertStatus(200);
     }
 

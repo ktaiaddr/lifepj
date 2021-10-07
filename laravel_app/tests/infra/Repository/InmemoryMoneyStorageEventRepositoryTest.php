@@ -54,7 +54,7 @@ class InmemoryMoneyStorageEventRepositoryTest extends TestCase
         $mp_amount->setAccessible(true);
         /** @var MoneyStorageEventAmount $amount */
         $amount = $mp_amount->getValue($m);
-        var_dump($amount->getValue());
+//        var_dump($amount->getValue());
         $this->assertSame( 101, $amount->getValue() );
 
 

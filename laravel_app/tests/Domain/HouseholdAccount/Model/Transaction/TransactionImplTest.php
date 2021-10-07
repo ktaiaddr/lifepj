@@ -32,23 +32,26 @@ class TransactionImplTest extends TestCase
         $result = "正常生成";
         try{
 
-            $transactionId = (string)Str::orderedUuid();
+            //取引区分を生成
+            $transactionType = new TransactionType(TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER);
 
-            $transactionDate = new \Datetime();
-
-            $transactionContents = "";
+            //取引金額を生成
             $transactionAmount = new TransactionAmount(199);
 
-            $transactionType = new TransactionType(TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER);
+            //取引IDをUUIDで生成
+            $transactionId = (string)Str::orderedUuid();
+
+            //取引日を現在日時で生成
+            $transactionDate = new \Datetime();
+
+            //取引内容
+            $transactionContents = "";
 
             $wAccount = $accountBalanceInmemoryQuery->find(1);
             $reducer = new Reducer($wAccount);
             $dAccount = $accountBalanceInmemoryQuery->find(2);
             $increaser = new Increaser($dAccount);
 
-
-//            $updateBalances = new Balancers($transactionType,$reducer,$increaser);
-//            $accounts = $updateBalances->updateBalance($transactionAmount);
             $accounts = $transactionType->updateBalance($transactionAmount,$reducer,$increaser);
 
             $transaction = new Transaction($transactionId,$transactionDate,$transactionAmount,$transactionContents/*,$updateBalances*/);
