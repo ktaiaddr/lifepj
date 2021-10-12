@@ -21,7 +21,7 @@ class Reducer implements Balancer
      * @return Account
      * @throws \Exception
      */
-    public function updateBalance(TransactionAmount $transactionAmount):Account
+    public function exec(TransactionAmount $transactionAmount):Account
     {
             return $this->accountBalance->reduce($transactionAmount);
     }
@@ -30,12 +30,12 @@ class Reducer implements Balancer
         $this->accountBalance->notify($transactionId,  $modelBuilder);
     }
 
-    public function hasBankTypeAccount(): bool
+    public function targetIsBank(): bool
     {
         return $this->accountBalance->isBank();
     }
 
-    public function hasHandMoneyAccount(): bool
+    public function targetIsHandMoney(): bool
     {
         return $this->accountBalance->isHandMoney();
     }

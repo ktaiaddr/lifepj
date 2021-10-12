@@ -21,7 +21,7 @@ class Increaser implements Balancer
      * @param TransactionAmount $transactionAmount
      * @return Account
      */
-    public function updateBalance(TransactionAmount $transactionAmount):Account
+    public function exec(TransactionAmount $transactionAmount):Account
     {
         return $this->accountBalance->increase($transactionAmount);
     }
@@ -30,12 +30,12 @@ class Increaser implements Balancer
         $this->accountBalance->notify($transactionId,  $modelBuilder);
     }
 
-    public function hasBankTypeAccount(): bool
+    public function targetIsBank(): bool
     {
         return $this->accountBalance->isBank();
     }
 
-    public function hasHandMoneyAccount(): bool
+    public function targetIsHandMoney(): bool
     {
         return $this->accountBalance->isHandMoney();
     }

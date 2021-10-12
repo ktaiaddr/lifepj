@@ -47,9 +47,22 @@ https://nochio12.hatenablog.com/entry/2020/10/03/215718
 Laravel Breeze APIでサクッと認証機能を実装する  
 https://zenn.dev/nrikiji/articles/dcde3df1ea8d85
 
+マイグレーション
+```bash
+bash tool/run.sh artisan migrate
+```
+ロールバック
+```bash
+bash tool/run.sh artisan "migrate:rollback --step=1"
+```
 テストDBへのマイグレーション   
-tool/run.sh artisan "migrate --env=testing"
-
+```bash
+bash tool/run.sh artisan "migrate --env=testing"
+```
+モデルの生成
+```bash
+bash tool/run.sh artisan "create:Model HouseholdAccount/Transaction"
+```
 
 
 composer require laravel/breeze

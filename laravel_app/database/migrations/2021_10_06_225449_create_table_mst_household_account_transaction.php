@@ -13,15 +13,15 @@ class CreateTableMstHouseholdAccountTransaction extends Migration
      */
     public function up()
     {
-        Schema::create('MST_HOUSEHOLD_ACCOUNT_TRANSACTION', function (Blueprint $table) {
-            $table->increments('transaction_id');
-            $table->dateTime('date');
+        Schema::create('DAT_HOUSEHOLD_ACCOUNT_TRANSACTION', function (Blueprint $table) {
+            $table->string('transaction_id')->primary();
+            $table->date('date');
             $table->integer('amount');
             $table->string('contents');
-            $table->tinyInteger('class');
-//            $table->dateTime('created_at');
+            $table->tinyInteger('type');
+            $table->dateTime('created_at');
 //            $table->dateTime('updated_at');
-            $table->timestamps();
+//            $table->timestamps();
         });
     }
 
@@ -32,7 +32,7 @@ class CreateTableMstHouseholdAccountTransaction extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('MST_HOUSEHOLD_ACCOUNT_TRANSACTION');
+        Schema::dropIfExists('DAT_HOUSEHOLD_ACCOUNT_TRANSACTION');
 
     }
 }

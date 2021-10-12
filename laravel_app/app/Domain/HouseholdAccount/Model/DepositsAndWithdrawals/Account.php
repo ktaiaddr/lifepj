@@ -57,11 +57,12 @@ class Account
      * @param TransactionAmount $transactionAmount
      * @return Account
      */
-    public function increase(TransactionAmount $transactionAmount){
-
-//        $this->balance = $transactionAmount->increaseBalance($this->balance);
+    public function increase(TransactionAmount $transactionAmount): Account
+    {
         $newBalance = $transactionAmount->increaseBalance($this->balance);
+
         return new Account($this->accountId,$newBalance,$this->accountType);
+
     }
 
     /**
@@ -69,10 +70,12 @@ class Account
      * @return Account
      * @throws \Exception
      */
-    public function reduce(TransactionAmount $transactionAmount){
-//        $this->balance = $transactionAmount->reduceBalance($this->balance);
+    public function reduce(TransactionAmount $transactionAmount): Account{
+
         $newBalance = $transactionAmount->reduceBalance($this->balance);
+
         return new Account($this->accountId,$newBalance,$this->accountType);
+
     }
 
 

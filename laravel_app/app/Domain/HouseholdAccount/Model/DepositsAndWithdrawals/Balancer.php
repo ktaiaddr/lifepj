@@ -11,19 +11,19 @@ interface Balancer
      * 残高を更新
      * @param TransactionAmount $transactionAmount
      */
-    public function updateBalance(TransactionAmount $transactionAmount);
+    public function exec(TransactionAmount $transactionAmount);
 
     /**
      * 処理対象が銀行口座が対象であること
      * @return bool
      */
-    public function hasBankTypeAccount();
+    public function targetIsBank();
 
     /**
      * 処理対象が手元現金であること
      * @return bool
      */
-    public function hasHandMoneyAccount();
+    public function targetIsHandMoney();
 
     /**
      * 永続化のための内部データ通知処理
