@@ -13,8 +13,9 @@ interface TransactionRepository
      * @param \DateTime $transactionDate
      * @param String $transactionContents
      * @param Transaction $transaction
-     * @param Account[] $accounts
+     * @param array $accounts
+     * @param int $user_id
      * @return bool
      */
-    function save(string $transactionId, \DateTime $transactionDate, String $transactionContents,Transaction $transaction,array $accounts):bool;
+    function save(string $transactionId, \DateTime $transactionDate, String $transactionContents,Transaction $transaction,array $accounts,int $user_id):bool;
 }

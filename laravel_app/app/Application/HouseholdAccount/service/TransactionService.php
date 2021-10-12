@@ -2,45 +2,32 @@
 
 namespace App\Application\HouseholdAccount\service;
 
-use App\Application\HouseholdAccount\query\AccountQuery;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
+use App\Application\HouseholdAccount\query\AccountBalanceQuery;
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Increaser;
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
 use App\Domain\HouseholdAccount\repository\TransactionRepository;
-use App\infra\HouseholdAccount\EloquentRepository\ModelBuilder;
-use App\infra\HouseholdAccount\inmemoryQuery\AccountInmemoryQuery;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TransactionService
 {
 
-    private AccountQuery $accountQuery;
+    private AccountBalanceQuery $accountQuery;
     private TransactionRepository $transactionRepository;
 
     /**
-     * @param AccountQuery $accountQuery
+     * @param AccountBalanceQuery $accountQuery
      * @param TransactionRepository $transactionRepository
      */
-    public function __construct(AccountQuery $accountQuery,TransactionRepository $transactionRepository)
+    public function __construct(AccountBalanceQuery $accountQuery, TransactionRepository $transactionRepository)
     {
         $this->accountQuery = $accountQuery;
-
-        $this->accountQuery->add(
-            new Account(1,200,new AccountType(AccountType::TYPE_BANK))
-        );
-        $this->accountQuery->add(
-            new Account(2,100,new AccountType(AccountType::TYPE_BANK))
-        );
-
         $this->transactionRepository = $transactionRepository;
     }
 
 
-    public function do(int $amount,int $transactionTypeValue,int $reduceAccountId,int $increaseAccountId, string $contents)
+    public function do(int $amount,int $transactionTypeValue,int $reduceAccountId,int $increaseAccountId, string $contents,int $user_id)
     {
         try{
 
@@ -59,13 +46,17 @@ class TransactionService
             //取引を生成
             $transaction = new Transaction($transactionTypeValue, $transactionAmount);
 
+            //レデューサーをnullで初期化
             $reducer = null;
+            //減らす側のIDが渡されたらリポジトリからデータを取得してレデューサーを生成
             if(isset($reduceAccountId)){
                 $reduceAccount = $this->accountQuery->find($reduceAccountId);
                 $reducer = new Reducer($reduceAccount);
             }
 
+            //インクリージャーをnullで初期か
             $increaser = null;
+            //増やす側のIDが渡されたらリポジトリからデータを取得してインクリージャーを生成
             if(isset($increaseAccountId)){
                 $increaseAccount = $this->accountQuery->find($increaseAccountId);
                 $increaser = new Increaser($increaseAccount);
@@ -73,8 +64,7 @@ class TransactionService
 
             $accounts = $transaction->process($reducer, $increaser);
 
-
-            $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts);
+            $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts,$user_id);
 
 
         }catch (\Exception $e){

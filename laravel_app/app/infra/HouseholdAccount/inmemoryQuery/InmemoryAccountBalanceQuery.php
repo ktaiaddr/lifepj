@@ -4,15 +4,25 @@ namespace App\infra\HouseholdAccount\inmemoryQuery;
 
 
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use JetBrains\PhpStorm\Pure;
+use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
 
-class AccountInmemoryQuery implements \App\Application\HouseholdAccount\query\AccountQuery
+class InmemoryAccountBalanceQuery implements \App\Application\HouseholdAccount\query\AccountBalanceQuery
 {
 
     /**
      * @var Account[]
      */
     private array $accountBalanceCollection = [];
+
+    /**
+     * @param Account[] $accountBalanceCollection
+     */
+    public function __construct()
+    {
+        $this->add(new Account(1,200,new AccountType(AccountType::TYPE_BANK)));
+        $this->add(new Account(2,100,new AccountType(AccountType::TYPE_BANK)));
+    }
+
 
     public function add(Account $accountBalance){
         $this->accountBalanceCollection[] = $accountBalance;
