@@ -4,7 +4,7 @@ namespace App\infra\HouseholdAccount\EloquentRepository;
 
 use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
-use App\Models\HouseholdAccount\AccountBalance;
+use App\Models\HouseholdAccount\EloquentAccountBalance;
 use Illuminate\Support\Facades\DB;
 
 class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repository\TransactionRepository
@@ -44,7 +44,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
 
             $balance = $modelBuilder->balances[$i];
 
-            AccountBalance::create([
+            EloquentAccountBalance::create([
                 'transaction_id' => $balance->transactionId,
                 'account_id' => $balance->accountId,
                 'balance' => $balance->balance,
@@ -52,7 +52,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
         }
 
         DB::commit();
-
+//exit;
         return true;
 
     }

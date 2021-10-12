@@ -64,6 +64,10 @@ bash tool/run.sh artisan "migrate --env=testing"
 bash tool/run.sh artisan "create:Model HouseholdAccount/Transaction"
 ```
 
+ファクトリ
+```bash
+bash tool/run.sh artisan "make:factory HouseholdAccount/AccountBalanceFactory --model=HouseholdAccount/EloquentAccountBalance"
+```
 
 composer require laravel/breeze
 

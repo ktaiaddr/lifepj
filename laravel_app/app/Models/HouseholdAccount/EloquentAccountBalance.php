@@ -5,7 +5,7 @@ namespace App\Models\HouseholdAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AccountBalance extends Model
+class EloquentAccountBalance extends Model
 {
     use HasFactory;
 
