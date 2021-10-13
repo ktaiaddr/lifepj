@@ -2,7 +2,7 @@
 
 namespace App\infra\HouseholdAccount\EloquentRepository;
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
+use App\Domain\HouseholdAccount\Model\Account\Account;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
 use Illuminate\Support\Facades\DB;

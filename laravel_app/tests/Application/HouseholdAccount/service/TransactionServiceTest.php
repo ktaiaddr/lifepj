@@ -2,7 +2,7 @@
 
 namespace Tests\Application\HouseholdAccount\service;
 
-use App\Application\HouseholdAccount\service\TransactionService;
+use App\Application\HouseholdAccount\service\TransactionRegisterService;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 
 
@@ -17,7 +17,7 @@ class TransactionServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    private TransactionService $transactionService;
+    private TransactionRegisterService $transactionService;
 
     protected function setUp(): void
     {
@@ -27,7 +27,7 @@ class TransactionServiceTest extends TestCase
 //        $stmt->execute();
 //        app()->bind(AccountQuery::class,AccountInmemoryQuery::class);
 //        app()->singleton(TransactionRepository::class,TransactionInmemoryRepository::class);
-        $this->transactionService = app()->make(TransactionService::class);;
+        $this->transactionService = app()->make(TransactionRegisterService::class);;
 
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),

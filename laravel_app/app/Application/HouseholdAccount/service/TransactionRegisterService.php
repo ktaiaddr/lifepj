@@ -3,14 +3,14 @@
 namespace App\Application\HouseholdAccount\service;
 
 use App\Application\HouseholdAccount\query\AccountBalanceQuery;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Increaser;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Reducer;
+use App\Domain\HouseholdAccount\Model\Account\Increaser;
+use App\Domain\HouseholdAccount\Model\Account\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 use App\Domain\HouseholdAccount\repository\TransactionRepository;
 use Illuminate\Support\Str;
 
-class TransactionService
+class TransactionRegisterService
 {
 
     private AccountBalanceQuery $accountQuery;
@@ -27,7 +27,13 @@ class TransactionService
     }
 
 
-    public function do(int $amount,int $transactionTypeValue,int $reduceAccountId,int $increaseAccountId, string $contents,int $user_id)
+    public function do(
+        int $amount,
+        int $transactionTypeValue,
+        ?int $reduceAccountId,
+        ?int $increaseAccountId,
+        string $contents,
+        int $user_id)
     {
         try{
 
@@ -46,26 +52,17 @@ class TransactionService
             //取引を生成
             $transaction = new Transaction($transactionTypeValue, $transactionAmount);
 
-            //レデューサーをnullで初期化
-            $reducer = null;
             //減らす側のIDが渡されたらリポジトリからデータを取得してレデューサーを生成
-            if(isset($reduceAccountId)){
-                $reduceAccount = $this->accountQuery->find($reduceAccountId);
-                $reducer = new Reducer($reduceAccount);
-            }
+            $reducer = $this->getReducer($reduceAccountId);
 
-            //インクリージャーをnullで初期か
-            $increaser = null;
             //増やす側のIDが渡されたらリポジトリからデータを取得してインクリージャーを生成
-            if(isset($increaseAccountId)){
-                $increaseAccount = $this->accountQuery->find($increaseAccountId);
-                $increaser = new Increaser($increaseAccount);
-            }
+            $increaser = $this->getIncreaser($increaseAccountId);
 
+            //取引を実行
             $accounts = $transaction->process($reducer, $increaser);
 
+            //取引を永続化
             $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts,$user_id);
-
 
         }catch (\Exception $e){
             $result = $e->getMessage();
@@ -73,4 +70,30 @@ class TransactionService
         }
 
     }
+
+    /**
+     * @param int|null $reduceAccountId
+     * @return Reducer|null
+     */
+    private function getReducer(?int $reduceAccountId){
+
+        if(isset($reduceAccountId))
+            return new Reducer($this->accountQuery->find($reduceAccountId));
+
+        return null;
+    }
+
+    /**
+     * @param int|null $increaseAccountId
+     * @return Reducer|null
+     */
+    private function getIncreaser(?int $increaseAccountId){
+
+        if(isset($increaseAccountId))
+            return new Reducer($this->accountQuery->find($increaseAccountId));
+
+        return null;
+
+    }
+
 }

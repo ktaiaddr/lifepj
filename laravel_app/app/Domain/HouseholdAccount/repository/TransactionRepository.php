@@ -2,7 +2,7 @@
 
 namespace App\Domain\HouseholdAccount\repository;
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
+use App\Domain\HouseholdAccount\Model\Account\Account;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 
 interface TransactionRepository

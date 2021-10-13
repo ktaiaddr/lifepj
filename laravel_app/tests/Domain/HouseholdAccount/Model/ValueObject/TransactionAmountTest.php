@@ -2,7 +2,7 @@
 
 namespace Tests\Domain\HouseholdAccount\Model\ValueObject;
 
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 use PHPUnit\Framework\TestCase;
 
 class TransactionAmountTest extends TestCase

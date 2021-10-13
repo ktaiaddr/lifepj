@@ -3,12 +3,12 @@
 namespace Tests\Domain\HouseholdAccount\Model\Transaction;
 
 use App\Application\HouseholdAccount\query\AccountBalanceQuery;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Increaser;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Reducer;
+use App\Domain\HouseholdAccount\Model\Account\Account;
+use App\Domain\HouseholdAccount\Model\Account\AccountType;
+use App\Domain\HouseholdAccount\Model\Account\Increaser;
+use App\Domain\HouseholdAccount\Model\Account\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 use App\infra\HouseholdAccount\EloquentRepository\ModelBuilder;
 use App\infra\HouseholdAccount\inmemoryQuery\InmemoryAccountBalanceQuery;
 use App\Models\HouseholdAccount\EloquentAccountBalance;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\HouseholdAccount\Model\ValueObject;
+namespace App\Domain\HouseholdAccount\Model\Transaction;
 
 use App\Domain\HouseholdAccount\AccountBalance;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;

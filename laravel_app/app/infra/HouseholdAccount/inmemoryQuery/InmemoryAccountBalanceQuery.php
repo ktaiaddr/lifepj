@@ -3,8 +3,8 @@
 namespace App\infra\HouseholdAccount\inmemoryQuery;
 
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
+use App\Domain\HouseholdAccount\Model\Account\Account;
+use App\Domain\HouseholdAccount\Model\Account\AccountType;
 
 class InmemoryAccountBalanceQuery implements \App\Application\HouseholdAccount\query\AccountBalanceQuery
 {

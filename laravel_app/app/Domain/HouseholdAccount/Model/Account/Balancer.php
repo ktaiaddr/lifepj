@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals;
+namespace App\Domain\HouseholdAccount\Model\Account;
 
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 
 interface Balancer
 {
@@ -25,10 +25,4 @@ interface Balancer
      */
     public function targetIsHandMoney();
 
-    /**
-     * 永続化のための内部データ通知処理
-     * @param string $transactionId
-     * @param NotificationTransaction $modelBuilder
-     */
-    public function notify(string $transactionId, NotificationTransaction $modelBuilder);
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals;
+namespace App\Domain\HouseholdAccount\Model\Account;
 
 use App\Domain\HouseholdAccount\Model\Notification\Balance;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 
 class Account
 {
@@ -12,7 +12,6 @@ class Account
      * @var int 口座ID
      */
     private int $accountId;
-
 
     /**
      * @var int 残高
@@ -24,6 +23,21 @@ class Account
      */
     private AccountType $accountType;
 
+    /**
+     * @param int $accountId
+     * @param int $balance
+     * @param AccountType $accountType
+     */
+    public function __construct(int $accountId, int $balance, AccountType $accountType)
+    {
+        $this->accountId = $accountId;
+        $this->balance = $balance;
+        $this->accountType = $accountType;
+    }
+
+    /**
+     * @return int
+     */
     public function getAccountId(){
         return $this->accountId;
     }
@@ -39,18 +53,6 @@ class Account
      */
     public function isHandMoney(){
         return $this->accountType->isHandMoney();
-    }
-
-    /**
-     * @param int $accountId
-     * @param int $balance
-     * @param AccountType $accountType
-     */
-    public function __construct(int $accountId, int $balance, AccountType $accountType)
-    {
-        $this->accountId = $accountId;
-        $this->balance = $balance;
-        $this->accountType = $accountType;
     }
 
     /**
@@ -77,7 +79,6 @@ class Account
         return new Account($this->accountId,$newBalance,$this->accountType);
 
     }
-
 
     /**
      * 通知

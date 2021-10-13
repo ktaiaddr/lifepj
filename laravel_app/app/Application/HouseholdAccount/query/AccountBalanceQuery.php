@@ -3,7 +3,7 @@
 namespace App\Application\HouseholdAccount\query;
 
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
+use App\Domain\HouseholdAccount\Model\Account\Account;
 
 interface AccountBalanceQuery
 {

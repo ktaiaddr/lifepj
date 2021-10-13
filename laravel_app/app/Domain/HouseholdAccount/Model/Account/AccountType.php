@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals;
+namespace App\Domain\HouseholdAccount\Model\Account;
 
 class AccountType
 {

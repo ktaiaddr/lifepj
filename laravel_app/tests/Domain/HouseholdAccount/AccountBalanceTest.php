@@ -3,11 +3,11 @@
 namespace Tests\Domain\Model;
 
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Deposits;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Balancer;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Withdrawals;
+use App\Domain\HouseholdAccount\Model\Account\Account;
+use App\Domain\HouseholdAccount\Model\Account\AccountType;
+use App\Domain\HouseholdAccount\Model\Account\Deposits;
+use App\Domain\HouseholdAccount\Model\Account\Balancer;
+use App\Domain\HouseholdAccount\Model\Account\Withdrawals;
 use PHPUnit\Framework\TestCase;
 
 class AccountBalanceTest extends TestCase

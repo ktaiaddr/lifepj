@@ -2,14 +2,14 @@
 
 namespace App\Domain\HouseholdAccount\Model\Transaction;
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Balancer;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Deposits;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Increaser;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Reducer;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Withdrawals;
+use App\Domain\HouseholdAccount\Model\Account\Account;
+use App\Domain\HouseholdAccount\Model\Account\Balancer;
+use App\Domain\HouseholdAccount\Model\Account\Deposits;
+use App\Domain\HouseholdAccount\Model\Account\Increaser;
+use App\Domain\HouseholdAccount\Model\Account\Reducer;
+use App\Domain\HouseholdAccount\Model\Account\Withdrawals;
 use App\Domain\HouseholdAccount\Model\Notification\NotificationTransaction;
-use App\Domain\HouseholdAccount\Model\ValueObject\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 use App\infra\HouseholdAccount\EloquentRepository\ModelBuilder;
 
 class Transaction

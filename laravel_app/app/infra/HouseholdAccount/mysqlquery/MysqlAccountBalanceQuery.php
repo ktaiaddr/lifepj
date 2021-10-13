@@ -2,8 +2,8 @@
 
 namespace App\infra\HouseholdAccount\mysqlquery;
 
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\Account;
-use App\Domain\HouseholdAccount\Model\DepositsAndWithdrawals\AccountType;
+use App\Domain\HouseholdAccount\Model\Account\Account;
+use App\Domain\HouseholdAccount\Model\Account\AccountType;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
 use Illuminate\Support\Facades\DB;
 
