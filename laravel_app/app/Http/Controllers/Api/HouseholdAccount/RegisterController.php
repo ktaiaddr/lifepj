@@ -38,14 +38,11 @@ class RegisterController extends Controller
             // リクエストをupdateコマンドに変換
             $registerCommand = $request->transferCommand();
 
-            // updateコマンドで登録又は更新
-//            if($updateCommand->isNew())
-            $refueling_id = $this->transactionRegisterService->do( $registerCommand, $user_id );
-//            else
-//                $refueling_id = $this->registerService->update( $updateCommand, $user_id );
+            // 登録
+            $transactionId = $this->transactionRegisterService->do( $registerCommand, $user_id );
 
             // レスポンス
-            return response()->json( ['id'=> $refueling_id] );
+            return response()->json( ['$transactionId'=> $transactionId] );
         }
         catch(\Exception $e){
             return response()->json(['message'=>$e->getMessage()],400);

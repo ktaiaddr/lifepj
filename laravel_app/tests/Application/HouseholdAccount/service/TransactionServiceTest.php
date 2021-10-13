@@ -51,7 +51,7 @@ class TransactionServiceTest extends TestCase
         EloquentAccout::create([
             'account_id'=>2,
             'user_id'=>2,
-            'type'=>3,
+            'type'=>1,
             'name'=>"fuga",
         ]);
 

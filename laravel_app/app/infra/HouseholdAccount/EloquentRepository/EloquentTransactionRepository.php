@@ -20,6 +20,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
      */
     function save(string $transactionId, \DateTime $transactionDate, string $transactionContents, Transaction $transaction, array $accounts, int $user_id):bool
     {
+
         $modelBuilder = new ModelBuilder();
         $modelBuilder->transactionId($transactionId);
         $modelBuilder->transactionDate($transactionDate);
@@ -40,19 +41,29 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
             'type' => $modelBuilder->transactionType
         ]);
 
+        if(! $result){
+            DB::rollBack();
+            return false;
+        }
+
         for($i=0; $i < count($modelBuilder->balances) ; $i++){
 
             $balance = $modelBuilder->balances[$i];
 
-            EloquentAccountBalance::create([
+            $result = EloquentAccountBalance::create([
                 'transaction_id' => $balance->transactionId,
                 'account_id' => $balance->accountId,
                 'balance' => $balance->balance,
             ]);
+
+            if(! $result){
+                DB::rollBack();
+                return false;
+            }
         }
 
         DB::commit();
-//exit;
+
         return true;
 
     }

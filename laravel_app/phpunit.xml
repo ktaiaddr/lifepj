@@ -11,25 +11,25 @@
 <!--            <directory suffix="Test.php">./tests/Unit</directory>-->
 <!--        </testsuite>-->
 
-<!--        <testsuite name="HouseholdAccount">-->
-<!--            <directory suffix="Test.php">./tests/Domain/HouseholdAccount</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Domain">-->
-<!--            <directory suffix="Test.php">./tests/Domain/Model</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Application">-->
-<!--            <directory suffix="Test.php">./tests/Application</directory>-->
-<!--        </testsuite>-->
+        <testsuite name="HouseholdAccount">
+            <directory suffix="Test.php">./tests/Domain/HouseholdAccount</directory>
+        </testsuite>
+        <testsuite name="Domain">
+            <directory suffix="Test.php">./tests/Domain/Model</directory>
+        </testsuite>
+        <testsuite name="Application">
+            <directory suffix="Test.php">./tests/Application</directory>
+        </testsuite>
 
-<!--        <testsuite name="infra_EloquentRepository">-->
-<!--            <directory suffix="Test.php">./tests/infra/EloquentRepository</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="infra_mysqlquery">-->
-<!--            <directory suffix="Test.php">./tests/infra/mysqlquery</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Feature">-->
-<!--            <directory suffix="Test.php">./tests/Feature</directory>-->
-<!--        </testsuite>-->
+        <testsuite name="infra_EloquentRepository">
+            <directory suffix="Test.php">./tests/infra/EloquentRepository</directory>
+        </testsuite>
+        <testsuite name="infra_mysqlquery">
+            <directory suffix="Test.php">./tests/infra/mysqlquery</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
 
         <testsuite name="Http">
             <directory suffix="Test.php">./tests/Http</directory>

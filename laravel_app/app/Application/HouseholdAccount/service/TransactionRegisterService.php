@@ -61,14 +61,15 @@ class TransactionRegisterService
             $accounts = $transaction->process($reducer, $increaser);
 
             //取引を永続化
-            $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts,$user_id);
+            $bool = $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts,$user_id);
 
         }catch (\Exception $e){
             $result = $e->getMessage();
-//            var_dump($result);
+
             throw $e;
         }
 
+        return $transactionId;
     }
 
     /**

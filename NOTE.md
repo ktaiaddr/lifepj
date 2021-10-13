@@ -40,6 +40,10 @@ class HogeTest extends TestCase
 上から順番にテストが実行されるっぽい
 なので、順番に依存するテストがあるならそのように並べるのが吉かも
 
+特定のテストスイートのみ実行する場合は`--testsuite=スイート名`とする
+```shell
+bash tool/run.sh test --testsuite=Http
+```
 
 Laravel8 + Sanctum + ReactでSPA認証  
 https://nochio12.hatenablog.com/entry/2020/10/03/215718
