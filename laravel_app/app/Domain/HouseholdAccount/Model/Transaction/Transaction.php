@@ -94,6 +94,42 @@ class Transaction
     }
 
     /**
+     * @param Reducer|null $reducer
+     * @param Increaser|null $increaser
+     * @return Balancer[]
+     */
+    private function takeBalancers(?Reducer $reducer, ?Increaser $increaser):array{
+
+        //残高のバランサーを検査する
+        if(! $this->inspectionBalancers($reducer, $increaser))
+            throw new \Exception($this->getLabel().'アカウントエラー',401);
+
+        //口座間転送
+        if($this->isAccountTransfer())
+            return [$reducer,$increaser];
+
+        //現金加算
+        if($this->isCashAddition())
+            return [$increaser];
+
+        //現金払い
+        if($this->isCashPayment())
+            return [$reducer];
+
+        //引き落とし
+        if($this->isDirectDevit())
+            return [$reducer];
+
+        //入金
+        if($this->isMoneyReceived())
+            return [$increaser];
+
+        //現金引き出し
+        if($this->isWithdrawalDeposit())
+            return [$reducer,$increaser];
+    }
+
+    /**
      * Blanacerオブジェクトが正しいか検査
      * @param Reducer|null $reducer
      * @param Increaser|null $increaser
@@ -122,41 +158,7 @@ class Transaction
 
     }
 
-    /**
-     * @param Reducer|null $reducer
-     * @param Increaser|null $increaser
-     * @return Balancer[]
-     */
-    private function takeBalancers(?Reducer $reducer, ?Increaser $increaser):array{
 
-        //残高のバランサーを検査する
-        if(! $this->inspectionBalancers($reducer, $increaser))
-            throw new \Exception($this->getLabel().'アカウントエラー');
-
-        //口座間転送
-        if($this->isAccountTransfer())
-            return [$reducer,$increaser];
-
-        //現金加算
-        if($this->isCashAddition())
-            return [$increaser];
-
-        //現金払い
-        if($this->isCashPayment())
-            return [$reducer];
-
-        //引き落とし
-        if($this->isDirectDevit())
-            return [$reducer];
-
-        //入金
-        if($this->isMoneyReceived())
-            return [$increaser];
-
-        //現金引き出し
-        if($this->isWithdrawalDeposit())
-            return [$reducer,$increaser];
-    }
 
     public function notify(NotificationTransaction $modelBuilder){
         $modelBuilder->transactionType($this->transactionTypeValue);

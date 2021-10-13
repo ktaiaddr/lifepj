@@ -5,6 +5,7 @@ namespace App\Application\HouseholdAccount\service;
 use App\Application\HouseholdAccount\query\AccountBalanceQuery;
 use App\Domain\HouseholdAccount\Model\Account\Increaser;
 use App\Domain\HouseholdAccount\Model\Account\Reducer;
+use App\Domain\HouseholdAccount\Model\Transaction\RegisterCommand;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
 use App\Domain\HouseholdAccount\repository\TransactionRepository;
@@ -26,14 +27,12 @@ class TransactionRegisterService
         $this->transactionRepository = $transactionRepository;
     }
 
-
-    public function do(
-        int $amount,
-        int $transactionTypeValue,
-        ?int $reduceAccountId,
-        ?int $increaseAccountId,
-        string $contents,
-        int $user_id)
+    /**
+     * @param RegisterCommand $registerCommand
+     * @param int $user_id
+     * @throws \Exception
+     */
+    public function do(RegisterCommand $registerCommand, int $user_id)
     {
         try{
 
@@ -44,19 +43,19 @@ class TransactionRegisterService
             $transactionDate = new \Datetime();
 
             //取引金額を生成
-            $transactionAmount = new TransactionAmount($amount);
+            $transactionAmount = new TransactionAmount($registerCommand->amount);
 
             //取引内容
-            $transactionContents = $contents;
+            $transactionContents = $registerCommand->contents;
 
             //取引を生成
-            $transaction = new Transaction($transactionTypeValue, $transactionAmount);
+            $transaction = new Transaction($registerCommand->transactionTypeValue, $transactionAmount);
 
             //減らす側のIDが渡されたらリポジトリからデータを取得してレデューサーを生成
-            $reducer = $this->getReducer($reduceAccountId);
+            $reducer = $this->getReducer($registerCommand->reduceAccountId);
 
             //増やす側のIDが渡されたらリポジトリからデータを取得してインクリージャーを生成
-            $increaser = $this->getIncreaser($increaseAccountId);
+            $increaser = $this->getIncreaser($registerCommand->increaseAccountId);
 
             //取引を実行
             $accounts = $transaction->process($reducer, $increaser);
@@ -66,7 +65,8 @@ class TransactionRegisterService
 
         }catch (\Exception $e){
             $result = $e->getMessage();
-            var_dump($result);
+//            var_dump($result);
+            throw $e;
         }
 
     }
@@ -85,12 +85,12 @@ class TransactionRegisterService
 
     /**
      * @param int|null $increaseAccountId
-     * @return Reducer|null
+     * @return Increaser|null
      */
     private function getIncreaser(?int $increaseAccountId){
 
         if(isset($increaseAccountId))
-            return new Reducer($this->accountQuery->find($increaseAccountId));
+            return new Increaser($this->accountQuery->find($increaseAccountId));
 
         return null;
 

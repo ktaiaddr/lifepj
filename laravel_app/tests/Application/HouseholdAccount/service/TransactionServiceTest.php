@@ -3,6 +3,7 @@
 namespace Tests\Application\HouseholdAccount\service;
 
 use App\Application\HouseholdAccount\service\TransactionRegisterService;
+use App\Domain\HouseholdAccount\Model\Transaction\RegisterCommand;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 
 
@@ -67,6 +68,7 @@ class TransactionServiceTest extends TestCase
      */
     public function test_登録(){
         $amount = 1001;
-        $this->transactionService->do($amount,Transaction::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema",999);
+        $registerCommand = new RegisterCommand($amount,Transaction::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema");
+        $this->transactionService->do($registerCommand,999);
     }
 }

@@ -41,6 +41,6 @@ QUERY;
 
         }
 
-        return new Account($result['account_id'], $result['balance'], new AccountType($result['type']) );
+        return new Account($result['account_id'], ($result['balance'] ?:0) , new AccountType($result['type']) );
     }
 }
