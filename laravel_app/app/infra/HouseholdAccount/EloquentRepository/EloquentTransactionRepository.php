@@ -32,7 +32,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
 
         DB::beginTransaction();
 
-        $result = \App\Models\HouseholdAccount\Transaction::create([
+        $result = \App\Models\HouseholdAccount\EloquentTransaction::create([
             'transaction_id' => $modelBuilder->transactionId,
             'user_id' => $user_id,
             'date'=> $modelBuilder->transactionDate->format('Y-m-d'),

@@ -121,9 +121,8 @@ class RegisterControllerTest extends TestCase
             "contents" => $contents,
         ],$header);
 
+        $response->assertStatus($status);
 
         $response->dump();
-
-        $response->assertStatus($status);
     }
 }

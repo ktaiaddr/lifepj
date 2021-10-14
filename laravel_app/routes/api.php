@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Api\HouseholdAccount\RegisterController;
+use App\Http\Controllers\Api\HouseholdAccount\ViewController;
 use App\Http\Controllers\MyLogin\LoginCheckController;
 use App\Http\Controllers\MyLogin\LoginController;
 use App\Http\Controllers\MyLogin\LogoutController;
@@ -47,7 +48,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 //口座管理
-/*一覧のリストを取得  */ Route::get('/household_account', SearchController::class );
+/*一覧のリストを取得  */ Route::get('/household_account', ViewController::class );
 /*新規データを登録   */  Route::post('/household_account', [RegisterController::class,'register']);
 ///*指定IDのデータを取得*/ Route::get('/household_account/{refueling_id}', [RegisterController::class,'entry'] );
 ///*指定IDのデータを更新*/ Route::put('/household_account/{refueling_id}', [RegisterController::class,'update']);

@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class TransactionServiceTest extends TestCase
+class TransactionRegisterServiceTest extends TestCase
 {
     use RefreshDatabase;
 
