@@ -9,6 +9,7 @@ use App\Domain\HouseholdAccount\Model\Account\Increaser;
 use App\Domain\HouseholdAccount\Model\Account\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\infra\HouseholdAccount\EloquentRepository\ModelBuilder;
 use App\infra\HouseholdAccount\inmemoryQuery\InmemoryAccountBalanceQuery;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
@@ -85,45 +86,45 @@ class TransactionImplTest extends TestCase
             '口座間転送アカウント１⇨２に１９９円送金'=> [
                 ['reduce'=>[self::ACCOUNT_BANK1,self::ACCOUNT_BANK1_AMOUNT -199],'increase'=>[self::ACCOUNT_BANK2, self::ACCOUNT_BANK2_AMOUNT+199]],
                 199,
-                Transaction::CLASSIFICATION_ACCOUNT_TRANSFER,
+                TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,
                 '正常処理'
             ],
             '現金加算2９９円'=> [
                 ['increase'=>[self::ACCOUNT_HAND_MONEY, self::ACCOUNT_HAND_MONEY_AMOUNT + 299]],
                 299,
-                Transaction::CLASSIFICATION_CASH_ADDITION,
+                TransactionType::CLASSIFICATION_CASH_ADDITION,
                 '正常処理'
             ],
             '現金払い１９９円'=> [
                 ['reduce'=>[self::ACCOUNT_HAND_MONEY,self::ACCOUNT_HAND_MONEY_AMOUNT -199]],
                 199,
-                Transaction::CLASSIFICATION_CASH_PAYMENT,
+                TransactionType::CLASSIFICATION_CASH_PAYMENT,
                 '正常処理'
             ],
             '口座引落し１９９円'=> [
                 ['reduce'=>[self::ACCOUNT_BANK2,self::ACCOUNT_BANK2_AMOUNT-95]],
                 95,
-                Transaction::CLASSIFICATION_DIRECT_DEVIT,
+                TransactionType::CLASSIFICATION_DIRECT_DEVIT,
                 '正常処理'
             ],
             '入金　アカウント１⇨２に100000円'=> [[
                 'increase'=>[self::ACCOUNT_BANK1, self::ACCOUNT_BANK1_AMOUNT+100000]],
                 100000,
-                Transaction::CLASSIFICATION_MONEY_RECEIVED,
+                TransactionType::CLASSIFICATION_MONEY_RECEIVED,
                 '正常処理'
             ],
             '引き出し１９９円送金する'=> [
                 ['reduce'=>[self::ACCOUNT_BANK2,self::ACCOUNT_BANK2_AMOUNT-28], 'increase'=>[self::ACCOUNT_HAND_MONEY, self::ACCOUNT_HAND_MONEY_AMOUNT+28]],
                 28,
-                Transaction::CLASSIFICATION_WITHDRAWAL_DEPOSIT,
+                TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,
                 '正常処理'
             ],
-            '口座振替アカウントエラー' => [null,1,Transaction::CLASSIFICATION_ACCOUNT_TRANSFER,'口座振替アカウントエラー'],
-            '現金加算アカウントエラー' => [null,1,Transaction::CLASSIFICATION_CASH_ADDITION,'現金加算アカウントエラー'],
-            '現金払いアカウントエラー' => [null,1,Transaction::CLASSIFICATION_CASH_PAYMENT,'現金払いアカウントエラー'],
-            '口座引落しアカウントエラー' => [null,1,Transaction::CLASSIFICATION_DIRECT_DEVIT,'口座引落しアカウントエラー'],
-            '入金アカウントエラー' => [null,1,Transaction::CLASSIFICATION_MONEY_RECEIVED,'入金アカウントエラー'],
-            '引き出しアカウントエラー' => [null,1,Transaction::CLASSIFICATION_WITHDRAWAL_DEPOSIT,'引き出しアカウントエラー'],
+            '口座振替アカウントエラー' => [null,1,TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,'口座振替アカウントエラー'],
+            '現金加算アカウントエラー' => [null,1,TransactionType::CLASSIFICATION_CASH_ADDITION,'現金加算アカウントエラー'],
+            '現金払いアカウントエラー' => [null,1,TransactionType::CLASSIFICATION_CASH_PAYMENT,'現金払いアカウントエラー'],
+            '口座引落しアカウントエラー' => [null,1,TransactionType::CLASSIFICATION_DIRECT_DEVIT,'口座引落しアカウントエラー'],
+            '入金アカウントエラー' => [null,1,TransactionType::CLASSIFICATION_MONEY_RECEIVED,'入金アカウントエラー'],
+            '引き出しアカウントエラー' => [null,1,TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,'引き出しアカウントエラー'],
             '取引区分が不正です' => [null,1,99,'取引区分が不正です'],
         ];
     }
@@ -172,7 +173,7 @@ class TransactionImplTest extends TestCase
             $transactionContents = "";
 
             //取引を生成
-            $transaction = new Transaction($transactionTypeValue, $transactionAmount);
+            $transaction = new Transaction(new TransactionType($transactionTypeValue), $transactionAmount);
 
             if(isset($reduceAccountId)){
                 $reduceAccount = $this->accountBalanceQuery->find($reduceAccountId);

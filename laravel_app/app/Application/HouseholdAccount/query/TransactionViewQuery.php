@@ -7,8 +7,8 @@ use App\Application\HouseholdAccount\QueryModel\TransactionViewModel;
 interface TransactionViewQuery
 {
     /**
-     * @param int $userId
+     * @param string $userId
      * @return TransactionViewModel[]
      */
-    public function find(int $userId):array;
+    public function find(string $userId):array;
 }

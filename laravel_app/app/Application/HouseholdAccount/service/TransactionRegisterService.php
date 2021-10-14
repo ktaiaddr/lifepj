@@ -8,6 +8,7 @@ use App\Domain\HouseholdAccount\Model\Account\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\RegisterCommand;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionAmount;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\Domain\HouseholdAccount\repository\TransactionRepository;
 use Illuminate\Support\Str;
 
@@ -49,7 +50,7 @@ class TransactionRegisterService
             $transactionContents = $registerCommand->contents;
 
             //取引を生成
-            $transaction = new Transaction($registerCommand->transactionTypeValue, $transactionAmount);
+            $transaction = new Transaction(new TransactionType($registerCommand->transactionTypeValue), $transactionAmount);
 
             //減らす側のIDが渡されたらリポジトリからデータを取得してレデューサーを生成
             $reducer = $this->getReducer($registerCommand->reduceAccountId);

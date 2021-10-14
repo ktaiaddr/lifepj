@@ -9,9 +9,9 @@ class TransactionViewModel
      */
     public string $transactionId;
     /**
-     * @var \Datetime 取引日
+     * @var string 取引日
      */
-    public \Datetime $date;
+    public string $date;
     /**
      * @var int 取引金額
      */
@@ -21,9 +21,9 @@ class TransactionViewModel
      */
     public string $contents;
     /**
-     * @var int 取引タイプ
+     * @var string 取引タイプラベル
      */
-    public int $type;
+    public string $typeLabel;
     /**
      * @var AccountBalanceViewModel[] 残高リスト
      */
@@ -31,19 +31,19 @@ class TransactionViewModel
 
     /**
      * @param string $transactionId
-     * @param \Datetime $date
+     * @param string $date
      * @param int $amount
      * @param string $contents
-     * @param int $type
+     * @param string $type
      * @param AccountBalanceViewModel[] $balances
      */
-    public function __construct(string $transactionId, \Datetime $date, int $amount, string $contents, int $type, array $balances)
+    public function __construct(string $transactionId, string $date, int $amount, string $contents, string $typeLabel, array $balances)
     {
         $this->transactionId = $transactionId;
         $this->date = $date;
         $this->amount = $amount;
         $this->contents = $contents;
-        $this->type = $type;
+        $this->typeLabel = $typeLabel;
         $this->balances = $balances;
     }
 
@@ -51,7 +51,7 @@ class TransactionViewModel
      * @param AccountBalanceViewModel[] $balances
      */
     public function addBalanceRecreate(array $balances){
-        return new TransactionViewModel($this->transactionId,$this->date,$this->amount,$this->contents,$this->type,$balances);
+        return new TransactionViewModel($this->transactionId,$this->date,$this->amount,$this->contents,$this->typeLabel,$balances);
     }
 
 }

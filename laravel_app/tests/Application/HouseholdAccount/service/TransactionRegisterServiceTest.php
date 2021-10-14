@@ -8,6 +8,7 @@ use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 
 
 //use PHPUnit\Framework\TestCase;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
 use App\Models\HouseholdAccount\EloquentAccout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -68,7 +69,7 @@ class TransactionRegisterServiceTest extends TestCase
      */
     public function test_登録(){
         $amount = 1001;
-        $registerCommand = new RegisterCommand($amount,Transaction::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema");
+        $registerCommand = new RegisterCommand($amount,TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema");
         $this->transactionService->do($registerCommand,999);
     }
 }

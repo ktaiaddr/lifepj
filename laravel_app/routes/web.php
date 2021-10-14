@@ -33,6 +33,8 @@ Route::get('/mylogin', [baseController::class,'create']);
 /*編集*/ Route::get('/refueling/regist/{refueling_id}', [baseController::class,'create']);
 
 Route::get('/household_account', [baseController::class,'create']);
+Route::get('/household_account/regist', [baseController::class,'create']);
+
 Route::get('/myforgetpassword', [baseController::class,'create']);
 Route::get('/myresetpassword/{token}', [baseController::class,'create']);
 Route::get('/myregisteruser', [baseController::class,'create']);

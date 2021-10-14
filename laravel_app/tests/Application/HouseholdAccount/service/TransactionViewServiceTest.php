@@ -6,6 +6,7 @@ use App\Application\HouseholdAccount\QueryModel\TransactionViewModel;
 use App\Application\HouseholdAccount\service\TransactionRegisterService;
 use App\Application\HouseholdAccount\service\TransactionViewService;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
 use App\Models\HouseholdAccount\EloquentAccout;
 use App\Models\HouseholdAccount\EloquentTransaction;
@@ -34,7 +35,7 @@ class TransactionViewServiceTest extends TestCase
             'date' => (new \DateTime())->format('Y-m-d'),
             'amount' => 100,
             'contents' => '',
-            'type' => Transaction::CLASSIFICATION_ACCOUNT_TRANSFER
+            'type' => TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER
         ]);
 
         EloquentAccountBalance::create([

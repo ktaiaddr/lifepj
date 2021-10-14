@@ -6,6 +6,8 @@ use App\Application\HouseholdAccount\QueryModel\AccountBalanceViewModel;
 use App\Application\HouseholdAccount\QueryModel\TransactionViewModel;
 use App\Domain\HouseholdAccount\Model\Account\Account;
 use App\Domain\HouseholdAccount\Model\Account\AccountType;
+use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
+use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use Illuminate\Support\Facades\DB;
 
 class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\query\TransactionViewQuery
@@ -14,31 +16,31 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
     /**
      * @inheritDoc
      */
-    public function find(int $userId): array
+    public function find(string $userId): array
     {
         try{
 
             /** @var  $pdo \PDO */
             $pdo = DB::getPdo();
 
-            $query  = "    select TRANSACTION.`transaction_id`,                                            ";
-            $query .= "           TRANSACTION.`date`,                                                  ";
-            $query .= "           TRANSACTION.`amount`,                                                  ";
-            $query .= "           TRANSACTION.`contents`,                                                  ";
-            $query .= "           TRANSACTION.`type`  as transaction_type,                                                  ";
+            $query  = "    select DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`transaction_id`,                                            ";
+            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`date`,                                                  ";
+            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`amount`,                                                  ";
+            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`contents`,                                                  ";
+            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`type`  as transaction_type,                                                  ";
             $query .= "           BALANCE.`account_id`,                              ";
             $query .= "           BALANCE.`balance`    ,                          ";
             $query .= "           ACCOUNT.`name`        ,                      ";
             $query .= "           ACCOUNT.`type`  as account_type                           ";
 
-            $query .= "      FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION as TRANSACTION            ";
+            $query .= "      FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION            ";
             $query .= " left join DAT_HOUSEHOLD_ACCOUNT_BALANCE as BALANCE               ";
-            $query .= "        on TRANSACTION.transaction_id = BALANCE.transaction_id  ";
+            $query .= "        on DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.transaction_id = BALANCE.transaction_id  ";
             $query .= " left join MST_ACCOUNT as ACCOUNT               ";
             $query .= "        on BALANCE.account_id = ACCOUNT.account_id  ";
 
-            $query .= "     where TRANSACTION.user_id = :user_id                               ";
-            $query .= "  order by TRANSACTION.created_at desc                      ";
+            $query .= "     where DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.user_id = :user_id                               ";
+            $query .= "  order by DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.created_at desc                      ";
             $query .= "     limit 10                     ";
 
             $stmt = $pdo->prepare( $query );
@@ -73,10 +75,10 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
                 // 残高無しで生成
                 $transactionViewModel = new TransactionViewModel(
                     $resultRow['transaction_id'],
-                    new \DateTime($resultRow['date']),
+                    $resultRow['date'],
                     $resultRow['amount'],
                     $resultRow['contents'],
-                    $resultRow['transaction_type'],
+                    TransactionType::LABEL[ $resultRow['transaction_type'] ],
                     []
                 );
 
@@ -87,7 +89,8 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
 
         }
         catch(\Exception $e){
-            $transactionViewModelList = null;
+            var_dump($e->getMessage());
+            $transactionViewModelList = [];
         }
 //var_dump($transactionViewModelList);
         return $transactionViewModelList;

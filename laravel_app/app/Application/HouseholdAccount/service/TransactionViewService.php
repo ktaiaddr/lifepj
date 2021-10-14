@@ -22,7 +22,7 @@ class TransactionViewService
      * @param int $user_id
      * @return TransactionViewModel[]
      */
-    public function do(int $user_id):array{
+    public function do(string $user_id):array{
 
         try{
             $transactionViewModelList = $this->transactionViewQuery->find( $user_id );
