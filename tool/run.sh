@@ -16,24 +16,26 @@ fi
 
 #プロジェクトのルートディレクトリの定義
 THISDIR=$(cd $(dirname $0)/..;pwd)
+#
+source ${THISDIR}/.env
 
-##コンテナ関連定義
-#ネットワーク名
-CONTAINER_NETWORK="lifenetwork"
-#イメージ名
-WEB_IMAGE_NAME="alpine-fpm_nginx:latest"
-#WEB_IMAGE_NAME="lifepj---php--8.1.0rc1-fpm-alpine3.13:20210921"
-MYSQL_IMAGE_NAME="mysql:8.0.24"
-NODEJS_IMAGE_NAME="node:14.16.1-alpine"
-#コンテナ名
-WEB_CONTAINER_NAME="life_web_container"
-MYSQL_CONTAINER_NAME="life_mysql_container"
-NODEJS_CONTAINER_NAME="lifepj_node"
-MAILHOG_CONTAINER_NAME="mailhog"
-#ボリューム名
-MYSQL_VOLUME_NAME="lifemysql_data"
+###コンテナ関連定義
+##ネットワーク名
+#CONTAINER_NETWORK="lifenetwork"
+##イメージ名
+#WEB_IMAGE_NAME="alpine-fpm_nginx:latest"
+##WEB_IMAGE_NAME="lifepj---php--8.1.0rc1-fpm-alpine3.13:20210921"
+#MYSQL_IMAGE_NAME="mysql:8.0.24"
+#NODEJS_IMAGE_NAME="node:14.16.1-alpine"
+##コンテナ名
+#WEB_CONTAINER_NAME="life_web_container"
+#MYSQL_CONTAINER_NAME="life_mysql_container"
+#NODEJS_CONTAINER_NAME="lifepj_node"
+#MAILHOG_CONTAINER_NAME="mailhog"
+##ボリューム名
+#MYSQL_VOLUME_NAME="lifemysql_data"
 
-
+echo $CONTAINER_NETWORK
 #################################################################################
 #コンテナ群を起動
 #################################################################################
