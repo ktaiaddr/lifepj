@@ -19,6 +19,8 @@ interface TransactionView{
     balances:AccountBalance[]
 }
 
+const rowColor = (index: number)=> ( index%2==1 ? {background:"lightblue"} : {} )
+
 export default ()=>{
     const [accountBalanceDataList,setAccountBalanceDataList] = useState<TransactionView[]>([])
 
@@ -59,25 +61,6 @@ export default ()=>{
             if(result){
                 console.log(result)
                 setAccountBalanceDataList(result.data.data);
-                result.data.data.map((row:TransactionView)=>{
-                    console.log(row.transactionId)
-                    console.log(row.date)
-                    console.log(row.amount)
-                    console.log(row.contents)
-                    console.log(row.typeLabel)
-                    row.balances.map(row2=>{
-                        console.log(row2.accountId)
-                        console.log(row2.balance)
-                        console.log(row2.name)
-                    })
-                })
-                // setRefuelings_data_list(result.data.list)
-                // setRefuelingsCount(result.data.count)
-                // setTotalAmount(result.data.total_refueling_amount)
-                // setTotalDistance(result.data.total_refueling_distance)
-                // setTotalFuelEconomy(result.data.total_fuel_economy)
-                // setPagingSelectable([...Array(Math.ceil(result.data.count/pageLimitSelect)).keys()].map(i => ++i))
-                // setReaded(true)
             }
         }
         await f2();
@@ -94,22 +77,44 @@ export default ()=>{
             <div>
                 家計簿のページ
                 <div>
-                    <table className="table" style={{color:"red"}}>
-                    {accountBalanceDataList.map(row=>(
+                    <table className="table" style={{verticalAlign:"middle"}}>
+                        <thead>
                         <tr>
-                            <td>{row.date}</td>
-                            <td>{row.transactionId}</td>
-                            <td>{row.typeLabel}</td>
-                            <td>{row.amount}円</td>
-                            <td>
-                            {row.balances.map(row2=>(
-                                <>
-                                    口座：{row2.name} / {row2.balance}円 / {row2.accountId}円<br />
-                                </>
-                            ))}
-                            </td>
+                            <th>日付</th>
+                            <th>取引種別</th>
+                            <th>金額</th>
+                            <th>取引内容</th>
+                            <th>口座</th>
+                            <th>残高</th>
                         </tr>
-                    ))}
+                        </thead>
+                        <tbody>
+                        {accountBalanceDataList.map((row,index)=> {
+                                const rowlength = row.balances.length;
+                                const first = row.balances.shift()
+                                return (<>
+                                    <tr style={rowColor(index)} >
+                                        <td rowSpan={rowlength}>{row.date}</td>
+                                        <td rowSpan={rowlength}>{row.typeLabel}</td>
+                                        <td rowSpan={rowlength}>{row.amount}円</td>
+                                        <td rowSpan={rowlength}>{row.contents}</td>
+                                        <td>{first?first.name:""}</td>
+                                        <td>{first?first.balance+"円":""}</td>
+                                    </tr>
+                                    {row.balances.length ?
+                                        row.balances.map((row2)=>(
+                                            <tr style={rowColor(index)}>
+                                                <td>{row2?row2.name:""}</td>
+                                                <td>{row2?row2.balance+"円":""}</td>
+                                            </tr>
+                                        )) :
+                                        <></>
+                                    }
+                                </>)
+                            }
+                        )}
+                        </tbody>
+
                     </table>
                 </div>
             </div>

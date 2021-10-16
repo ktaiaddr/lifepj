@@ -31,18 +31,19 @@ class TransactionType
      */
     const CLASSIFICATION_WITHDRAWAL_DEPOSIT = 6;
     const VALUE_LABEL = [
-        self::CLASSIFICATION_ACCOUNT_TRANSFER  => '口座振替',
-        self::CLASSIFICATION_CASH_ADDITION  => '現金加算',
-        self::CLASSIFICATION_CASH_PAYMENT  => '現金払い',
-        self::CLASSIFICATION_DIRECT_DEVIT  => '口座引落し',
-        self::CLASSIFICATION_MONEY_RECEIVED  => '入金',
-        self::CLASSIFICATION_WITHDRAWAL_DEPOSIT  => '引き出し',
+        ['value'=>self::CLASSIFICATION_ACCOUNT_TRANSFER  ,'label'=> '口座振替'],
+        ['value'=>self::CLASSIFICATION_CASH_ADDITION  ,'label'=> '現金加算'],
+        ['value'=>self::CLASSIFICATION_CASH_PAYMENT  ,'label'=> '現金払い'],
+        ['value'=>self::CLASSIFICATION_DIRECT_DEVIT  ,'label'=> '口座引落し'],
+        ['value'=>self::CLASSIFICATION_MONEY_RECEIVED  ,'label'=> '入金'],
+        ['value'=>self::CLASSIFICATION_WITHDRAWAL_DEPOSIT  ,'label'=> '引き出し'],
     ];
 
     private int $transactionTypeValue;
 
     public function getLabel(){
-        return self::VALUE_LABEL[ $this->transactionTypeValue ];
+        $filtered = array_filter(self::VALUE_LABEL,fn($a)=> $a['value'] == $this->transactionTypeValue);
+        return array_shift($filtered)['label'];
     }
 
     /**
@@ -50,16 +51,7 @@ class TransactionType
      */
     public static function getTypeDefines(): array
     {
-
-        $values = array_keys(self::VALUE_LABEL);
-
-        $typeDefines = [];
-
-        foreach( $values as $value ){
-            $typeDefines[] = new TransactionTypeDefine($value, self::VALUE_LABEL[$value] );
-        }
-
-        return $typeDefines;
+        return array_map(fn($a,$b) => new TransactionTypeDefine($a['value'], $a['label']),self::VALUE_LABEL,[]);
     }
 
     /**

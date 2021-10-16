@@ -78,7 +78,7 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
                     $resultRow['date'],
                     $resultRow['amount'],
                     $resultRow['contents'],
-                    TransactionType::VALUE_LABEL[ $resultRow['transaction_type'] ],
+                    (new TransactionType($resultRow['transaction_type'] ))->getLabel(),
                     []
                 );
 
