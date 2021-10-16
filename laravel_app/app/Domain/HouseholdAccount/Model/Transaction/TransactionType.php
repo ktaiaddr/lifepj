@@ -30,7 +30,7 @@ class TransactionType
      * 引き出し
      */
     const CLASSIFICATION_WITHDRAWAL_DEPOSIT = 6;
-    const LABEL = [
+    const VALUE_LABEL = [
         self::CLASSIFICATION_ACCOUNT_TRANSFER  => '口座振替',
         self::CLASSIFICATION_CASH_ADDITION  => '現金加算',
         self::CLASSIFICATION_CASH_PAYMENT  => '現金払い',
@@ -42,11 +42,29 @@ class TransactionType
     private int $transactionTypeValue;
 
     public function getLabel(){
-        return self::LABEL[ $this->transactionTypeValue ];
+        return self::VALUE_LABEL[ $this->transactionTypeValue ];
+    }
+
+    /**
+     * @return TransactionTypeDefine[]
+     */
+    public static function getTypeDefines(): array
+    {
+
+        $values = array_keys(self::VALUE_LABEL);
+
+        $typeDefines = [];
+
+        foreach( $values as $value ){
+            $typeDefines[] = new TransactionTypeDefine($value, self::VALUE_LABEL[$value] );
+        }
+
+        return $typeDefines;
     }
 
     /**
      * @param int $transactionTypeValue
+     * @throws \Exception
      */
     public function __construct(int $transactionTypeValue)
     {
@@ -68,23 +86,11 @@ class TransactionType
 
     }
 
-    public function isAccountTransfer():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_ACCOUNT_TRANSFER;
-    }
-    public function isCashAddition():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_CASH_ADDITION;
-    }
-    public function isCashPayment():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_CASH_PAYMENT;
-    }
-    public function isDirectDevit():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_DIRECT_DEVIT;
-    }
-    public function isMoneyReceived():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_MONEY_RECEIVED;
-    }
-    public function isWithdrawalDeposit():bool{
-        return $this->transactionTypeValue == self::CLASSIFICATION_WITHDRAWAL_DEPOSIT;
-    }
+    public function isAccountTransfer()   :bool { return $this->transactionTypeValue == self::CLASSIFICATION_ACCOUNT_TRANSFER   ;}
+    public function isCashAddition()      :bool { return $this->transactionTypeValue == self::CLASSIFICATION_CASH_ADDITION      ;}
+    public function isCashPayment()       :bool { return $this->transactionTypeValue == self::CLASSIFICATION_CASH_PAYMENT       ;}
+    public function isDirectDevit()       :bool { return $this->transactionTypeValue == self::CLASSIFICATION_DIRECT_DEVIT       ;}
+    public function isMoneyReceived()     :bool { return $this->transactionTypeValue == self::CLASSIFICATION_MONEY_RECEIVED     ;}
+    public function isWithdrawalDeposit() :bool { return $this->transactionTypeValue == self::CLASSIFICATION_WITHDRAWAL_DEPOSIT ;}
 
 }

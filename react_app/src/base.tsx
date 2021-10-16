@@ -13,6 +13,7 @@ import PasswordForget from "./Login/password_forget";
 import ResetPassword from "./Login/reset_password";
 import RegisterUser from "./Login/register_user";
 import Verifyemail from "./Login/verify_email";
+import HouseholdAccountRegist from "./HouseholdAccount/HouseholdAccountRegist";
 
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -68,6 +69,14 @@ export default ()=>{
                     />
 
                     <Route exact path='/household_account' render={ ()=> (login!==null&&login!==false?<HouseholdAccount />:<Redirect to={"/mylogin"} />) }/>
+
+                    <Route exact path='/household_account/regist'
+                           render={ ({match})=> (
+                               login!==null&&login!==false
+                                   ?<HouseholdAccountRegist match={match} />
+                                   :<Redirect to={"/mylogin"} />
+                           ) }
+                    />
 
                     <Route exact path='/mylogin' render={()=>
                         <Login setLogined={setLogin}/>

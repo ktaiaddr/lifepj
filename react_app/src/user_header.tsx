@@ -56,15 +56,22 @@ export default ()=>{
                                data-bs-toggle="dropdown" aria-expanded="false">
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><Link className="dropdown-item" to="/refueling">一覧</Link></li>
+                                <li><Link className="dropdown-item" to={refueling_route}>一覧</Link></li>
                                 <li> <a className="dropdown-item" href="/refueling/regist">登録</a></li>
                             </ul>
                         </li>
 
                         <li className="nav-item">
-                            {/*<a className="nav-link" href="#">Link</a>*/}
                             <Link className="nav-link" to={household_account}>家計簿</Link>
-
+                        </li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><Link className="dropdown-item" to={household_account}>一覧</Link></li>
+                                <li> <a className="dropdown-item" href="/household_account/regist">登録</a></li>
+                            </ul>
                         </li>
                     </ul>
                     <form className="d-flex">

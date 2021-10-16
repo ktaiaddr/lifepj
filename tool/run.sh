@@ -17,7 +17,7 @@ fi
 #プロジェクトのルートディレクトリの定義
 THISDIR=$(cd $(dirname $0)/..;pwd)
 #
-source ${THISDIR}/.env
+source "${THISDIR}"/.env
 
 ###コンテナ関連定義
 ##ネットワーク名
@@ -358,6 +358,19 @@ elif [ "$1" = artisan ];then
 elif [ "$1" = webpack ];then
 
   docker exec -it -w /opt/react_app -u "$(id -u)" ${NODEJS_CONTAINER_NAME} npx webpack -w
+  exit 0
+
+##################################################################################
+# docker-compose up
+##################################################################################
+elif [ "$1" = compose ];then
+
+  if [ -z "$DB_PASS" ];then
+    echo DB_PASSを設定してください
+    exit 1
+  fi
+
+  (cd $THISDIR; DB_PASS=$DB_PASS LOCAL_USER_ID=$(id -u) docker-compose up -d)
   exit 0
 
 fi
