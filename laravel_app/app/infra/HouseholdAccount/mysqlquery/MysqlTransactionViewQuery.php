@@ -23,25 +23,39 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
             /** @var  $pdo \PDO */
             $pdo = DB::getPdo();
 
-            $query  = "    select DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`transaction_id`,                                            ";
-            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`date`,                                                  ";
-            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`amount`,                                                  ";
-            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`contents`,                                                  ";
-            $query .= "           DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.`type`  as transaction_type,                                                  ";
-            $query .= "           BALANCE.`account_id`,                              ";
-            $query .= "           BALANCE.`balance`    ,                          ";
+            $query  = "    select BASE_TRANSACTION.`transaction_id`,                                            ";
+            $query .= "           BASE_TRANSACTION.`date`,                                                  ";
+            $query .= "           BASE_TRANSACTION.`amount`,                                                  ";
+            $query .= "           BASE_TRANSACTION.`contents`,                                                  ";
+            $query .= "           BASE_TRANSACTION.`type`  as transaction_type,                                                  ";
+            $query .= "           BASE_ACCOUNT.`account_id`,                              ";
+//            $query .= "           BASE_ACCOUNT.`increase_decrease_type`    ,                          ";
+            $query .= "           BASE_ACCOUNT.increase_decrease_type," ;
+
+            $query .= "                       (select";
+            $query .= "           sum(case";
+            $query .= "           DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.increase_decrease_type";
+            $query .= "            when 1 then amount * -1";
+            $query .= "            when 2 then amount";
+            $query .= "            else 0 end)";
+            $query .= "            from DAT_HOUSEHOLD_ACCOUNT_TRANSACTION, DAT_HOUSEHOLD_ACCOUNT_ACCOUNT";
+            $query .= "           where DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.transaction_id = DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.transaction_id";
+            $query .= "                       and DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.account_id = BASE_ACCOUNT.account_id";
+            $query .= "                       and  concat (DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.date,' ',TIME_FORMAT(DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.created_at,'%H:%i:%s')) <= concat (BASE_TRANSACTION.date,' ',TIME_FORMAT(BASE_TRANSACTION.created_at,'%H:%i:%s'))";
+            $query .= "           ) as balance ," ;
+
             $query .= "           ACCOUNT.`name`        ,                      ";
             $query .= "           ACCOUNT.`type`  as account_type                           ";
 
-            $query .= "      FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION            ";
-            $query .= " left join DAT_HOUSEHOLD_ACCOUNT_BALANCE as BALANCE               ";
-            $query .= "        on DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.transaction_id = BALANCE.transaction_id  ";
+            $query .= "      FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION as BASE_TRANSACTION           ";
+            $query .= " left join DAT_HOUSEHOLD_ACCOUNT_ACCOUNT as BASE_ACCOUNT               ";
+            $query .= "        on BASE_TRANSACTION.transaction_id = BASE_ACCOUNT.transaction_id  ";
             $query .= " left join MST_ACCOUNT as ACCOUNT               ";
-            $query .= "        on BALANCE.account_id = ACCOUNT.account_id  ";
+            $query .= "        on BASE_ACCOUNT.account_id = ACCOUNT.account_id  ";
 
-            $query .= "     where DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.user_id = :user_id                               ";
-            $query .= "  order by DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.created_at desc                      ";
-            $query .= "     limit 10                     ";
+            $query .= "     where BASE_TRANSACTION.user_id = :user_id                               ";
+            $query .= "  order by BASE_TRANSACTION.date asc      ,BASE_TRANSACTION.created_at asc                 ";
+//            $query .= "     limit 10                     ";
 
             $stmt = $pdo->prepare( $query );
             $stmt->bindParam(':user_id', $userId);
@@ -70,7 +84,7 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
                     $accountBalanceViewModelList = [];
                 }
 
-                $accountBalanceViewModelList[] = new AccountBalanceViewModel($resultRow['account_id'],$resultRow['balance'],$resultRow['name']);
+                $accountBalanceViewModelList[] = new AccountBalanceViewModel($resultRow['account_id'],$resultRow['balance'],$resultRow['name'],$resultRow['increase_decrease_type']);
 
                 // 残高無しで生成
                 $transactionViewModel = new TransactionViewModel(
@@ -85,7 +99,8 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
                 $beforeTransactionId = $resultRow['transaction_id'];
             }
 
-            $transactionViewModelList[] = $transactionViewModel->addBalanceRecreate( $accountBalanceViewModelList );
+            if($transactionViewModel)
+                $transactionViewModelList[] = $transactionViewModel->addBalanceRecreate( $accountBalanceViewModelList );
 
         }
         catch(\Exception $e){

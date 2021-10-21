@@ -14,9 +14,9 @@ class Account
     private int $accountId;
 
     /**
-     * @var int 残高
+     * @var int 増減タイプ
      */
-    private int $balance;
+    private int $increase_decrease_type;
 
     /**
      * @var AccountType アカウント種別
@@ -25,13 +25,13 @@ class Account
 
     /**
      * @param int $accountId
-     * @param int $balance
+     * @param int $increase_decrease_type
      * @param AccountType $accountType
      */
-    public function __construct(int $accountId, int $balance, AccountType $accountType)
+    public function __construct(int $accountId, int $increase_decrease_type, AccountType $accountType)
     {
         $this->accountId = $accountId;
-        $this->balance = $balance;
+        $this->increase_decrease_type = $increase_decrease_type;
         $this->accountType = $accountType;
     }
 
@@ -61,9 +61,10 @@ class Account
      */
     public function increase(TransactionAmount $transactionAmount): Account
     {
-        $newBalance = $transactionAmount->increaseBalance($this->balance);
-
-        return new Account($this->accountId,$newBalance,$this->accountType);
+//        $newBalance = $transactionAmount->increaseBalance($this->increase_decrease_type);
+//
+//        return new Account($this->accountId,$newBalance,$this->accountType);
+        return new Account($this->accountId,$this->increase_decrease_type,$this->accountType);
 
     }
 
@@ -74,9 +75,10 @@ class Account
      */
     public function reduce(TransactionAmount $transactionAmount): Account{
 
-        $newBalance = $transactionAmount->reduceBalance($this->balance);
-
-        return new Account($this->accountId,$newBalance,$this->accountType);
+//        $newBalance = $transactionAmount->reduceBalance($this->increase_decrease_type);
+//
+//        return new Account($this->accountId,$newBalance,$this->accountType);
+        return new Account($this->accountId,$this->increase_decrease_type,$this->accountType);
 
     }
 
@@ -86,6 +88,6 @@ class Account
      * @param NotificationTransaction $modelBuilder
      */
     public function notify(string $transactionId, NotificationTransaction $modelBuilder){
-        $modelBuilder->addBalance(new Balance($transactionId,$this->accountId,$this->balance));
+        $modelBuilder->addBalance(new Balance($transactionId,$this->accountId,$this->increase_decrease_type));
     }
 }

@@ -34,13 +34,13 @@ class TransactionRegisterServiceTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => 1,
-            'balance' => 100000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => 2,
-            'balance' => 200000,
+            'increase_decrease_type' => 2,
         ]);
 
         EloquentAccout::create([
@@ -51,7 +51,7 @@ class TransactionRegisterServiceTest extends TestCase
         ]);
         EloquentAccout::create([
             'account_id'=>2,
-            'user_id'=>2,
+            'user_id'=>1,
             'type'=>1,
             'name'=>"fuga",
         ]);
@@ -69,7 +69,7 @@ class TransactionRegisterServiceTest extends TestCase
      */
     public function test_登録(){
         $amount = 1001;
-        $registerCommand = new RegisterCommand($amount,TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema");
-        $this->transactionService->do($registerCommand,999);
+        $registerCommand = new RegisterCommand($amount,'2021-10-10',TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,1,2,"amema");
+        $this->transactionService->do($registerCommand,1);
     }
 }

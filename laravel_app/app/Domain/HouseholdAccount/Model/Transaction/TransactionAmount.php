@@ -42,9 +42,10 @@ class TransactionAmount
 
         $afterBalance = ($accountBalanceValue - $this->value);
 
-        if($afterBalance < 0){
-            throw new \Exception("残高不足で処理できません");
-        }
+        //TODO 例外処理は別途作り変えが必要
+//        if($afterBalance < 0){
+//            throw new \Exception("残高不足で処理できません");
+//        }
 
         return $afterBalance;
     }

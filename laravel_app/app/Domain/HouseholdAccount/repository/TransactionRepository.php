@@ -13,7 +13,7 @@ interface TransactionRepository
      * @param \DateTime $transactionDate
      * @param String $transactionContents
      * @param Transaction $transaction
-     * @param array $accounts
+     * @param Account[] $accounts
      * @param int $user_id
      * @return bool
      */

@@ -8,6 +8,7 @@ interface AccountBalance{
     accountId:number
     balance:number
     name:string
+    increase_decrease_type:number
 }
 
 interface TransactionView{
@@ -24,13 +25,8 @@ const rowColor = (index: number)=> ( index%2==1 ? {background:"lightblue"} : {} 
 export default ()=>{
     const [accountBalanceDataList,setAccountBalanceDataList] = useState<TransactionView[]>([])
 
-    useEffect(()=>{
-        document.title = "家計簿管理"
-    },[])
-
     const f = async ()=>{
         // setReaded(false)
-        console.log("api request")
         const url = 'http://'+process.env.API_ENDPOINT+'/api/household_account'
         const instance = axios.create({ withCredentials: true })
         const result = await instance.get(url,{
@@ -67,8 +63,10 @@ export default ()=>{
         // setButtonDisabled(true)
     }
     useEffect(()=>{
+        document.title = "家計簿管理"
         searchRequest()
     },[])
+
     return (
         <>
             <div>
@@ -89,25 +87,28 @@ export default ()=>{
                         </tr>
                         </thead>
                         <tbody>
-                        {accountBalanceDataList.map((row,index)=> {
+                        {accountBalanceDataList && accountBalanceDataList.length > 0 && accountBalanceDataList.map((row,index)=> {
                                 const rowlength = row.balances.length;
-                                const first = row.balances.shift()
-                                return (<>
-                                    <tr style={rowColor(index)} >
+
+                                const row_clone = [...row.balances]
+                                const first = row_clone.shift()
+                                return (< >
+                                    <tr style={rowColor(index)} key={index} >
                                         <td rowSpan={rowlength}>{row.date}</td>
                                         <td rowSpan={rowlength}>{row.typeLabel}</td>
                                         <td rowSpan={rowlength}>{row.amount}円</td>
                                         <td rowSpan={rowlength}>{row.contents}</td>
                                         <td>{first?first.name:""}</td>
-                                        <td>{first?first.balance+"円":""}</td>
+                                        <td style={first?({color:(first.increase_decrease_type===2?"blue":"red")}):{}}>{first?(first.balance).toLocaleString()+"円":""}</td>
                                     </tr>
-                                    {row.balances.length ?
-                                        row.balances.map((row2)=>(
-                                            <tr style={rowColor(index)}>
-                                                <td>{row2?row2.name:""}</td>
-                                                <td>{row2?row2.balance+"円":""}</td>
-                                            </tr>
-                                        )) :
+                                    {row_clone.length ?
+                                        row_clone.map((row2)=>{
+                                            return (
+                                                <tr style={rowColor(index)} key={1000+index} >
+                                                    <td>{row2?row2.name:""}</td>
+                                                    <td style={row2?({color:(row2.increase_decrease_type===2?"blue":"red")}):{}}>{row2?(row2.balance).toLocaleString()+"円":""}</td>
+                                                </tr>
+                                            )}) :
                                         <></>
                                     }
                                 </>)

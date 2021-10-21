@@ -37,7 +37,7 @@ class RegisterController extends Controller
             if(! $user_id)
                 throw new \Exception('ユーザIDがありません');
 
-            $registerPageComponents = $this->transactionRegisterViewService->getComponents();
+            $registerPageComponents = $this->transactionRegisterViewService->getComponents($user_id);
 
             // レスポンス
             return response()->json(['registerPageComponents' => $registerPageComponents],200 );

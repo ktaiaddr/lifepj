@@ -13,7 +13,7 @@ class EloquentAccountBalance extends Model
     const UPDATED_AT  = null;
     public $timestamps = [ "created_at" ]; // enable only to created_at
 
-    protected $table = 'DAT_HOUSEHOLD_ACCOUNT_BALANCE';
+    protected $table = 'DAT_HOUSEHOLD_ACCOUNT_ACCOUNT';
 
     protected $primaryKey = ['transaction_id','account_id'];
     public $incrementing = false;
@@ -26,7 +26,7 @@ class EloquentAccountBalance extends Model
     protected $fillable = [
         'transaction_id',
         'account_id',
-        'balance',
+        'increase_decrease_type',
         'created_at',
     ];
 }

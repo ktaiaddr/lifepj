@@ -36,13 +36,13 @@ class ViewControllerTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 1,
-            'balance' => 100000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 2,
-            'balance' => 100000,
+            'increase_decrease_type' => 2,
         ]);
 
         EloquentAccout::create([
@@ -74,13 +74,13 @@ class ViewControllerTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 1,
-            'balance' => 200000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 2,
-            'balance' => 200000,
+            'increase_decrease_type' => 2,
         ]);
 
     }

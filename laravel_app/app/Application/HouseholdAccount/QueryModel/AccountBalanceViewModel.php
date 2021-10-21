@@ -18,15 +18,22 @@ class AccountBalanceViewModel
     public string $name;
 
     /**
+     * @var int
+     */
+    public int $increase_decrease_type;
+
+    /**
      * @param int $accountId
      * @param int $balance
      * @param string $name
+     * @param int $increase_decrease_type
      */
-    public function __construct(int $accountId, int $balance, string $name)
+    public function __construct(int $accountId, int $balance, string $name, int $increase_decrease_type)
     {
         $this->accountId = $accountId;
         $this->balance = $balance;
         $this->name = $name;
+        $this->increase_decrease_type = $increase_decrease_type;
     }
 
 

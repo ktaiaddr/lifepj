@@ -25,11 +25,11 @@ class TransactionImplTest extends TestCase
     use RefreshDatabase;
 
     const ACCOUNT_BANK1      = 1;
-    const ACCOUNT_BANK1_AMOUNT = 200;
+    const ACCOUNT_BANK1_INCREASE_DECREASE_TYPE = 2;
     const ACCOUNT_BANK2      = 2;
-    const ACCOUNT_BANK2_AMOUNT = 100;
+    const ACCOUNT_BANK2_INCREASE_DECREASE_TYPE = 2;
     const ACCOUNT_HAND_MONEY = 3;
-    const ACCOUNT_HAND_MONEY_AMOUNT = 5000;
+    const ACCOUNT_HAND_MONEY_INCREASE_DECREASE_TYPE = 2;
 
     private AccountBalanceQuery $accountBalanceQuery;
 
@@ -43,19 +43,19 @@ class TransactionImplTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => self::ACCOUNT_BANK1,
-            'balance' => self::ACCOUNT_BANK1_AMOUNT,
+            'increase_decrease_type' => self::ACCOUNT_BANK1_INCREASE_DECREASE_TYPE,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => self::ACCOUNT_BANK2,
-            'balance' => self::ACCOUNT_BANK2_AMOUNT,
+            'increase_decrease_type' => self::ACCOUNT_BANK2_INCREASE_DECREASE_TYPE,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => self::ACCOUNT_HAND_MONEY,
-            'balance' => self::ACCOUNT_HAND_MONEY_AMOUNT,
+            'increase_decrease_type' => self::ACCOUNT_HAND_MONEY_INCREASE_DECREASE_TYPE,
         ]);
 
         EloquentAccout::create([
@@ -84,37 +84,37 @@ class TransactionImplTest extends TestCase
     public function トランザクションtestProvider():array{
         return [
             '口座間転送アカウント１⇨２に１９９円送金'=> [
-                ['reduce'=>[self::ACCOUNT_BANK1,self::ACCOUNT_BANK1_AMOUNT -199],'increase'=>[self::ACCOUNT_BANK2, self::ACCOUNT_BANK2_AMOUNT+199]],
+                ['reduce'=>[self::ACCOUNT_BANK1,1 ],'increase'=>[self::ACCOUNT_BANK2, 2]],
                 199,
                 TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,
                 '正常処理'
             ],
             '現金加算2９９円'=> [
-                ['increase'=>[self::ACCOUNT_HAND_MONEY, self::ACCOUNT_HAND_MONEY_AMOUNT + 299]],
+                ['increase'=>[self::ACCOUNT_HAND_MONEY, 2 ]],
                 299,
                 TransactionType::CLASSIFICATION_CASH_ADDITION,
                 '正常処理'
             ],
             '現金払い１９９円'=> [
-                ['reduce'=>[self::ACCOUNT_HAND_MONEY,self::ACCOUNT_HAND_MONEY_AMOUNT -199]],
+                ['reduce'=>[self::ACCOUNT_HAND_MONEY,1 ]],
                 199,
                 TransactionType::CLASSIFICATION_CASH_PAYMENT,
                 '正常処理'
             ],
             '口座引落し１９９円'=> [
-                ['reduce'=>[self::ACCOUNT_BANK2,self::ACCOUNT_BANK2_AMOUNT-95]],
+                ['reduce'=>[self::ACCOUNT_BANK2,1]],
                 95,
                 TransactionType::CLASSIFICATION_DIRECT_DEVIT,
                 '正常処理'
             ],
             '入金　アカウント１⇨２に100000円'=> [[
-                'increase'=>[self::ACCOUNT_BANK1, self::ACCOUNT_BANK1_AMOUNT+100000]],
+                'increase'=>[self::ACCOUNT_BANK1, 2]],
                 100000,
                 TransactionType::CLASSIFICATION_MONEY_RECEIVED,
                 '正常処理'
             ],
             '引き出し１９９円送金する'=> [
-                ['reduce'=>[self::ACCOUNT_BANK2,self::ACCOUNT_BANK2_AMOUNT-28], 'increase'=>[self::ACCOUNT_HAND_MONEY, self::ACCOUNT_HAND_MONEY_AMOUNT+28]],
+                ['reduce'=>[self::ACCOUNT_BANK2,1], 'increase'=>[self::ACCOUNT_HAND_MONEY, 2]],
                 28,
                 TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,
                 '正常処理'
@@ -158,6 +158,8 @@ class TransactionImplTest extends TestCase
 
         $increaser = null;
 
+        $user_id = 1;
+
         try{
 
             //取引IDをUUIDで生成
@@ -175,18 +177,21 @@ class TransactionImplTest extends TestCase
             //取引を生成
             $transaction = new Transaction(new TransactionType($transactionTypeValue), $transactionAmount);
 
+            $reduceAccount=null;
             if(isset($reduceAccountId)){
-                $reduceAccount = $this->accountBalanceQuery->find($reduceAccountId);
+                $reduceAccount = $this->accountBalanceQuery->find($reduceAccountId,$user_id,1);
                 $reducer = new Reducer($reduceAccount);
             }
 
+            $increaseAccount=null;
             if(isset($increaseAccountId)){
-                $increaseAccount = $this->accountBalanceQuery->find($increaseAccountId);
+                $increaseAccount = $this->accountBalanceQuery->find($increaseAccountId,$user_id,2);
                 $increaser = new Increaser($increaseAccount);
             }
 
-            $accounts = $transaction->process($reducer, $increaser);
+//            $accounts = $transaction->process($reducer, $increaser);
 
+            $accounts = $transaction->takeTransactionAccounts($reduceAccount,$increaseAccount);
 
             $modelBuilder = new ModelBuilder();
             $modelBuilder->transactionId($transactionId);
@@ -209,12 +214,12 @@ class TransactionImplTest extends TestCase
 
                 if(isset($reduceAccountId)){
                     if((int)($balance->accountId) === $reduceAccountId)
-                        $this->assertSame($reduceAccountResult,$balance->balance);
+                        $this->assertSame($reduceAccountResult,$balance->increase_decrease_type);
                 }
 
                 if(isset($increaseAccountId)){
                     if((int)($balance->accountId) === $increaseAccountId)
-                        $this->assertSame($increaseAccountResult,$balance->balance);
+                        $this->assertSame($increaseAccountResult,$balance->increase_decrease_type);
                 }
 
             }

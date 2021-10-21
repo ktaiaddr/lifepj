@@ -31,18 +31,18 @@ class RegisterControllerTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => 1,
-            'balance' => 100000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => 2,
-            'balance' => 200000,
+            'increase_decrease_type' => 1,
         ]);
         EloquentAccountBalance::create([
             'transaction_id' => (string)Str::orderedUuid(),
             'account_id' => 3,
-            'balance' => 100,
+            'increase_decrease_type' => 1,
         ]);
         EloquentAccout::create([
             'account_id'=>1,
@@ -66,19 +66,19 @@ class RegisterControllerTest extends TestCase
 
     public function dataProvider(){
 
-        $ACCOUNT_TRANSFER_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,$reduceAccountId=1,$increaseAccountId=2,$contents="test"];
-        $ACCOUNT_TRANSFER_422 = [$user_id=1,$amount=null,$transactionType=TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
+        $ACCOUNT_TRANSFER_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,$reduceAccountId=1,$increaseAccountId=2,$contents="test"];
+        $ACCOUNT_TRANSFER_422 = [$user_id=1,$amount=null,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_ACCOUNT_TRANSFER,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
 
-        $CASH_ADDITION_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_CASH_ADDITION,$reduceAccountId=null,$increaseAccountId=3,$contents="test"];
-        $CASH_ADDITION_422 = [$user_id=1,$amount=null,$transactionType=TransactionType::CLASSIFICATION_CASH_ADDITION,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
-        $CASH_PAYMENT_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_CASH_PAYMENT,$reduceAccountId=3,$increaseAccountId=null,$contents="test"];
-        $CASH_PAYMENT_422 = [$user_id=1,$amount=null,$transactionType=TransactionType::CLASSIFICATION_CASH_PAYMENT,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
-        $DIRECT_DEVIT_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_DIRECT_DEVIT,$reduceAccountId=2,$increaseAccountId=null,$contents="test"];
-        $DIRECT_DEVIT_422 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_DIRECT_DEVIT,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
-        $MONEY_RECEIVED_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_MONEY_RECEIVED,$reduceAccountId=null,$increaseAccountId=1,$contents="test"];
-        $MONEY_RECEIVED_422 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_MONEY_RECEIVED,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
-        $WITHDRAWAL_DEPOSIT_200 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,$reduceAccountId=1,$increaseAccountId=3,$contents="test"];
-        $WITHDRAWAL_DEPOSIT_422 = [$user_id=1,$amount=100,$transactionType=TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
+        $CASH_ADDITION_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_CASH_ADDITION,$reduceAccountId=null,$increaseAccountId=3,$contents="test"];
+        $CASH_ADDITION_422 = [$user_id=1,$amount=null,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_CASH_ADDITION,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
+        $CASH_PAYMENT_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_CASH_PAYMENT,$reduceAccountId=3,$increaseAccountId=null,$contents="test"];
+        $CASH_PAYMENT_422 = [$user_id=1,$amount=null,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_CASH_PAYMENT,$reduceAccountId=null,$increaseAccountId=null,$contents="test"];
+        $DIRECT_DEVIT_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_DIRECT_DEVIT,$reduceAccountId=2,$increaseAccountId=null,$contents="test"];
+        $DIRECT_DEVIT_422 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_DIRECT_DEVIT,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
+        $MONEY_RECEIVED_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_MONEY_RECEIVED,$reduceAccountId=null,$increaseAccountId=1,$contents="test"];
+        $MONEY_RECEIVED_422 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_MONEY_RECEIVED,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
+        $WITHDRAWAL_DEPOSIT_200 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,$reduceAccountId=1,$increaseAccountId=3,$contents="test"];
+        $WITHDRAWAL_DEPOSIT_422 = [$user_id=1,$amount=100,$date='2021-10-10',$transactionType=TransactionType::CLASSIFICATION_WITHDRAWAL_DEPOSIT,$reduceAccountId=null,$increaseAccountId=null,$contents=null];
 
         $ajax_header = ['X-Requested-With' => 'XMLHttpRequest'];
         $empty_header = [];
@@ -105,7 +105,7 @@ class RegisterControllerTest extends TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function test_RegisterController__regist(int $userId,?int $amount, int $transactionType,
+    public function test_RegisterController__regist(int $userId,?int $amount,string $date, int $transactionType,
                                                       ?int $reduceAccountId,
                                                       ?int $increaseAccountId,
                                                     ?string $contents,
@@ -114,8 +114,9 @@ class RegisterControllerTest extends TestCase
 
         $user = new User();
         $user->id = $userId;
-        $response = $this->actingAs($user)->json('POST','/api/household_account',[
+        $response = $this->actingAs($user)->json('POST','/api/household_account/regist',[
             "amount" =>  $amount,
+            "date" =>  $date,
             "transactionTypeValue" => $transactionType,
             "reduceAccountId" =>  $reduceAccountId,
             "increaseAccountId" =>  $increaseAccountId,

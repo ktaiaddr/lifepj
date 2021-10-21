@@ -41,13 +41,13 @@ class TransactionViewServiceTest extends TestCase
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 1,
-            'balance' => 100000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccountBalance::create([
             'transaction_id' => $transaction_id,
             'account_id' => 2,
-            'balance' => 100000,
+            'increase_decrease_type' => 1,
         ]);
 
         EloquentAccout::create([

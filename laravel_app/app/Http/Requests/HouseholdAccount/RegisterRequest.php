@@ -8,6 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property int amount
+ * @property string date
  * @property int transactionTypeValue
  * @property int reduceAccountId
  * @property int increaseAccountId
@@ -35,6 +36,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             "amount" =>  ['required','numeric','min:1'],
+            "date" =>  ['required','date'],
             "transactionTypeValue" =>  ['required','numeric','min:1'],
             "reduceAccountId" =>  ['nullable','numeric','min:1'],
             "increaseAccountId" =>  ['nullable','numeric','min:1'],
@@ -51,6 +53,7 @@ class RegisterRequest extends FormRequest
     {
         return new RegisterCommand(
             $this->amount,
+            $this->date,
             $this->transactionTypeValue,
             $this->reduceAccountId,
             $this->increaseAccountId,

@@ -3,6 +3,7 @@
 namespace App\Application\HouseholdAccount\service;
 
 use App\Application\HouseholdAccount\query\AccountBalanceQuery;
+use App\Domain\HouseholdAccount\Model\Account\Account;
 use App\Domain\HouseholdAccount\Model\Account\Increaser;
 use App\Domain\HouseholdAccount\Model\Account\Reducer;
 use App\Domain\HouseholdAccount\Model\Transaction\RegisterCommand;
@@ -41,7 +42,7 @@ class TransactionRegisterService
             $transactionId = (string)Str::orderedUuid();
 
             //取引日を現在日時で生成
-            $transactionDate = new \Datetime();
+            $transactionDate = new \Datetime($registerCommand->date);
 
             //取引金額を生成
             $transactionAmount = new TransactionAmount($registerCommand->amount);
@@ -53,13 +54,15 @@ class TransactionRegisterService
             $transaction = new Transaction(new TransactionType($registerCommand->transactionTypeValue), $transactionAmount);
 
             //減らす側のIDが渡されたらリポジトリからデータを取得してレデューサーを生成
-            $reducer = $this->getReducer($registerCommand->reduceAccountId);
+            $reduceAccount = $this->getReduceAccount($registerCommand->reduceAccountId,$user_id);
 
             //増やす側のIDが渡されたらリポジトリからデータを取得してインクリージャーを生成
-            $increaser = $this->getIncreaser($registerCommand->increaseAccountId);
+            $increaseAccount = $this->getIncreaseAccount($registerCommand->increaseAccountId,$user_id);
 
             //取引を実行
-            $accounts = $transaction->process($reducer, $increaser);
+//            $accounts = $transaction->process($reduceAccount, $increaseAccount);
+//dd($reduceAccount, $increaseAccount);
+            $accounts = $transaction->takeTransactionAccounts($reduceAccount, $increaseAccount);
 
             //取引を永続化
             $bool = $this->transactionRepository->save($transactionId,$transactionDate,$transactionContents,$transaction,$accounts,$user_id);
@@ -75,24 +78,30 @@ class TransactionRegisterService
 
     /**
      * @param int|null $reduceAccountId
-     * @return Reducer|null
+//     * @return Reducer|null
+     * @return Account|null
      */
-    private function getReducer(?int $reduceAccountId){
+    private function getReduceAccount(?int $reduceAccountId,int $user_id):Account|null{
 
-        if(isset($reduceAccountId))
-            return new Reducer($this->accountQuery->find($reduceAccountId));
+        if(isset($reduceAccountId)){
+//            return new Reducer($this->accountQuery->find($reduceAccountId,$user_id));
+            return $this->accountQuery->find($reduceAccountId,$user_id,1);
+        }
 
         return null;
     }
 
     /**
      * @param int|null $increaseAccountId
-     * @return Increaser|null
+//     * @return Increaser|null
+     * @return Account|null
      */
-    private function getIncreaser(?int $increaseAccountId){
+    private function getIncreaseAccount(?int $increaseAccountId,int $user_id):Account|null{
 
-        if(isset($increaseAccountId))
-            return new Increaser($this->accountQuery->find($increaseAccountId));
+        if(isset($increaseAccountId)){
+//            return new Increaser($this->accountQuery->find($increaseAccountId,$user_id));
+            return $this->accountQuery->find($increaseAccountId,$user_id,2);
+        }
 
         return null;
 

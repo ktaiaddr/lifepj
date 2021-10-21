@@ -98,6 +98,39 @@ class Transaction
     }
 
     /**
+     *
+     */
+    public function takeTransactionAccounts(?Account $reduceAccount, ?Account $increaseAccount){
+        //残高のバランサーを検査する
+        if(! $this->inspectionAccounts($reduceAccount, $increaseAccount))
+            throw new \Exception($this->getLabel().'アカウントエラー',401);
+
+        //口座間転送
+        if($this->isAccountTransfer())
+            return [$reduceAccount,$increaseAccount];
+
+        //現金加算
+        if($this->isCashAddition())
+            return [$increaseAccount];
+
+        //現金払い
+        if($this->isCashPayment())
+            return [$reduceAccount];
+
+        //引き落とし
+        if($this->isDirectDevit())
+            return [$reduceAccount];
+
+        //入金
+        if($this->isMoneyReceived())
+            return [$increaseAccount];
+
+        //現金引き出し
+        if($this->isWithdrawalDeposit())
+            return [$reduceAccount,$increaseAccount];
+    }
+
+    /**
      * @param Reducer|null $reducer
      * @param Increaser|null $increaser
      * @return Balancer[]
@@ -162,7 +195,34 @@ class Transaction
 
     }
 
+    /**
+     * Blanacerオブジェクトが正しいか検査
+     * @param Account|null $reduceAccount
+     * @param Account|null $increaseAccount
+     * @return bool
+     * @throws \Exception
+     */
+    private function inspectionAccounts(?Account $reduceAccount, ?Account $increaseAccount):bool{
 
+        if($this->isAccountTransfer())
+            return $reduceAccount && $reduceAccount->isBank() && $increaseAccount && $increaseAccount->isBank();
+
+        if($this->isCashAddition())
+            return !$reduceAccount && $increaseAccount && $increaseAccount->isHandMoney();
+
+        if($this->isCashPayment())
+            return $reduceAccount && $reduceAccount->isHandMoney() && !$increaseAccount;
+
+        if($this->isDirectDevit())
+            return $reduceAccount && $reduceAccount->isBank()  && !$increaseAccount;
+
+        if($this->isMoneyReceived())
+            return !$reduceAccount && $increaseAccount && $increaseAccount->isBank();
+
+        if($this->isWithdrawalDeposit())
+            return $reduceAccount && $reduceAccount->isBank() && $increaseAccount && $increaseAccount->isHandMoney();
+
+    }
 
     public function notify(NotificationTransaction $modelBuilder){
 //        $modelBuilder->transactionType($this->transactionTypeValue);

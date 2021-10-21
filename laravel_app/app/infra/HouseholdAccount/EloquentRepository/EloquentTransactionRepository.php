@@ -14,7 +14,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
      * @param \DateTime $transactionDate
      * @param string $transactionContents
      * @param Transaction $transaction
-     * @param array $accounts
+     * @param Account[] $accounts
      * @param int $user_id
      * @return bool
      */
@@ -53,7 +53,7 @@ class EloquentTransactionRepository implements \App\Domain\HouseholdAccount\repo
             $result = EloquentAccountBalance::create([
                 'transaction_id' => $balance->transactionId,
                 'account_id' => $balance->accountId,
-                'balance' => $balance->balance,
+                'increase_decrease_type' => $balance->increase_decrease_type,
             ]);
 
             if(! $result){
