@@ -25,9 +25,10 @@ class AccountType
      * @return string|null
      */
     public function typeLabel():?string{
-        if($this->value == self::TYPE_HAND_MONEY) return "ハンドマネー";
-        if($this->value == self::TYPE_BANK) return "銀行口座";
-        return null;
+
+        if($this->isHandMoney()) return "ハンドマネー";
+
+        return "銀行口座";
     }
 
     public function isBank(): bool

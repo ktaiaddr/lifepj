@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\HouseholdAccount;
 
+use App\Application\HouseholdAccount\service\TransactionRegisterViewService;
 use App\Application\HouseholdAccount\service\TransactionViewService;
+use App\Http\Requests\HouseholdAccount\SearchRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,22 +14,24 @@ class ViewController
 {
 
     private TransactionViewService $transactionViewService;
+    private TransactionRegisterViewService $transactionRegisterViewService;
 
     /**
      * @param TransactionViewService $transactionViewService
      */
-    public function __construct(TransactionViewService $transactionViewService)
+    public function __construct(TransactionViewService $transactionViewService,TransactionRegisterViewService $transactionRegisterViewService)
     {
         $this->transactionViewService = $transactionViewService;
+        $this->transactionRegisterViewService = $transactionRegisterViewService;
 
     }
 
     /**
      * Handle the incoming request.
-     * @param Request $request
+     * @param SearchRequest $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request):JsonResponse
+    public function __invoke(SearchRequest $request):JsonResponse
     {
         Log::debug("hoge");
 
@@ -37,11 +41,14 @@ class ViewController
         // 現在認証されているユーザーのID取得
         $user_id = Auth::id();
 
-        $data = $this->transactionViewService->do( $user_id );
+        $commnd = $request->transferCommand();
+
+        $data = $this->transactionViewService->do( $commnd, $user_id );
+        $registerPageComponents = $this->transactionRegisterViewService->getComponents($user_id);
 
 //        var_dump($data);
 
-        return response()->json( ['data'=>$data], 200 );
+        return response()->json( ['data'=>$data,'registerPageComponents'=>$registerPageComponents], 200 );
 
     }
 

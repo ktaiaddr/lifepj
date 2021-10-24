@@ -4,9 +4,7 @@ namespace App\infra\HouseholdAccount\mysqlquery;
 
 use App\Application\HouseholdAccount\QueryModel\AccountBalanceViewModel;
 use App\Application\HouseholdAccount\QueryModel\TransactionViewModel;
-use App\Domain\HouseholdAccount\Model\Account\Account;
-use App\Domain\HouseholdAccount\Model\Account\AccountType;
-use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
+use App\Domain\HouseholdAccount\Model\Transaction\SearchCommand;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use Illuminate\Support\Facades\DB;
 
@@ -16,49 +14,120 @@ class MysqlTransactionViewQuery implements \App\Application\HouseholdAccount\que
     /**
      * @inheritDoc
      */
-    public function find(string $userId): array
+    public function find(SearchCommand $searchCommand,string $userId): array
     {
         try{
 
             /** @var  $pdo \PDO */
             $pdo = DB::getPdo();
 
-            $query  = "    select BASE_TRANSACTION.`transaction_id`,                                            ";
-            $query .= "           BASE_TRANSACTION.`date`,                                                  ";
-            $query .= "           BASE_TRANSACTION.`amount`,                                                  ";
-            $query .= "           BASE_TRANSACTION.`contents`,                                                  ";
-            $query .= "           BASE_TRANSACTION.`type`  as transaction_type,                                                  ";
-            $query .= "           BASE_ACCOUNT.`account_id`,                              ";
-//            $query .= "           BASE_ACCOUNT.`increase_decrease_type`    ,                          ";
-            $query .= "           BASE_ACCOUNT.increase_decrease_type," ;
+            $pdo->query(<<<QUERY
+CREATE TEMPORARY TABLE IF NOT EXISTS TEMPORARY_LATEST_CLOSING (
+account_id int,
+closing_next_month_day_of_first date,
+balance int
+);
+QUERY);
 
-            $query .= "                       (select";
-            $query .= "           sum(case";
-            $query .= "           DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.increase_decrease_type";
-            $query .= "            when 1 then amount * -1";
-            $query .= "            when 2 then amount";
-            $query .= "            else 0 end)";
-            $query .= "            from DAT_HOUSEHOLD_ACCOUNT_TRANSACTION, DAT_HOUSEHOLD_ACCOUNT_ACCOUNT";
-            $query .= "           where DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.transaction_id = DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.transaction_id";
-            $query .= "                       and DAT_HOUSEHOLD_ACCOUNT_ACCOUNT.account_id = BASE_ACCOUNT.account_id";
-            $query .= "                       and  concat (DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.date,' ',TIME_FORMAT(DAT_HOUSEHOLD_ACCOUNT_TRANSACTION.created_at,'%H:%i:%s')) <= concat (BASE_TRANSACTION.date,' ',TIME_FORMAT(BASE_TRANSACTION.created_at,'%H:%i:%s'))";
-            $query .= "           ) as balance ," ;
+            $pdo->query("DELETE FROM TEMPORARY_LATEST_CLOSING;");
 
-            $query .= "           ACCOUNT.`name`        ,                      ";
-            $query .= "           ACCOUNT.`type`  as account_type                           ";
+            $stmt = $pdo->prepare( <<<QUERY
+INSERT INTO TEMPORARY_LATEST_CLOSING
+SELECT
+  account_id,
+--   DATE_ADD( concat(substr(month,1,4),'-',substr(month,5,2),'-01') , INTERVAL 1 MONTH ) as closing_next_month_day_of_first,
+  DATE_ADD( str_to_date(concat(month,'01'), '%Y%m%d') , INTERVAL 1 MONTH ) as closing_next_month_day_of_first,
+  balance
+FROM lifepj.DAT_ACCOUNT_MONTH_CLOSING
+WHERE (account_id,month) IN
+(SELECT account_id, MAX(month)
+FROM lifepj.DAT_ACCOUNT_MONTH_CLOSING
+WHERE lifepj.DAT_ACCOUNT_MONTH_CLOSING.month < :target_month_yyyymm
+GROUP BY account_id)
+QUERY
+);
+            $stmt->bindValue( ':target_month_yyyymm', str_replace('-','',$searchCommand->viewMonth), \PDO::PARAM_INT );
+            $stmt->execute();
 
-            $query .= "      FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION as BASE_TRANSACTION           ";
-            $query .= " left join DAT_HOUSEHOLD_ACCOUNT_ACCOUNT as BASE_ACCOUNT               ";
-            $query .= "        on BASE_TRANSACTION.transaction_id = BASE_ACCOUNT.transaction_id  ";
-            $query .= " left join MST_ACCOUNT as ACCOUNT               ";
-            $query .= "        on BASE_ACCOUNT.account_id = ACCOUNT.account_id  ";
+            $wheres = [];
+            $values = [];
 
-            $query .= "     where BASE_TRANSACTION.user_id = :user_id                               ";
-            $query .= "  order by BASE_TRANSACTION.date asc      ,BASE_TRANSACTION.created_at asc                 ";
-//            $query .= "     limit 10                     ";
+            $values[] = [':target_month_day_of_first', $searchCommand->viewMonth.'-01', \PDO::PARAM_INT];
+            $values[] = [':target_month_day_of_first2', $searchCommand->viewMonth.'-01', \PDO::PARAM_INT];
+
+            // ユーザID
+            $wheres[] = ' BASE_TRANSACTION.user_id = :user_id ';
+            $values[] = [':user_id', $userId, \PDO::PARAM_INT];
+
+            if($searchCommand->transactionTypeVal){
+                $wheres[] = ' BASE_TRANSACTION.type = :transaction_type ';
+                $values[] = [':transaction_type', $searchCommand->transactionTypeVal, \PDO::PARAM_INT];
+            }
+
+            if($searchCommand->accountId > 0){
+                $wheres[] = ' BASE_ACCOUNT.account_id = :account_id ';
+                $values[] = [':account_id', $searchCommand->accountId, \PDO::PARAM_INT];
+            }
+
+            $implode = 'implode';
+
+            $query = <<<QUERY
+
+        select BASE_TRANSACTION.`transaction_id`,
+               BASE_TRANSACTION.`date`,
+               BASE_TRANSACTION.`amount`,
+               BASE_TRANSACTION.`contents`,
+               BASE_TRANSACTION.`type`  as transaction_type,
+               BASE_ACCOUNT.`account_id`,
+               BASE_ACCOUNT.increase_decrease_type,
+               (
+                   SELECT
+                          sum( case SUB_ACCOUNT.increase_decrease_type
+                              when 1 then amount * -1 -- 減少タイプならマイナス
+                              when 2 then amount      -- 加算タイプならプラス
+                              else 0 end )
+                              + ifnull(TEMPORARY_LATEST_CLOSING.balance,0)
+                   FROM
+                        DAT_HOUSEHOLD_ACCOUNT_TRANSACTION as SUB_TRANSACTION,
+                        DAT_HOUSEHOLD_ACCOUNT_ACCOUNT as SUB_ACCOUNT
+                   WHERE SUB_TRANSACTION.transaction_id = SUB_ACCOUNT.transaction_id
+                     AND SUB_ACCOUNT.account_id = BASE_ACCOUNT.account_id
+                         -- 開始縛り、月締データが無ければ開始日縛り無しで計算、月締データがあれば締月の翌月以降の取引データのみを計算
+                     AND IF( TEMPORARY_LATEST_CLOSING.account_id IS NULL, TRUE, SUB_TRANSACTION.date >= TEMPORARY_LATEST_CLOSING.closing_next_month_day_of_first )
+                         -- 終了縛り、取引日時までの取引データを合算させる
+                     AND concat(SUB_TRANSACTION.date,' ',TIME_FORMAT(SUB_TRANSACTION.created_at,'%H:%i:%s')) <= concat (BASE_TRANSACTION.date,' ',TIME_FORMAT(BASE_TRANSACTION.created_at,'%H:%i:%s'))
+                   )
+                   AS balance,
+               ACCOUNT.`name`,
+               ACCOUNT.`type`  as account_type
+
+        FROM
+             DAT_HOUSEHOLD_ACCOUNT_TRANSACTION AS BASE_TRANSACTION
+
+                 LEFT JOIN DAT_HOUSEHOLD_ACCOUNT_ACCOUNT as BASE_ACCOUNT
+                     ON BASE_TRANSACTION.transaction_id = BASE_ACCOUNT.transaction_id
+
+                 LEFT JOIN MST_ACCOUNT as ACCOUNT
+                     ON BASE_ACCOUNT.account_id = ACCOUNT.account_id
+
+                 LEFT JOIN TEMPORARY_LATEST_CLOSING
+                     ON TEMPORARY_LATEST_CLOSING.account_id = ACCOUNT.account_id
+
+        WHERE  {$implode(' and ', $wheres)}
+        AND BASE_TRANSACTION.date >= :target_month_day_of_first
+        AND BASE_TRANSACTION.date < DATE_ADD(:target_month_day_of_first2, INTERVAL 1 MONTH)
+
+ORDER BY
+         BASE_TRANSACTION.date ASC,
+         TIME_FORMAT(BASE_TRANSACTION.created_at,'%H:%i:%s') ASC
+
+QUERY;
 
             $stmt = $pdo->prepare( $query );
-            $stmt->bindParam(':user_id', $userId);
+
+            foreach( $values as $value ) $stmt->bindParam( ...$value );
+
+//            $stmt->bindParam(':user_id', $userId);
 
             if(! $stmt->execute()){
                 throw new \Exception();

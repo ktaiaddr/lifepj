@@ -80,7 +80,7 @@ class MysqlAccountBalanceQuery implements \App\Application\HouseholdAccount\quer
 
             $accounts = [];
             foreach($resultAll as $result){
-                $accounts[] = new AccountBalanceSelectModel($result['account_id'], $result['type'],new AccountType($result['type']) , $result['name'] );
+                $accounts[] = new AccountBalanceSelectModel($result['account_id'], new AccountType($result['type']) , $result['name'] );
             }
 
         }

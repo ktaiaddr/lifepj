@@ -29,15 +29,14 @@ class AccountBalanceSelectModel
 
     /**
      * @param int $accountId
-     * @param int $accountTypeValue
      * @param AccountType $accountType
      * @param string $name
      */
-    public function __construct(int $accountId, int $accountTypeValue,AccountType $accountType, string $name)
+    public function __construct(int $accountId, AccountType $accountType, string $name)
     {
         $this->accountId = $accountId;
-        $this->accountTypeValue = $accountTypeValue;
-        $this->accountTypeLabel = $accountType->typeLabel();
+        $this->accountTypeValue = ($accountType->isHandMoney()? AccountType::TYPE_HAND_MONEY: AccountType::TYPE_BANK);
+        $this->accountTypeLabel =  $accountType->typeLabel();
         $this->accountType = $accountType;
         $this->name = $name;
     }
