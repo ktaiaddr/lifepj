@@ -5,6 +5,7 @@ namespace Tests\Application\HouseholdAccount\service;
 use App\Application\HouseholdAccount\QueryModel\TransactionViewModel;
 use App\Application\HouseholdAccount\service\TransactionRegisterService;
 use App\Application\HouseholdAccount\service\TransactionViewService;
+use App\Domain\HouseholdAccount\Model\Transaction\SearchCommand;
 use App\Domain\HouseholdAccount\Model\Transaction\Transaction;
 use App\Domain\HouseholdAccount\Model\Transaction\TransactionType;
 use App\Models\HouseholdAccount\EloquentAccountBalance;
@@ -68,7 +69,7 @@ class TransactionViewServiceTest extends TestCase
     public function test_do(){
 
         /** @var TransactionViewModel[] $transactionViewModelList */
-        $transactionViewModelList = $this->transactionViewService->do($user_id=1);
+        $transactionViewModelList = $this->transactionViewService->do(new SearchCommand(null,null,202109),$user_id=1);
 
     }
 }

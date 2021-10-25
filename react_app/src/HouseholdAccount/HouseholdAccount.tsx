@@ -21,6 +21,15 @@ interface TransactionView{
     balances:AccountBalance[]
 }
 
+interface balanceAggregateViewModel{
+    account_id: number
+    account_name: string
+    balance: number
+    aggregate_balance?: number
+    latest_closing_balance?: number
+    closing_next_month_day_of_first?: string
+}
+
 const rowColor = (index: number)=> ( index%2==1 ? {background:"lightblue"} : {} )
 
 export default ()=>{
@@ -31,6 +40,8 @@ export default ()=>{
     const [transactionTypeSearchValue,setTransactionTypeSearchValue] = useState<number|null>(0)
     const [accountIdSearchValue,setAccountIdSearchValue] = useState<number|null>(0)
     const [viewMonth,setViewMonth] = useState<string>((new Date()).getFullYear()+'-'+((new Date()).getMonth()+1))
+    const [balanceAggregateViewModel,setBalanceAggregateViewModel] = useState<balanceAggregateViewModel[]>([])
+    const [transactionSearchRange,setTransactionSearchRange] = useState<{maxMonth:string,minMonth:string}>({maxMonth:'2021-10',minMonth:'2021-10'})
 
 
     const [enableSearch,setEnableSearch] = useState<boolean>(true)
@@ -84,9 +95,12 @@ export default ()=>{
             const result = await f();
             if(result){
                 console.log(result)
-                setAccountBalanceDataList(result.data.data);
+                setAccountBalanceDataList(result.data.transactionViewModels);
                 setTransactionTypeDefinitionsList(result.data.registerPageComponents.transactionTypeDefinitions)
                 setAccountList(result.data.registerPageComponents.accounts)
+                setBalanceAggregateViewModel(result.data.balanceAggregateViewModel)
+                setTransactionSearchRange(result.data.transactionSearchRange)
+
             }
         }
         await f2();
@@ -119,6 +133,8 @@ export default ()=>{
                         accountIdSearchValue={accountIdSearchValue}
                         viewMonth={viewMonth}
                         _setViewMonth={_setViewMonth}
+                        balanceAggregateViewModel={balanceAggregateViewModel}
+                        transactionSearchRange={transactionSearchRange}
                     />
                     <table className="table" style={{verticalAlign:"middle"}}>
                         <thead>

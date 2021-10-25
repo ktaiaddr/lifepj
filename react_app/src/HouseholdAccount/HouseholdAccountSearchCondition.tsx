@@ -8,19 +8,56 @@ export default ({
                     transactionTypeSearchValue,
                     accountIdSearchValue,
                     viewMonth,
-                    _setViewMonth}
+                    _setViewMonth,
+                    balanceAggregateViewModel,
+                    transactionSearchRange}
                     :{
     transactionTypeDefinitionsList:any,accountList:any,_setTransactionTypeSearchValue:any,_setAccountIdSearchValue:any,transactionTypeSearchValue:number|null,accountIdSearchValue:number|null,
-    viewMonth:string,_setViewMonth:any})=> {
+    viewMonth:string,_setViewMonth:any,balanceAggregateViewModel:any,transactionSearchRange:any})=> {
     return (
         <>
             <div className="row mb-4">
                 <div className="col-lg-12">
                     <div className="row">
-                        <div className="mb-4 d-flex">
-                            <div className="0">
-                                <input type="month" value={viewMonth} onChange={_setViewMonth}/>
+                        <div className="row">
+                            <div className="mb-4 d-flex">
+                                <div className="0">
+                                    <input type="month" value={viewMonth} onChange={_setViewMonth} max={transactionSearchRange.maxMonth} min={transactionSearchRange.minMonth}/>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="mb-4 d-flex">
+                                <table className="table" style={{verticalAlign:"middle"}}>
+                                    <thead>
+                                    <tr>
+                                        <th>口座</th>
+                                        <th>残高</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {balanceAggregateViewModel.map((balanceAggregate:{
+                                        account_id: number
+                                        account_name: string
+                                        balance: number
+                                        aggregate_balance?: number
+                                        latest_closing_balance?: number
+                                        closing_next_month_day_of_first?: string
+                                    })=>{
+                                        return (
+                                            <tr>
+                                                <td>
+                                                    {balanceAggregate.account_name}
+                                                </td>
+                                                <td>
+                                                    {balanceAggregate.balance.toLocaleString()+"円"}
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div className="row">
@@ -28,7 +65,7 @@ export default ({
                                 対象取引種別：
                             </div>
                             <div className="col-md-10 col-lg-10">
-                                <label style={{padding:"10px"}}>
+                                <label style={{padding:"0 10px"}}>
                                     <input type     = "radio"
                                            name     = "transaction_type"
                                            value    = {0}
@@ -36,7 +73,7 @@ export default ({
                                            checked  = {transactionTypeSearchValue==0} />
                                     全て
                                 </label>
-                                {transactionTypeDefinitionsList.map((transactionTypeDefinition:any)=>(<label style={{padding:"10px"}}>
+                                {transactionTypeDefinitionsList.map((transactionTypeDefinition:any)=>(<label style={{padding:"0 10px"}}>
                                     <input type     = "radio"
                                            name     = "transaction_type"
                                            value    = {transactionTypeDefinition.typeValue}
@@ -75,14 +112,14 @@ export default ({
                     </div>
                 </div>
 
-                <div className="mb-4 d-flex">
-                    <div className="0">
-                        <button className={"btn"+ (""?" btn-secondary":" btn-primary")} onClick={()=>""} disabled={false}>検索</button>
-                    </div>
-                    <div className="mx-2">
-                        <button className={"btn"+ (""?" btn-secondary":" btn-primary")} onClick={()=>""} disabled={false}>リセット</button>
-                    </div>
-                </div>
+                {/*<div className="mb-4 d-flex">*/}
+                {/*    <div className="0">*/}
+                {/*        <button className={"btn"+ (""?" btn-secondary":" btn-primary")} onClick={()=>""} disabled={false}>検索</button>*/}
+                {/*    </div>*/}
+                {/*    <div className="mx-2">*/}
+                {/*        <button className={"btn"+ (""?" btn-secondary":" btn-primary")} onClick={()=>""} disabled={false}>リセット</button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </>
     )

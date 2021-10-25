@@ -103,6 +103,9 @@ class ViewControllerTest extends TestCase
         $user = new User();
         $user->id = 1;
         $response = $this->actingAs($user)->json('GET','/api/household_account',[
+            'transactionTypeVal'=> null
+            , 'accountId'=>null
+            , 'viewMonth'=> '2021-09'
         ],$header);
 
         $response->assertStatus($status);

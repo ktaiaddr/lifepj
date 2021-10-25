@@ -43,12 +43,20 @@ class ViewController
 
         $commnd = $request->transferCommand();
 
+        //最終締月の残高データを生成
+        $this->transactionViewService->generateTemporaryLatestClosingData( $commnd, $user_id );
+
         $data = $this->transactionViewService->do( $commnd, $user_id );
-        $registerPageComponents = $this->transactionRegisterViewService->getComponents($user_id);
+//        $balanceAggregateViewModel = $this->transactionViewService->getAggregateData( $commnd, $user_id );
+
+
+
+//        $registerPageComponents = $this->transactionRegisterViewService->getComponents($user_id);
 
 //        var_dump($data);
 
-        return response()->json( ['data'=>$data,'registerPageComponents'=>$registerPageComponents], 200 );
+//        return response()->json( ['data'=>$data,'balanceAggregateViewModel'=>$balanceAggregateViewModel,'registerPageComponents'=>$registerPageComponents], 200 );
+        return response()->json( $data, 200 );
 
     }
 
