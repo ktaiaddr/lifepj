@@ -50,7 +50,7 @@ class TransactionViewService
 
             $registerPageComponents = $this->transactionRegisterViewService->getComponents($user_id);
 
-            $transactionSearchRange = $this->transactionViewQuery->getTransactionSearchRange();
+            $transactionSearchRange = $this->transactionViewQuery->getTransactionSearchRange($user_id);
 
             $viewPageComponent = new ViewPage($transactionViewModelList,$balanceAggregateViewModelList,$registerPageComponents,$transactionSearchRange);
 

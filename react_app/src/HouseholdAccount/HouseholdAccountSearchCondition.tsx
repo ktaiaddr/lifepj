@@ -10,10 +10,14 @@ export default ({
                     viewMonth,
                     _setViewMonth,
                     balanceAggregateViewModel,
-                    transactionSearchRange}
+                    transactionSearchRange,
+                    nowMonth,
+                    closingMonth}
                     :{
     transactionTypeDefinitionsList:any,accountList:any,_setTransactionTypeSearchValue:any,_setAccountIdSearchValue:any,transactionTypeSearchValue:number|null,accountIdSearchValue:number|null,
-    viewMonth:string,_setViewMonth:any,balanceAggregateViewModel:any,transactionSearchRange:any})=> {
+    viewMonth:string,_setViewMonth:any,balanceAggregateViewModel:any,transactionSearchRange:any,nowMonth:string,closingMonth:number})=> {
+    console.log(closingMonth)
+    console.log(parseInt(viewMonth.replace('-','')))
     return (
         <>
             <div className="row mb-4">
@@ -22,10 +26,17 @@ export default ({
                         <div className="row">
                             <div className="mb-4 d-flex">
                                 <div className="0">
-                                    <input type="month" value={viewMonth} onChange={_setViewMonth} max={transactionSearchRange.maxMonth} min={transactionSearchRange.minMonth}/>
+                                    <input className="form-control" type="month" value={viewMonth} onChange={_setViewMonth} max={transactionSearchRange.maxMonth} min={transactionSearchRange.minMonth}/>
 
                                 </div>
                             </div>
+                        </div>
+                        <div className="row">
+                            {parseInt(viewMonth.replace('-',''))<parseInt(nowMonth.replace('-',''))&&closingMonth<parseInt(viewMonth.replace('-',''))?(
+                                <div className="mb-4 d-flex">
+                                    <button style={{maxWidth:"200px",background:"#dc3545",color:"white"}} className="form-control" type={'button'} onClick={()=>alert(1)}>締め処理を行う</button>
+                                </div>
+                            ):""}
                         </div>
                         <div className="row">
                             <div className="mb-4 d-flex">
@@ -66,7 +77,8 @@ export default ({
                             </div>
                             <div className="col-md-10 col-lg-10">
                                 <label style={{padding:"0 10px"}}>
-                                    <input type     = "radio"
+                                    <input className="form-check-input"
+                                           type     = "radio"
                                            name     = "transaction_type"
                                            value    = {0}
                                            onChange = {_setTransactionTypeSearchValue}
@@ -74,7 +86,8 @@ export default ({
                                     全て
                                 </label>
                                 {transactionTypeDefinitionsList.map((transactionTypeDefinition:any)=>(<label style={{padding:"0 10px"}}>
-                                    <input type     = "radio"
+                                    <input className="form-check-input"
+                                           type     = "radio"
                                            name     = "transaction_type"
                                            value    = {transactionTypeDefinition.typeValue}
                                            key      = {transactionTypeDefinition.typeValue}
@@ -91,7 +104,8 @@ export default ({
                             </div>
                             <div className="col-md-10 col-lg-10">
                                 <label style={{padding:"0 10px"}}>
-                                    <input type="radio"
+                                    <input className="form-check-input"
+                                           type     = "radio"
                                            name="account_id"
                                            value={0}
                                            onChange={_setAccountIdSearchValue}
@@ -99,7 +113,8 @@ export default ({
                                     全て
                                 </label>
                                 {accountList.map((account:any)=>(<label style={{padding:"0 10px"}}>
-                                    <input type     = "radio"
+                                    <input className="form-check-input"
+                                           type     = "radio"
                                            name     = "account_id"
                                            value    = {account.accountId}
                                            key      = {account.accountId}

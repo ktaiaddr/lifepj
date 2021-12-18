@@ -4,6 +4,10 @@ import UserHeader from "../user_header";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+function nowYYYmmdd(){
+    const now = new Date();
+    return now.getFullYear()+'-' + (now.getMonth()+1)+'-'+now.getDate()
+}
 
 export default (props: any)=>{
 
@@ -189,7 +193,7 @@ export default (props: any)=>{
                     <form>
                         <div className="mb-3">
 
-                            <input type="date" className="form-control" name="date" placeholder={'日付'} value={date} onInput={_setDate} />
+                            <input type="date" className="form-control" name="date" placeholder={'日付'} value={date} onInput={_setDate} min={'2021-10-10'} max={nowYYYmmdd()}/>
                             <select className="form-control"  name="refueling_amount" onChange={_setTransactionType}>
                                 <option value="0">※取引種別を選択してください</option>
                                 {transactionTypeDefinitionsList.map(transactionTypeDefinition=>(

@@ -30,5 +30,5 @@ interface TransactionViewQuery
      */
     public function getBalanceAggregateData(SearchCommand $searchCommand,string $userId):array;
 
-    public function getTransactionSearchRange():TransactionSearchRange;
+    public function getTransactionSearchRange(int $user_id):TransactionSearchRange;
 }

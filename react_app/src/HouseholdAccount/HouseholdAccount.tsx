@@ -32,6 +32,13 @@ interface balanceAggregateViewModel{
 
 const rowColor = (index: number)=> ( index%2==1 ? {background:"lightblue"} : {} )
 
+function nowMonthYYYYmm(){
+    const now = new Date();
+    return now.getFullYear()+'-' + (now.getMonth()+1)
+}
+
+const nowMonth = (new Date()).getFullYear()+'-'+((new Date()).getMonth()+1);
+
 export default ()=>{
     const [accountBalanceDataList,setAccountBalanceDataList] = useState<TransactionView[]>([])
 
@@ -39,9 +46,9 @@ export default ()=>{
     const [accountList,setAccountList] = useState<{accountId:number,accountTypeLabel:string,accountTypeValue:number,name:string}[]>([])
     const [transactionTypeSearchValue,setTransactionTypeSearchValue] = useState<number|null>(0)
     const [accountIdSearchValue,setAccountIdSearchValue] = useState<number|null>(0)
-    const [viewMonth,setViewMonth] = useState<string>((new Date()).getFullYear()+'-'+((new Date()).getMonth()+1))
+    const [viewMonth,setViewMonth] = useState<string>((nowMonth))
     const [balanceAggregateViewModel,setBalanceAggregateViewModel] = useState<balanceAggregateViewModel[]>([])
-    const [transactionSearchRange,setTransactionSearchRange] = useState<{maxMonth:string,minMonth:string}>({maxMonth:'2021-10',minMonth:'2021-10'})
+    const [transactionSearchRange,setTransactionSearchRange] = useState<{maxMonth:string,minMonth:string}>({maxMonth:nowMonthYYYYmm(),minMonth:nowMonthYYYYmm()})
 
 
     const [enableSearch,setEnableSearch] = useState<boolean>(true)
@@ -99,6 +106,9 @@ export default ()=>{
                 setTransactionTypeDefinitionsList(result.data.registerPageComponents.transactionTypeDefinitions)
                 setAccountList(result.data.registerPageComponents.accounts)
                 setBalanceAggregateViewModel(result.data.balanceAggregateViewModel)
+
+                if(!result.data.transactionSearchRange.maxMonth)result.data.transactionSearchRange.maxMonth=nowMonthYYYYmm()
+                if(!result.data.transactionSearchRange.minMonth)result.data.transactionSearchRange.minMonth=nowMonthYYYYmm()
                 setTransactionSearchRange(result.data.transactionSearchRange)
 
             }
@@ -135,6 +145,8 @@ export default ()=>{
                         _setViewMonth={_setViewMonth}
                         balanceAggregateViewModel={balanceAggregateViewModel}
                         transactionSearchRange={transactionSearchRange}
+                        nowMonth={nowMonth}
+                        closingMonth={202106}
                     />
                     <table className="table" style={{verticalAlign:"middle"}}>
                         <thead>

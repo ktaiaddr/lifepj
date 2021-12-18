@@ -264,24 +264,27 @@ QUERY;
 
     }
 
-    public function getTransactionSearchRange(): TransactionSearchRange
+    public function getTransactionSearchRange(int $user_id): TransactionSearchRange
     {
         /** @var  $pdo \PDO */
         $pdo = DB::getPdo();
 
         $query = <<<QUERY
 select
-       (SELECT date_format(min(date),'%Y-%m') FROM lifepj.DAT_HOUSEHOLD_ACCOUNT_TRANSACTION) minMonth,
-       (SELECT date_format(max(date),'%Y-%m')  FROM lifepj.DAT_HOUSEHOLD_ACCOUNT_TRANSACTION) maxMonth
+       (SELECT date_format(min(date),'%Y-%m') FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION where user_id = :user_id1) minMonth ,
+       (SELECT date_format(max(date),'%Y-%m')  FROM DAT_HOUSEHOLD_ACCOUNT_TRANSACTION where user_id = :user_id2) maxMonth
 ;
 QUERY;
 
-        $result = $pdo->query( $query );
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':user_id1',$user_id, \PDO::PARAM_INT);
+        $stmt->bindParam(':user_id2',$user_id, \PDO::PARAM_INT);
+        $stmt->execute();
 
-        $result->setFetchMode(\PDO::FETCH_CLASS, TransactionSearchRange::class);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, TransactionSearchRange::class);
 
         /** @var TransactionSearchRange $transactionSearchRange */
-        $transactionSearchRange = $result->fetch();
+        $transactionSearchRange = $stmt->fetch();
 
         return $transactionSearchRange;
 
