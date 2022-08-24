@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const env = dotenv.config().parsed;
-
+console.log(env.OUTPUT_PATH)
 module.exports = {
     // 開発用の設定
     mode: 'development',
@@ -13,7 +13,7 @@ module.exports = {
 
     // バンドル後の js ファイルの出力先
     output: {
-	path: path.resolve(__dirname, '../laravel_app/public/react'),
+	path: path.resolve(__dirname, env.OUTPUT_PATH),
 	filename: 'index.js'
     },
 
