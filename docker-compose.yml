@@ -49,7 +49,14 @@ services:
     working_dir: /opt
     tty: true
     entrypoint: /bin/sh
-    command: -c "deluser www-data;adduser -u 1000 -s /sbin/nologin -D www-data;addgroup nginx www-data ;addgroup www-data www-data;nginx;docker-php-entrypoint php-fpm"
+    command: >
+      -c "
+      deluser www-data;
+      adduser -u 1000 -s /sbin/nologin -D www-data;
+      addgroup nginx www-data ;
+      addgroup www-data www-data;
+      nginx;docker-php-entrypoint php-fpm
+      "
 
   nodejs:
     container_name: ${NODEJS_CONTAINER_NAME}
