@@ -1,4 +1,4 @@
-FROM php:8.0.6-fpm-alpine3.13
+FROM php:8.1.9-fpm-alpine3.16
 
 RUN apk update && \
     apk upgrade && \
@@ -24,11 +24,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"  &
 #RUN echo '<?php phpinfo();' > /var/www/localhost/htdocs/index.php
 #RUN echo 'clear_env = no' >> /usr/local/etc/php-fpm.d/www.conf
 
-RUN mkdir /run/nginx
-RUN mkdir /run/php
+RUN if [ ! -d /run/nginx ] ; then mkdir /run/nginx ; fi
+RUN if [ ! -d /run/php ] ; then mkdir /run/php ; fi
 
-COPY ./zz-www.conf /usr/local/etc/php-fpm.d/zz-www.conf
-COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
+#COPY ./zz-www.conf /usr/local/etc/php-fpm.d/zz-www.conf
+#COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
 #xdebugを有効にする
 RUN echo '#コメントアウト'             > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
@@ -39,3 +39,5 @@ RUN echo '#コメントアウト'             > /usr/local/etc/php/conf.d/docker
 WORKDIR /opt
 
 ENTRYPOINT /bin/sh -c "chown -R www-data:www-data laravel_app/storage && nginx && php-fpm"
+
+RUN apk --no-cache add gettext

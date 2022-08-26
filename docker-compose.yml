@@ -34,16 +34,21 @@ services:
       - "9000:80"
     volumes:
       - ./:/opt
+      - ./docker_config/php-fpm_nginx/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf
+      - ./docker_config/php-fpm_nginx/nginx.conf:/etc/nginx/http.d/nginx.conf.template
     working_dir: /opt
     tty: true
     entrypoint: /bin/sh
     command: >
       -c "
-      deluser www-data;
-      adduser -u 1000 -s /sbin/nologin -D www-data;
-      addgroup nginx www-data ;
-      addgroup www-data www-data;
-      nginx;docker-php-entrypoint php-fpm
+          if [ ! -d /run/nginx ] ; then mkdir /run/nginx ; fi
+          if [ ! -d /run/php ] ; then mkdir /run/php ; fi
+          sed -i -e 's/user nginx;/user www-data;/g' /etc/nginx/nginx.conf;
+          deluser www-data;
+          adduser -u 1000 -s /sbin/nologin -D www-data;
+          php-fpm -D;
+          envsubst 80 < /etc/nginx/http.d/nginx.conf.template > /etc/nginx/http.d/nginx.conf;
+          nginx -g \"daemon off;\";
       "
 
   nodejs:
